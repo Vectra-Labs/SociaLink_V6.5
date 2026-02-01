@@ -1,0 +1,71 @@
+{
+    "common": {
+        "login": "Login",
+        "register": "Register",
+        "logout": "Logout",
+        "dashboard": "Dashboard",
+        "profile": "My Profile",
+        "settings": "Settings",
+        "save": "Save",
+        "cancel": "Cancel",
+        "edit": "Edit",
+        "delete": "Delete",
+        "search": "Search",
+        "loading": "Loading...",
+        "submit": "Submit",
+        "back": "Back"
+    },
+    "nav": {
+        "home": "Home",
+        "missions": "Missions",
+        "pricing": "Pricing",
+        "howItWorks": "How it works",
+        "forWho": "For whom?",
+        "requestAccess": "Request access"
+    },
+    "hero": {
+        "title": "The platform connecting healthcare professionals",
+        "subtitle": "Find missions suited to your profile or recruit the best talents in the sector",
+        "workerCta": "I'm a professional",
+        "establishmentCta": "I'm recruiting"
+    },
+    "auth": {
+        "email": "Email",
+        "password": "Password",
+        "confirmPassword": "Confirm password",
+        "forgotPassword": "Forgot password?",
+        "noAccount": "Don't have an account?",
+        "hasAccount": "Already have an account?",
+        "loginTitle": "Login to your account",
+        "registerTitle": "Create an account"
+    },
+    "worker": {
+        "dashboard": "Worker Dashboard",
+        "profile": "My Profile",
+        "missions": "Available Missions",
+        "applications": "My Applications",
+        "documents": "My Documents",
+        "calendar": "My Calendar"
+    },
+    "establishment": {
+        "dashboard": "Establishment Dashboard",
+        "profile": "Establishment Profile",
+        "createMission": "Post a mission",
+        "myMissions": "My Missions",
+        "applications": "Received Applications",
+        "searchWorkers": "Search for talents"
+    },
+    "subscription": {
+        "basic": "BASIC",
+        "premium": "PREMIUM",
+        "pro": "PRO",
+        "upgrade": "Upgrade to",
+        "currentPlan": "Your current plan"
+    },
+    "footer": {
+        "about": "About",
+        "contact": "Contact",
+        "legal": "Legal",
+        "privacy": "Privacy"
+    }
+}

@@ -1,0 +1,861 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+///////////////////////
+// ENUMS
+///////////////////////
+
+enum UserRole {
+  WORKER
+  ESTABLISHMENT
+  ADMIN
+  SUPER_ADMIN
+}
+
+// Statut global de l'utilisateur (validation admin)
+enum UserStatus {
+  PENDING // En attente de validation
+  IN_REVIEW // En cours de vérification par admin
+  VALIDATED // Validé par admin
+  REJECTED // Rejeté
+  SUSPENDED // Suspendu
+}
+
+enum VerificationStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+enum EstablishmentDocType {
+  ICE           // Identifiant Commun de l'Entreprise
+  RC            // Registre de Commerce
+  CNSS          // Attestation CNSS
+  PATENT        // Patente
+  RIB           // Relevé d'Identité Bancaire
+  OTHER
+}
+
+enum NotificationType {
+  INFO
+  WARNING
+  SUCCESS
+  URGENT
+  MISSION_INVITE
+  APPLICATION_UPDATE
+  NEW_MESSAGE
+  CV_REQUEST
+}
+
+// Plans d'abonnement
+enum SubscriptionTier {
+  BASIC // Gratuit avec limitations
+  PREMIUM // Travailleur payant (149 DH/mois)
+  PRO // Établissement payant (499 DH/mois)
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  TRIAL
+  EXPIRED
+  CANCELLED
+}
+
+///////////////////////
+// LOCATION
+///////////////////////
+
+model Region {
+  region_id Int    @id @default(autoincrement())
+  name      String @unique
+
+  cities City[]
+}
+
+model City {
+  city_id   Int    @id @default(autoincrement())
+  name      String
+  region_id Int
+
+  region         Region                 @relation(fields: [region_id], references: [region_id])
+  workers        WorkerProfile[]
+  establishments EstablishmentProfile[]
+
+  missions Mission[]
+}
+
+///////////////////////
+// USER & AUTH
+///////////////////////
+
+model User {
+  user_id    Int        @id @default(autoincrement())
+  email      String     @unique
+  password   String
+  role       UserRole
+  status     UserStatus @default(PENDING)
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
+
+  // Permissions Admin (JSON)
+  admin_permissions Json? // ["CAN_VALIDATE", "CAN_MODERATE", ...]
+
+  // Email Verification
+  verificationCode          String?
+  verificationCodeExpiresAt DateTime?
+  isEmailVerified           Boolean   @default(false)
+
+  // Password Reset
+  resetPasswordToken          String?
+  resetPasswordTokenExpiresAt DateTime?
+
+  workerProfile        WorkerProfile?
+  establishmentProfile EstablishmentProfile?
+  notifications        Notification[]
+  subscription         Subscription?
+  payments             Payment[]
+
+  givenReviews    Review[]   @relation("GivenReviews")
+  receivedReviews Review[]   @relation("ReceivedReviews")
+  createdDisputes Dispute[]  @relation("CreatedDisputes")
+  reportedDisputes Dispute[] @relation("ReportedDisputes")
+  sentAdminMessages     AdminMessage[] @relation("SentAdminMessages")
+  receivedAdminMessages AdminMessage[] @relation("ReceivedAdminMessages")
+  adminLogs       AdminLog[]
+  adminProfile    AdminProfile?
+
+
+  @@index([status])
+  @@index([role])
+
+  sent_messages Message[]
+}
+
+///////////////////////
+// WORKER
+///////////////////////
+
+model WorkerProfile {
+  user_id Int @id
+
+  user User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
+  first_name          String?
+  last_name           String?
+  title               String?
+  experience_years    Int?
+  verification_status VerificationStatus @default(PENDING)
+
+  address String?
+  city_id Int?
+  city    City?   @relation(fields: [city_id], references: [city_id])
+  phone   String?
+  bio     String?
+
+  profile_pic_url String?
+  banner_url      String?
+  cv_url          String?
+
+  // Zone de disponibilité géographique
+  availability_radius_km Int?    @default(30)
+  availability_lat       Float?
+  availability_lng       Float?
+
+  diplomas        Diploma[]
+  experiences     Experience[]
+  availabilities  Availability[]
+  applications    Application[]
+  specialities    WorkerSpeciality[]
+  documents       WorkerDocument[]
+  calendar_events CalendarEvent[]
+  profile_views   ProfileView[]
+  conversations   Conversation[]
+  languages       WorkerLanguage[]
+}
+
+model WorkerLanguage {
+  id        Int      @id @default(autoincrement())
+  worker_id Int
+  worker    WorkerProfile @relation(fields: [worker_id], references: [user_id], onDelete: Cascade)
+
+  name      String   // "Français", "Amazigh", etc.
+  level     String   // "Natif", "Courant", etc.
+  code      String?  // "FR", "EN" (pour drapeaux)
+
+  @@index([worker_id])
+}
+
+///////////////////////
+// PROFILE VIEWS (Statistics)
+///////////////////////
+
+model ProfileView {
+  id         Int      @id @default(autoincrement())
+  worker_id  Int
+  viewer_id  Int?     // null = anonymous visitor or establishment not logged in
+  viewed_at  DateTime @default(now())
+  
+  worker     WorkerProfile @relation(fields: [worker_id], references: [user_id], onDelete: Cascade)
+  
+  @@index([worker_id])
+  @@index([viewed_at])
+}
+
+///////////////////////
+// ESTABLISHMENT
+///////////////////////
+
+model EstablishmentProfile {
+  user_id Int @id
+
+  user User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
+  structure_id Int?
+  structure    Structure? @relation(fields: [structure_id], references: [id])
+
+  name               String
+  slug               String? @unique // URL-friendly identifier
+  contact_first_name String
+  contact_last_name  String
+  contact_function   String?
+  ice_number         String  @unique
+  rc_number          String?
+  address            String?
+  city_id            Int?
+  city               City?   @relation(fields: [city_id], references: [city_id])
+
+  phone               String?
+  website             String?
+  description         String?
+  founding_year       Int?
+  employee_count      String?
+  verification_status VerificationStatus @default(PENDING)
+
+  service  String?
+  logo_url String?
+  banner_url String?
+
+  missions Mission[]
+  conversations Conversation[]
+  documents EstablishmentDocument[]
+}
+
+///////////////////////
+// STRUCTURE
+///////////////////////
+
+model Structure {
+  id        Int     @id @default(autoincrement())
+  label     String  @unique
+  is_active Boolean @default(true)
+
+  establishments EstablishmentProfile[]
+}
+
+///////////////////////
+// SPECIALITIES
+///////////////////////
+
+model Speciality {
+  speciality_id Int    @id @default(autoincrement())
+  name          String @unique
+
+  workers WorkerSpeciality[]
+}
+
+model WorkerSpeciality {
+  user_id       Int
+  speciality_id Int
+
+  worker     WorkerProfile @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  speciality Speciality    @relation(fields: [speciality_id], references: [speciality_id], onDelete: Cascade)
+
+  @@id([user_id, speciality_id])
+}
+
+///////////////////////
+// EXPERIENCE
+///////////////////////
+
+model Experience {
+  experience_id Int @id @default(autoincrement())
+  user_id       Int
+
+  worker WorkerProfile @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
+  establishment_name String
+  job_title          String
+  description        String?
+  start_date         DateTime
+  end_date           DateTime?
+  is_current_role    Boolean   @default(false)
+  created_at         DateTime  @default(now())
+}
+
+///////////////////////
+// DIPLOMA (RGPD)
+///////////////////////
+
+model Diploma {
+  diploma_id Int @id @default(autoincrement())
+  user_id    Int
+
+  worker WorkerProfile @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
+  name                String
+  institution         String?
+  issue_date          DateTime?
+  description         String?
+  verification_status VerificationStatus @default(PENDING)
+  file_path           String
+}
+
+///////////////////////
+// AVAILABILITY
+///////////////////////
+
+model Availability {
+  availability_id   Int @id @default(autoincrement())
+  worker_profile_id Int
+
+  worker WorkerProfile @relation(fields: [worker_profile_id], references: [user_id], onDelete: Cascade)
+
+  start_datetime DateTime
+  end_datetime   DateTime
+}
+
+///////////////////////
+// MISSIONS
+///////////////////////
+
+// ... (previous content)
+
+enum MissionStatus {
+  PENDING
+  REJECTED
+  OPEN
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum ContractType {
+  CDI
+  CDD
+  INTERIM
+  STAGE
+  BENEVOLAT
+  FREELANCE
+}
+
+enum WorkMode {
+  ON_SITE
+  REMOTE
+  HYBRID
+}
+
+enum ExperienceLevel {
+  JUNIOR
+  INTERMEDIATE
+  SENIOR
+  EXPERT
+}
+
+model Mission {
+  mission_id       Int @id @default(autoincrement())
+  establishment_id Int
+  city_id          Int
+
+  establishment EstablishmentProfile @relation(fields: [establishment_id], references: [user_id], onDelete: Cascade)
+  city          City                 @relation(fields: [city_id], references: [city_id])
+
+  title       String
+  start_date  DateTime
+  end_date    DateTime
+  status      MissionStatus @default(PENDING)
+  contract_type ContractType @default(FREELANCE)
+  description String?
+  budget      Float?
+
+  // Nouveaux champs pour système abonnement
+  is_urgent    Boolean   @default(false)
+  published_at DateTime?
+  created_at   DateTime  @default(now())
+
+  // Nouveaux champs pour détails de mission enrichis
+  sector              String?           // Catégorie: "Action Sociale", "Médical", etc.
+  positions_count     Int               @default(1)
+  work_mode           WorkMode          @default(ON_SITE)
+  experience_level    ExperienceLevel   @default(INTERMEDIATE)
+  salary_min          Float?
+  salary_max          Float?
+  application_deadline DateTime?
+  benefits            String[]          @default([]) // ["CNSS", "MUTUELLE", "TRANSPORT", "FORMATION"]
+  skills              String[]          @default([]) // ["Education spécialisée", "Ecoute active", ...]
+
+  applications Application[]
+  reviews      Review[]
+  disputes     Dispute[]
+
+  views        Int               @default(0)
+
+  @@index([status])
+  @@index([is_urgent])
+  @@index([published_at])
+  @@index([sector])
+}
+
+model Review {
+  review_id  Int @id @default(autoincrement())
+  mission_id Int
+  author_id  Int
+  target_id  Int
+
+  rating     Int // 1-5
+  comment    String?
+  created_at DateTime @default(now())
+
+  mission Mission @relation(fields: [mission_id], references: [mission_id], onDelete: Cascade)
+  author  User    @relation("GivenReviews", fields: [author_id], references: [user_id], onDelete: Cascade)
+  target  User    @relation("ReceivedReviews", fields: [target_id], references: [user_id], onDelete: Cascade)
+}
+
+///////////////////////
+// APPLICATION
+///////////////////////
+
+enum ApplicationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  PROPOSED
+}
+
+model Application {
+  application_id    Int @id @default(autoincrement())
+  worker_profile_id Int
+  mission_id        Int
+
+  worker  WorkerProfile @relation(fields: [worker_profile_id], references: [user_id], onDelete: Cascade)
+  mission Mission       @relation(fields: [mission_id], references: [mission_id], onDelete: Cascade)
+
+  status     ApplicationStatus @default(PENDING)
+  created_at DateTime          @default(now())
+
+  intervention Intervention?
+}
+
+///////////////////////
+// INTERVENTION & FEEDBACK
+///////////////////////
+
+model Intervention {
+  intervention_id Int @id @default(autoincrement())
+  application_id  Int @unique
+
+  application Application @relation(fields: [application_id], references: [application_id], onDelete: Cascade)
+
+  feedbacks Feedback[]
+}
+
+model Feedback {
+  feedback_id     Int @id @default(autoincrement())
+  intervention_id Int
+
+  intervention Intervention @relation(fields: [intervention_id], references: [intervention_id], onDelete: Cascade)
+
+  content String
+  rating  Int?
+}
+
+///////////////////////
+// NOTIFICATION
+///////////////////////
+
+model Notification {
+  notification_id Int @id @default(autoincrement())
+  user_id         Int
+
+  user User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
+  message    String
+  is_read    Boolean          @default(false)
+  type       NotificationType
+  link       String?
+  created_at DateTime         @default(now())
+}
+
+///////////////////////
+// SUBSCRIPTION SYSTEM
+///////////////////////
+
+// Configuration des plans (géré par Super Admin)
+model SubscriptionPlanConfig {
+  plan_id     Int              @id @default(autoincrement())
+  code        SubscriptionTier
+  name        String // "Gratuit", "Premium", "Pro"
+  description String?
+  target_role UserRole // WORKER ou ESTABLISHMENT
+
+  // Prix en centimes DH (0 = gratuit)
+  price_monthly Int  @default(0)
+  price_yearly  Int?
+  trial_days    Int  @default(0)
+
+  // === LIMITATIONS TRAVAILLEURS ===
+  max_active_applications  Int     @default(3)
+  can_view_urgent_missions Boolean @default(false)
+  can_view_full_profiles   Boolean @default(false)
+  has_auto_matching        Boolean @default(false)
+  mission_view_delay_hours Int     @default(48)
+  max_visible_missions     Int? // null = illimité
+
+  // === LIMITATIONS ÉTABLISSEMENTS ===
+  max_active_missions        Int? // null = illimité
+  can_post_urgent            Boolean @default(false)
+  can_search_workers         Boolean @default(false)
+  urgent_mission_fee_percent Int     @default(30)
+
+  is_active  Boolean  @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  subscriptions Subscription[]
+
+  @@unique([code, target_role])
+  @@index([target_role])
+  @@index([is_active])
+}
+
+// Abonnement utilisateur
+model Subscription {
+  subscription_id Int @id @default(autoincrement())
+  user_id         Int @unique
+  plan_id         Int
+
+  user User                   @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  plan SubscriptionPlanConfig @relation(fields: [plan_id], references: [plan_id])
+
+  status         SubscriptionStatus @default(ACTIVE)
+  start_date     DateTime           @default(now())
+  end_date       DateTime? // null = pas d'expiration (plan gratuit)
+  trial_end_date DateTime?
+
+  // Infos paiement
+  payment_method    String? // "card", "mobile_money", "manual"
+  payment_reference String?
+  last_payment_date DateTime?
+
+  // Stripe payment tracking
+  stripe_payment_id String?
+  stripe_session_id String?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@index([status])
+  @@index([end_date])
+  payments       Payment[]
+}
+
+model Payment {
+  payment_id     Int      @id @default(autoincrement())
+  user_id        Int
+  subscription_id Int? 
+  
+  user           User          @relation(fields: [user_id], references: [user_id])
+  subscription   Subscription? @relation(fields: [subscription_id], references: [subscription_id])
+
+  amount         Int      // In cents
+  currency       String   @default("MAD")
+  status         String   // COMPLETED, PENDING, FAILED
+  type           String   // SUBSCRIPTION, COMMISSION, REFUND
+  
+  provider       String?  // stripe, paypal, manual
+  transaction_id String?  // External ID
+
+  created_at     DateTime @default(now())
+  
+  @@index([user_id])
+  @@index([created_at])
+}
+
+// Suivi usage quotidien (pour limites)
+model UserUsage {
+  usage_id Int      @id @default(autoincrement())
+  user_id  Int
+  date     DateTime @db.Date
+
+  applications_count       Int @default(0)
+  missions_viewed_count    Int @default(0)
+  missions_published_count Int @default(0)
+
+  created_at DateTime @default(now())
+
+  @@unique([user_id, date])
+  @@index([date])
+}
+
+///////////////////////
+// AUDIT LOGS (Super Admin)
+///////////////////////
+
+model AdminLog {
+  log_id      Int      @id @default(autoincrement())
+  admin_id    Int
+  action      String // "VALIDATE_USER", "DELETE_MISSION", "UPDATE_SETTINGS"
+  target_type String? // "USER", "MISSION", "SYSTEM"
+  target_id   String? // ID of the target object
+  details     Json? // Snapshot of changes
+  ip_address  String?
+  created_at  DateTime @default(now())
+
+  admin User @relation(fields: [admin_id], references: [user_id])
+
+  @@index([admin_id])
+  @@index([action])
+}
+
+model SystemSetting {
+  key         String   @id
+  value       String
+  description String?
+  category    String?  // "FINANCE", "ALGO", "GENERAL"
+  updated_at  DateTime @updatedAt
+}
+
+enum DisputeStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  DISMISSED
+}
+
+enum DisputeType {
+  SCAM
+  HARASSMENT
+  NO_SHOW
+  PAYMENT_ISSUE
+  OTHER
+}
+
+model Dispute {
+  dispute_id  Int          @id @default(autoincrement())
+  reporter_id Int
+  target_id   Int
+  mission_id  Int?
+
+  status      DisputeStatus @default(OPEN)
+  type        DisputeType
+  description String
+  resolution  String?
+
+  reporter User @relation("CreatedDisputes", fields: [reporter_id], references: [user_id])
+  target   User @relation("ReportedDisputes", fields: [target_id], references: [user_id])
+  mission  Mission? @relation(fields: [mission_id], references: [mission_id])
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@index([status])
+  @@index([reporter_id])
+  @@index([target_id])
+}
+
+///////////////////////
+// MARKETING & BANNIERES
+///////////////////////
+
+model MarketingBanner {
+  banner_id Int     @id @default(autoincrement())
+  title     String
+  message   String?
+  image_url String?
+  link      String?
+
+  target_role UserRole? // null = Tout le monde
+
+  is_active  Boolean   @default(true)
+  priority   Int       @default(0) // Ordre d'affichage
+  start_date DateTime  @default(now())
+  end_date   DateTime?
+
+  created_at DateTime @default(now())
+}
+
+///////////////////////
+// ADMIN MESSAGING
+///////////////////////
+
+model AdminMessage {
+  message_id  Int      @id @default(autoincrement())
+  sender_id   Int
+  receiver_id Int
+  content     String
+  is_read     Boolean  @default(false)
+  created_at  DateTime @default(now())
+
+  sender   User @relation("SentAdminMessages", fields: [sender_id], references: [user_id])
+  receiver User @relation("ReceivedAdminMessages", fields: [receiver_id], references: [user_id])
+
+  @@index([sender_id])
+  @@index([receiver_id])
+  @@index([created_at])
+}
+
+///////////////////////
+// WORKER DOCUMENTS (avec validation admin)
+///////////////////////
+
+enum DocumentType {
+  DIPLOMA           // Diplôme
+  CIN               // Carte d'identité nationale
+  CASIER_JUDICIAIRE // Casier judiciaire
+  ATTESTATION_TRAVAIL // Attestation de travail
+  CARTE_CNSS        // Carte CNSS
+  CERTIFICATE       // Certificat/Formation
+  OTHER             // Autre document
+}
+
+model WorkerDocument {
+  document_id  Int      @id @default(autoincrement())
+  worker_id    Int
+  
+  worker       WorkerProfile @relation(fields: [worker_id], references: [user_id], onDelete: Cascade)
+  
+  type         DocumentType
+  name         String        // Titre du document
+  institution  String?       // Institution/Organisme émetteur
+  issue_date   DateTime?     // Date d'obtention/délivrance
+  expiry_date  DateTime?     // Date d'expiration (CIN, casier, etc.)
+  document_number String?    // Numéro du document (étudiant, CIN, etc.)
+  file_url     String        // URL fichier uploadé
+  
+  // Validation Admin
+  status       VerificationStatus @default(PENDING)
+  verified_by  Int?          // Admin qui a validé
+  verified_at  DateTime?
+  rejection_reason String?
+  
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+  
+  @@index([worker_id])
+  @@index([type])
+  @@index([status])
+}
+
+///////////////////////
+// WORKER CALENDAR
+///////////////////////
+
+enum CalendarEventType {
+  AVAILABLE   // Disponible pour missions
+  BUSY        // Occupé (rendez-vous, mission)
+  BLOCKED     // Indisponible
+}
+
+model CalendarEvent {
+  event_id    Int      @id @default(autoincrement())
+  worker_id   Int
+  
+  worker      WorkerProfile @relation(fields: [worker_id], references: [user_id], onDelete: Cascade)
+  
+  title       String?
+  description String?
+  start_date  DateTime
+  end_date    DateTime
+  type        CalendarEventType @default(AVAILABLE)
+  is_all_day  Boolean @default(false)
+  
+  created_at  DateTime @default(now())
+  
+  @@index([worker_id])
+  @@index([start_date])
+  @@index([type])
+}
+
+///////////////////////
+// MESSAGING SYSTEM
+///////////////////////
+
+model Conversation {
+  conversation_id Int @id @default(autoincrement())
+  worker_id       Int
+  establishment_id Int
+  
+  worker        WorkerProfile @relation(fields: [worker_id], references: [user_id], onDelete: Cascade)
+  establishment EstablishmentProfile @relation(fields: [establishment_id], references: [user_id], onDelete: Cascade)
+  
+  messages      Message[]
+  
+  last_message_at DateTime @default(now())
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  @@unique([worker_id, establishment_id])
+  @@index([updated_at])
+}
+
+model Message {
+  message_id     Int @id @default(autoincrement())
+  conversation_id Int
+  sender_id      Int
+  
+  conversation   Conversation @relation(fields: [conversation_id], references: [conversation_id], onDelete: Cascade)
+  sender         User         @relation(fields: [sender_id], references: [user_id], onDelete: Cascade)
+  
+  content        String
+  is_read        Boolean      @default(false)
+  created_at     DateTime     @default(now())
+  
+  @@index([conversation_id])
+  @@index([is_read])
+}
+
+///////////////////////
+// ADMIN PROFILE
+///////////////////////
+
+model AdminProfile {
+  user_id Int @id
+  user    User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
+  first_name      String
+  last_name       String
+  phone           String?
+  profile_pic_url String?
+  department      String? // ex: "Vérification Documents", "Support"
+  
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+///////////////////////
+// ESTABLISHMENT DOCUMENTS
+///////////////////////
+
+model EstablishmentDocument {
+  document_id Int @id @default(autoincrement())
+  user_id     Int
+  
+  establishment EstablishmentProfile @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
+  type             EstablishmentDocType
+  file_url         String
+  file_name        String
+  uploaded_at      DateTime @default(now())
+  status           VerificationStatus @default(PENDING)
+  reviewed_by      Int?
+  reviewed_at      DateTime?
+  rejection_reason String?
+
+  @@index([user_id])
+  @@index([status])
+}

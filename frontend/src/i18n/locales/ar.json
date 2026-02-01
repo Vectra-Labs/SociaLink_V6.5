@@ -1,0 +1,71 @@
+{
+    "common": {
+        "login": "تسجيل الدخول",
+        "register": "تسجيل",
+        "logout": "تسجيل الخروج",
+        "dashboard": "لوحة التحكم",
+        "profile": "ملفي الشخصي",
+        "settings": "الإعدادات",
+        "save": "حفظ",
+        "cancel": "إلغاء",
+        "edit": "تعديل",
+        "delete": "حذف",
+        "search": "بحث",
+        "loading": "جاري التحميل...",
+        "submit": "إرسال",
+        "back": "رجوع"
+    },
+    "nav": {
+        "home": "الرئيسية",
+        "missions": "المهام",
+        "pricing": "الأسعار",
+        "howItWorks": "كيف يعمل",
+        "forWho": "لمن؟",
+        "requestAccess": "طلب الوصول"
+    },
+    "hero": {
+        "title": "المنصة التي تربط المهنيين في القطاع الصحي",
+        "subtitle": "ابحث عن مهام تناسب ملفك الشخصي أو قم بتوظيف أفضل المواهب",
+        "workerCta": "أنا محترف",
+        "establishmentCta": "أنا أوظف"
+    },
+    "auth": {
+        "email": "البريد الإلكتروني",
+        "password": "كلمة المرور",
+        "confirmPassword": "تأكيد كلمة المرور",
+        "forgotPassword": "نسيت كلمة المرور؟",
+        "noAccount": "ليس لديك حساب؟",
+        "hasAccount": "لديك حساب بالفعل؟",
+        "loginTitle": "تسجيل الدخول إلى حسابك",
+        "registerTitle": "إنشاء حساب"
+    },
+    "worker": {
+        "dashboard": "لوحة تحكم العامل",
+        "profile": "ملفي الشخصي",
+        "missions": "المهام المتاحة",
+        "applications": "طلباتي",
+        "documents": "مستنداتي",
+        "calendar": "تقويمي"
+    },
+    "establishment": {
+        "dashboard": "لوحة تحكم المؤسسة",
+        "profile": "ملف المؤسسة",
+        "createMission": "نشر مهمة",
+        "myMissions": "مهامي",
+        "applications": "الطلبات المستلمة",
+        "searchWorkers": "البحث عن المواهب"
+    },
+    "subscription": {
+        "basic": "أساسي",
+        "premium": "مميز",
+        "pro": "احترافي",
+        "upgrade": "الترقية إلى",
+        "currentPlan": "خطتك الحالية"
+    },
+    "footer": {
+        "about": "حول",
+        "contact": "اتصل بنا",
+        "legal": "قانوني",
+        "privacy": "الخصوصية"
+    }
+}

@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SociaLink V6 - Présentation Soutenance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card { background: white; border-radius: 1rem; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        .section { scroll-margin-top: 80px; }
+        @media print {
+            .no-print { display: none; }
+            .section { page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full gradient-bg text-white shadow-lg z-50 no-print">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <h1 class="text-xl font-bold">🎓 SociaLink V6 - Soutenance</h1>
+            <div class="hidden md:flex space-x-4 text-sm">
+                <a href="#intro" class="hover:underline">Intro</a>
+                <a href="#architecture" class="hover:underline">Architecture</a>
+                <a href="#demo" class="hover:underline">Démo</a>
+                <a href="#conformite" class="hover:underline">Conformité</a>
+                <a href="#technique" class="hover:underline">Technique</a>
+                <a href="#perspectives" class="hover:underline">Perspectives</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="gradient-bg text-white pt-24 pb-16 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">🌐 SociaLink V6</h1>
+            <p class="text-xl md:text-2xl opacity-90 mb-6">Réseau de Travailleurs Sociaux Indépendants</p>
+            <div class="inline-flex items-center bg-white/20 rounded-full px-6 py-2">
+                <span class="text-sm">Projet de Fin de Formation • Développement Full-Stack 2025</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-12 space-y-16">
+
+        <!-- Section 1: Introduction -->
+        <section id="intro" class="section">
+            <div class="card p-8">
+                <h2 class="text-3xl font-bold text-purple-700 mb-6">1. Présentation du Projet</h2>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4">🎯 Objectif</h3>
+                        <p class="text-gray-600 mb-4">
+                            Plateforme de <strong>mise en relation</strong> entre travailleurs sociaux indépendants 
+                            et établissements médico-sociaux au Maroc.
+                        </p>
+                        <ul class="space-y-2 text-gray-600">
+                            <li>✅ <strong>Travailleurs</strong> : Aides-soignants, éducateurs, infirmiers</li>
+                            <li>✅ <strong>Établissements</strong> : EHPAD, crèches, centres sociaux</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4">💡 Proposition de Valeur</h3>
+                        <ul class="space-y-2 text-gray-600">
+                            <li>🏆 <strong>Labellisation rigoureuse</strong> - Vérification des diplômes</li>
+                            <li>🔍 <strong>Matching qualifié</strong> - Filtres compétences/expérience</li>
+                            <li>⭐ <strong>Suivi qualité</strong> - Évaluations bidirectionnelles</li>
+                            <li>🤝 <strong>Lien durable</strong> - Limiter la multiplication d'intervenants</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-8 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl p-6">
+                    <h4 class="font-semibold mb-4 text-center">Flux de la Plateforme</h4>
+                    <div class="mermaid">
+                        graph LR
+                            A[🏢 Établissement] -->|Publie mission| P[📱 SociaLink]
+                            P -->|Matching| B[👷 Travailleur Labellisé]
+                            B -->|Postule| P
+                            P -->|Intervention| A
+                            A -->|⭐ Évaluation| P
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Architecture -->
+        <section id="architecture" class="section">
+            <div class="card p-8">
+                <h2 class="text-3xl font-bold text-purple-700 mb-6">2. Architecture Technique</h2>
+                
+                <h3 class="text-xl font-semibold mb-4">🏗️ Stack Technologique</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-purple-100">
+                                <th class="p-3 font-semibold">Couche</th>
+                                <th class="p-3 font-semibold">Technologies</th>
+                                <th class="p-3 font-semibold">Justification</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y">
+                            <tr><td class="p-3 font-medium">Frontend</td><td class="p-3">React 19 + Vite 7</td><td class="p-3 text-gray-600">SPA performante, hot reload</td></tr>
+                            <tr><td class="p-3 font-medium">Styling</td><td class="p-3">Tailwind CSS 4</td><td class="p-3 text-gray-600">Responsive, utility-first</td></tr>
+                            <tr><td class="p-3 font-medium">Backend</td><td class="p-3">Node.js + Express 5</td><td class="p-3 text-gray-600">API REST modulaire</td></tr>
+                            <tr><td class="p-3 font-medium">ORM</td><td class="p-3">Prisma 6.x</td><td class="p-3 text-gray-600">Type-safe, migrations auto</td></tr>
+                            <tr><td class="p-3 font-medium">Database</td><td class="p-3">PostgreSQL</td><td class="p-3 text-gray-600">Relations complexes, ACID</td></tr>
+                            <tr><td class="p-3 font-medium">Auth</td><td class="p-3">JWT + HTTP-Only Cookies</td><td class="p-3 text-gray-600">Sécurité tokens</td></tr>
+                            <tr><td class="p-3 font-medium">Real-time</td><td class="p-3">Socket.io</td><td class="p-3 text-gray-600">Messagerie instantanée</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-8 bg-gray-50 rounded-xl p-6">
+                    <h4 class="font-semibold mb-4 text-center">Schéma d'Architecture</h4>
+                    <div class="mermaid">
+                        graph TB
+                            subgraph Client["🖥️ Frontend React"]
+                                UI[Interface]
+                                CTX[Contexts]
+                                RQ[React Query]
+                            end
+                            subgraph Server["⚙️ Backend Express"]
+                                API[API REST]
+                                MW[Middlewares]
+                                CTRL[Controllers]
+                            end
+                            subgraph Data["🗄️ Database"]
+                                PRISMA[Prisma ORM]
+                                PG[(PostgreSQL)]
+                            end
+                            UI --> CTX --> RQ --> API
+                            API --> MW --> CTRL --> PRISMA --> PG
+                    </div>
+                </div>
+
+                <div class="mt-8 grid md:grid-cols-2 gap-6">
+                    <div class="bg-blue-50 rounded-xl p-6">
+                        <h4 class="font-semibold mb-3">📁 Backend</h4>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• <code class="bg-blue-100 px-1 rounded">prisma/schema.prisma</code> - 25+ modèles</li>
+                            <li>• <code class="bg-blue-100 px-1 rounded">src/controllers/</code> - 15 controllers</li>
+                            <li>• <code class="bg-blue-100 px-1 rounded">src/routes/</code> - 15 fichiers</li>
+                            <li>• <code class="bg-blue-100 px-1 rounded">src/middleware/</code> - Auth, Roles, Upload</li>
+                        </ul>
+                    </div>
+                    <div class="bg-green-50 rounded-xl p-6">
+                        <h4 class="font-semibold mb-3">📁 Frontend</h4>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• <code class="bg-green-100 px-1 rounded">src/pages/</code> - 61+ pages</li>
+                            <li>• <code class="bg-green-100 px-1 rounded">src/components/</code> - 21 composants</li>
+                            <li>• <code class="bg-green-100 px-1 rounded">src/context/</code> - 5 providers</li>
+                            <li>• <code class="bg-green-100 px-1 rounded">src/hooks/</code> - Hooks personnalisés</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Demo -->
+        <section id="demo" class="section">
+            <div class="card p-8">
+                <h2 class="text-3xl font-bold text-purple-700 mb-6">3. Démonstration des Fonctionnalités</h2>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Worker -->
+                    <div class="border-2 border-blue-200 rounded-xl p-6">
+                        <h3 class="text-xl font-semibold text-blue-700 mb-4">👤 Travailleur Social</h3>
+                        <table class="w-full text-sm">
+                            <tbody class="divide-y">
+                                <tr><td class="py-2">Inscription enrichie</td><td class="py-2 text-gray-500">/register/worker</td></tr>
+                                <tr><td class="py-2">Profil complet</td><td class="py-2 text-gray-500">/worker/profile</td></tr>
+                                <tr><td class="py-2">Upload diplômes</td><td class="py-2 text-gray-500">/worker/documents</td></tr>
+                                <tr><td class="py-2">Calendrier</td><td class="py-2 text-gray-500">/worker/calendar</td></tr>
+                                <tr><td class="py-2">Missions</td><td class="py-2 text-gray-500">/worker/missions</td></tr>
+                                <tr><td class="py-2">Évaluations</td><td class="py-2 text-gray-500">/worker/reviews</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Establishment -->
+                    <div class="border-2 border-green-200 rounded-xl p-6">
+                        <h3 class="text-xl font-semibold text-green-700 mb-4">🏢 Établissement</h3>
+                        <table class="w-full text-sm">
+                            <tbody class="divide-y">
+                                <tr><td class="py-2">Profil structure</td><td class="py-2 text-gray-500">/establishment/profile</td></tr>
+                                <tr><td class="py-2">Créer mission</td><td class="py-2 text-gray-500">/establishment/missions/create</td></tr>
+                                <tr><td class="py-2">Mes missions</td><td class="py-2 text-gray-500">/establishment/missions</td></tr>
+                                <tr><td class="py-2">Recherche workers</td><td class="py-2 text-gray-500">/establishment/search-worker</td></tr>
+                                <tr><td class="py-2">Candidatures</td><td class="py-2 text-gray-500">/establishment/candidates</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Admin -->
+                    <div class="border-2 border-orange-200 rounded-xl p-6">
+                        <h3 class="text-xl font-semibold text-orange-700 mb-4">🛡️ Administrateur</h3>
+                        <table class="w-full text-sm">
+                            <tbody class="divide-y">
+                                <tr><td class="py-2">Dashboard</td><td class="py-2 text-gray-500">/admin/dashboard</td></tr>
+                                <tr><td class="py-2">Validations profils</td><td class="py-2 text-gray-500">/admin/validations</td></tr>
+                                <tr><td class="py-2">Vérifier documents</td><td class="py-2 text-gray-500">/admin/documents</td></tr>
+                                <tr><td class="py-2">Litiges</td><td class="py-2 text-gray-500">/admin/disputes</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Super Admin -->
+                    <div class="border-2 border-purple-200 rounded-xl p-6">
+                        <h3 class="text-xl font-semibold text-purple-700 mb-4">👑 Super Admin</h3>
+                        <table class="w-full text-sm">
+                            <tbody class="divide-y">
+                                <tr><td class="py-2">Vue globale</td><td class="py-2 text-gray-500">/super-admin/dashboard</td></tr>
+                                <tr><td class="py-2">Finances</td><td class="py-2 text-gray-500">/super-admin/finance</td></tr>
+                                <tr><td class="py-2">Utilisateurs</td><td class="py-2 text-gray-500">/super-admin/users</td></tr>
+                                <tr><td class="py-2">Paramètres</td><td class="py-2 text-gray-500">/super-admin/settings</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="mt-8 bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-xl">
+                    <p class="font-semibold">💡 Comptes de Test pour Démo :</p>
+                    <div class="mt-2 grid md:grid-cols-3 gap-4 text-sm">
+                        <div><strong>Worker:</strong> worker.premium@test.ma / test123</div>
+                        <div><strong>Établissement:</strong> etab.pro@test.ma / test123</div>
+                        <div><strong>Admin:</strong> admin@socialink.ma / admin123</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Conformité -->
+        <section id="conformite" class="section">
+            <div class="card p-8">
+                <h2 class="text-3xl font-bold text-purple-700 mb-6">4. Conformité au Brief</h2>
+                
+                <div class="text-center mb-8">
+                    <div class="inline-flex items-center bg-green-100 text-green-700 rounded-full px-8 py-3 text-xl font-bold">
+                        ✅ 100% des Exigences Couvertes
+                    </div>
+                </div>
+
+                <h3 class="text-xl font-semibold mb-4">User Stories</h3>
+                <div class="overflow-x-auto mb-8">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-green-100">
+                                <th class="p-3">Exigence Brief</th>
+                                <th class="p-3 text-center">Statut</th>
+                                <th class="p-3">Implémentation</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y">
+                            <tr><td class="p-3">Profil enrichi + diplômes</td><td class="p-3 text-center text-2xl">✅</td><td class="p-3 text-gray-600">WorkerDocument, EditProfile.jsx</td></tr>
+                            <tr><td class="p-3">Calendrier disponibilités</td><td class="p-3 text-center text-2xl">✅</td><td class="p-3 text-gray-600">CalendarEvent, WorkerCalendar.jsx</td></tr>
+                            <tr><td class="p-3">Postuler missions</td><td class="p-3 text-center text-2xl">✅</td><td class="p-3 text-gray-600">Application, MissionMarket.jsx</td></tr>
+                            <tr><td class="p-3">Publier offres</td><td class="p-3 text-center text-2xl">✅</td><td class="p-3 text-gray-600">Mission, CreateMission.jsx</td></tr>
+                            <tr><td class="p-3">Recherche filtres</td><td class="p-3 text-center text-2xl">✅</td><td class="p-3 text-gray-600">SearchWorker.jsx, API filtres</td></tr>
+                            <tr><td class="p-3">Noter intervention</td><td class="p-3 text-center text-2xl">✅</td><td class="p-3 text-gray-600">Review, WorkerReviews.jsx</td></tr>
+                            <tr><td class="p-3">Labelliser profils</td><td class="p-3 text-center text-2xl">✅</td><td class="p-3 text-gray-600">verification_status, AdminValidations.jsx</td></tr>
+                            <tr><td class="p-3">Vue d'ensemble admin</td><td class="p-3 text-center text-2xl">✅</td><td class="p-3 text-gray-600">AdminDashboard.jsx</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="text-xl font-semibold mb-4">Spécifications Non-Fonctionnelles</h3>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-red-50 rounded-xl p-4">
+                        <h4 class="font-semibold text-red-700 mb-2">🔐 Sécurité</h4>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>✅ RGPD compliant</li>
+                            <li>✅ Bcrypt passwords</li>
+                            <li>✅ JWT HTTP-Only</li>
+                        </ul>
+                    </div>
+                    <div class="bg-blue-50 rounded-xl p-4">
+                        <h4 class="font-semibold text-blue-700 mb-2">⚡ Performance</h4>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>✅ SPA React</li>
+                            <li>✅ React Query cache</li>
+                            <li>✅ Architecture modulaire</li>
+                        </ul>
+                    </div>
+                    <div class="bg-purple-50 rounded-xl p-4">
+                        <h4 class="font-semibold text-purple-700 mb-2">🎨 UX/UI</h4>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>✅ Responsive Design</li>
+                            <li>✅ Accessibilité</li>
+                            <li>✅ 4 dashboards distincts</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Technique -->
+        <section id="technique" class="section">
+            <div class="card p-8">
+                <h2 class="text-3xl font-bold text-purple-700 mb-6">5. Points Techniques Clés</h2>
+                
+                <div class="space-y-6">
+                    <!-- JWT -->
+                    <div class="bg-gray-900 rounded-xl p-6 text-white">
+                        <h4 class="text-green-400 font-semibold mb-3">🔐 Authentification JWT</h4>
+                        <pre class="text-sm overflow-x-auto"><code>// backend/src/middleware/authMiddleware.js
+export const authenticateToken = (req, res, next) => {
+    const token = req.cookies.accessToken;
+    if (!token) return res.status(401).json({ error: 'Non authentifié' });
+    
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        if (err) return res.status(403).json({ error: 'Token invalide' });
+        req.user = user;
+        next();
+    });
+};</code></pre>
+                    </div>
+
+                    <!-- React Query -->
+                    <div class="bg-gray-900 rounded-xl p-6 text-white">
+                        <h4 class="text-blue-400 font-semibold mb-3">⚡ Caching React Query</h4>
+                        <pre class="text-sm overflow-x-auto"><code>// Caching intelligent côté client
+const { data: missions, isLoading } = useQuery({
+    queryKey: ['missions', filters],
+    queryFn: () => fetchMissions(filters),
+    staleTime: 5 * 60 * 1000, // Cache 5 minutes
+});</code></pre>
+                    </div>
+
+                    <!-- ER Diagram -->
+                    <div class="bg-gray-50 rounded-xl p-6">
+                        <h4 class="font-semibold mb-4 text-center">📊 Modèle Relationnel Simplifié</h4>
+                        <div class="mermaid">
+                            erDiagram
+                                User ||--o| WorkerProfile : has
+                                User ||--o| EstablishmentProfile : has
+                                WorkerProfile ||--o{ Application : submits
+                                WorkerProfile ||--o{ WorkerDocument : uploads
+                                EstablishmentProfile ||--o{ Mission : publishes
+                                Mission ||--o{ Application : receives
+                                Application ||--o| Review : generates
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Perspectives -->
+        <section id="perspectives" class="section">
+            <div class="card p-8">
+                <h2 class="text-3xl font-bold text-purple-700 mb-6">6. Améliorations et Perspectives</h2>
+                
+                <h3 class="text-xl font-semibold mb-4">🚀 Fonctionnalités Bonus Implémentées</h3>
+                <div class="grid md:grid-cols-4 gap-4 mb-8">
+                    <div class="bg-gradient-to-br from-purple-500 to-indigo-600 text-white rounded-xl p-4 text-center">
+                        <div class="text-3xl mb-2">💳</div>
+                        <div class="font-semibold">Abonnements</div>
+                        <div class="text-sm opacity-80">BASIC/PREMIUM/PRO</div>
+                    </div>
+                    <div class="bg-gradient-to-br from-blue-500 to-cyan-600 text-white rounded-xl p-4 text-center">
+                        <div class="text-3xl mb-2">👑</div>
+                        <div class="font-semibold">Super Admin</div>
+                        <div class="text-sm opacity-80">Dashboard finances</div>
+                    </div>
+                    <div class="bg-gradient-to-br from-green-500 to-emerald-600 text-white rounded-xl p-4 text-center">
+                        <div class="text-3xl mb-2">💬</div>
+                        <div class="font-semibold">Messagerie</div>
+                        <div class="text-sm opacity-80">Socket.io temps réel</div>
+                    </div>
+                    <div class="bg-gradient-to-br from-orange-500 to-red-600 text-white rounded-xl p-4 text-center">
+                        <div class="text-3xl mb-2">🧪</div>
+                        <div class="font-semibold">Tests E2E</div>
+                        <div class="text-sm opacity-80">Playwright</div>
+                    </div>
+                </div>
+
+                <h3 class="text-xl font-semibold mb-4">🔮 Roadmap V7</h3>
+                <div class="bg-gray-50 rounded-xl p-6">
+                    <div class="flex flex-wrap gap-4">
+                        <span class="bg-green-100 text-green-700 px-4 py-2 rounded-full">✅ Paiements Stripe</span>
+                        <span class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full">📱 Application PWA</span>
+                        <span class="bg-purple-100 text-purple-700 px-4 py-2 rounded-full">🔔 Push Notifications</span>
+                        <span class="bg-orange-100 text-orange-700 px-4 py-2 rounded-full">🤖 IA Matching</span>
+                        <span class="bg-pink-100 text-pink-700 px-4 py-2 rounded-full">🌍 Multilingue AR/FR</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Metrics -->
+        <section class="section">
+            <div class="card p-8">
+                <h2 class="text-3xl font-bold text-purple-700 mb-6">📊 Métriques du Projet</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                    <div class="bg-purple-50 rounded-xl p-6">
+                        <div class="text-4xl font-bold text-purple-700">25+</div>
+                        <div class="text-gray-600">Modèles Prisma</div>
+                    </div>
+                    <div class="bg-blue-50 rounded-xl p-6">
+                        <div class="text-4xl font-bold text-blue-700">61+</div>
+                        <div class="text-gray-600">Pages React</div>
+                    </div>
+                    <div class="bg-green-50 rounded-xl p-6">
+                        <div class="text-4xl font-bold text-green-700">15</div>
+                        <div class="text-gray-600">Controllers API</div>
+                    </div>
+                    <div class="bg-orange-50 rounded-xl p-6">
+                        <div class="text-4xl font-bold text-orange-700">21</div>
+                        <div class="text-gray-600">Composants</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Questions Jury -->
+        <section class="section">
+            <div class="card p-8">
+                <h2 class="text-3xl font-bold text-purple-700 mb-6">🙋 Questions Potentielles du Jury</h2>
+                <div class="space-y-4">
+                    <div class="bg-gray-50 rounded-xl p-4">
+                        <p class="font-semibold text-purple-700">Pourquoi React plutôt qu'Angular ou Vue ?</p>
+                        <p class="text-gray-600 mt-2">SPA performante, écosystème riche, compétence très demandée sur le marché, hooks et composition facile.</p>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl p-4">
+                        <p class="font-semibold text-purple-700">Pourquoi Prisma plutôt que Sequelize ?</p>
+                        <p class="text-gray-600 mt-2">Type-safe avec TypeScript, migrations automatiques, meilleure expérience développeur, syntaxe moderne.</p>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl p-4">
+                        <p class="font-semibold text-purple-700">Comment gérez-vous la sécurité ?</p>
+                        <p class="text-gray-600 mt-2">JWT en HTTP-Only cookies, bcrypt pour les mots de passe, middleware de vérification des rôles, validation OTP par email.</p>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl p-4">
+                        <p class="font-semibold text-purple-700">Quelle est la différence avec LinkedIn ou Indeed ?</p>
+                        <p class="text-gray-600 mt-2">Focus secteur social, labellisation qualité par validation admin, lien durable avec les établissements, marché marocain.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <section class="text-center py-12">
+            <div class="card p-8 inline-block">
+                <h2 class="text-3xl font-bold text-purple-700 mb-4">Merci pour votre attention ! 🙏</h2>
+                <p class="text-gray-600 mb-4">
+                    <strong>SociaLink V6</strong> - Réseau de Travailleurs Sociaux<br>
+                    Stack: React + Node.js + PostgreSQL
+                </p>
+                <div class="text-sm text-gray-500">
+                    Projet de Fin de Formation • Développement Full-Stack 2025
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</body>
+</html>

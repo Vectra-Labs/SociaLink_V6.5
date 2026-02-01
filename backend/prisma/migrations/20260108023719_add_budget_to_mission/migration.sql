@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Mission" ADD COLUMN     "budget" DOUBLE PRECISION,
+ALTER COLUMN "status" SET DEFAULT 'OPEN';

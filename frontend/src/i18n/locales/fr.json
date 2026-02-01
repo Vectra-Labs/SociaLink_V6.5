@@ -1,0 +1,71 @@
+{
+    "common": {
+        "login": "Connexion",
+        "register": "S'inscrire",
+        "logout": "Se déconnecter",
+        "dashboard": "Tableau de bord",
+        "profile": "Mon Profil",
+        "settings": "Paramètres",
+        "save": "Enregistrer",
+        "cancel": "Annuler",
+        "edit": "Modifier",
+        "delete": "Supprimer",
+        "search": "Rechercher",
+        "loading": "Chargement...",
+        "submit": "Soumettre",
+        "back": "Retour"
+    },
+    "nav": {
+        "home": "Accueil",
+        "missions": "Missions",
+        "pricing": "Tarifs",
+        "howItWorks": "Comment ça marche",
+        "forWho": "Pour qui ?",
+        "requestAccess": "Demander l'accès"
+    },
+    "hero": {
+        "title": "La plateforme qui connecte les professionnels du médico-social",
+        "subtitle": "Trouvez des missions adaptées à votre profil ou recrutez les meilleurs talents du secteur",
+        "workerCta": "Je suis professionnel",
+        "establishmentCta": "Je recrute"
+    },
+    "auth": {
+        "email": "Email",
+        "password": "Mot de passe",
+        "confirmPassword": "Confirmer le mot de passe",
+        "forgotPassword": "Mot de passe oublié ?",
+        "noAccount": "Pas encore de compte ?",
+        "hasAccount": "Déjà un compte ?",
+        "loginTitle": "Connexion à votre compte",
+        "registerTitle": "Créer un compte"
+    },
+    "worker": {
+        "dashboard": "Tableau de bord Travailleur",
+        "profile": "Mon Profil",
+        "missions": "Missions disponibles",
+        "applications": "Mes Candidatures",
+        "documents": "Mes Documents",
+        "calendar": "Mon Calendrier"
+    },
+    "establishment": {
+        "dashboard": "Tableau de bord Établissement",
+        "profile": "Profil Établissement",
+        "createMission": "Publier une mission",
+        "myMissions": "Mes Missions",
+        "applications": "Candidatures reçues",
+        "searchWorkers": "Rechercher des talents"
+    },
+    "subscription": {
+        "basic": "BASIC",
+        "premium": "PREMIUM",
+        "pro": "PRO",
+        "upgrade": "Passer à",
+        "currentPlan": "Votre plan actuel"
+    },
+    "footer": {
+        "about": "À propos",
+        "contact": "Contact",
+        "legal": "Mentions légales",
+        "privacy": "Confidentialité"
+    }
+}

@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SociaLink - Dashboard Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1a2632",
+                        "text-main": "#111418",
+                        "text-sub": "#617589",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-main font-display antialiased overflow-hidden">
+<div class="flex h-screen w-full">
+<!-- Side Navigation -->
+<aside class="w-64 bg-surface-light dark:bg-surface-dark border-r border-[#dbe0e6] dark:border-gray-700 flex flex-col flex-shrink-0 z-20 hidden md:flex">
+<div class="p-6 flex items-center gap-3">
+<div class="bg-primary/10 text-primary p-2 rounded-lg">
+<span class="material-symbols-outlined text-3xl">hub</span>
+</div>
+<div>
+<h1 class="text-text-main dark:text-white text-lg font-bold leading-tight">SociaLink</h1>
+<p class="text-text-sub text-xs font-medium">Administration</p>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto px-4 py-2 flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary" href="#">
+<span class="material-symbols-outlined icon-filled">dashboard</span>
+<span class="text-sm font-medium">Tableau de bord</span>
+</a>
+<div class="pt-4 pb-1 px-3">
+<p class="text-xs font-semibold text-text-sub uppercase tracking-wider">Modération</p>
+</div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-main dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" href="#">
+<span class="material-symbols-outlined">person_check</span>
+<span class="text-sm font-medium">Validations Profils</span>
+<span class="ml-auto bg-primary text-white text-xs font-bold px-2 py-0.5 rounded-full">12</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-main dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" href="#">
+<span class="material-symbols-outlined">verified</span>
+<span class="text-sm font-medium">Diplômes &amp; Docs</span>
+<span class="ml-auto bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">45</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-main dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" href="#">
+<span class="material-symbols-outlined">gavel</span>
+<span class="text-sm font-medium">Litiges</span>
+</a>
+<div class="pt-4 pb-1 px-3">
+<p class="text-xs font-semibold text-text-sub uppercase tracking-wider">Système</p>
+</div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-main dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" href="#">
+<span class="material-symbols-outlined">notifications</span>
+<span class="text-sm font-medium">Notifications</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-main dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Paramètres</span>
+</a>
+</nav>
+<div class="p-4 border-t border-[#dbe0e6] dark:border-gray-700">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat bg-cover rounded-full h-10 w-10 border border-gray-200" data-alt="Portrait of admin user" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCzWTdvxhoLy-ykKhTwlSDjnR0gnj6WdkwU-CrsNF3QJzWTQtLatssGO_FLPpnMsCAIgLWS-asKNXAE5bTK39eBUyu6ZwO8jybRx8qKnVacM0gYFsToxSwFpioRRNXNov8xRZVaSDwU7MlVx_NVKML9SfEFjnaKuw-vWyZLCe917vwrWJrJcTNBoHysK5c-HSUyqZm5yDRi3L0lSrfDtkewnVZzwNRcklI8VhhYwiXMCZ4E-PsX7Q4FsyV7njGAL73u4L1Cy0dr7EAM");'></div>
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-text-main dark:text-white">Admin Principal</span>
+<span class="text-xs text-text-sub">admin@socialink.ma</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-full relative overflow-hidden">
+<!-- Top Header -->
+<header class="h-16 bg-surface-light dark:bg-surface-dark border-b border-[#dbe0e6] dark:border-gray-700 flex items-center justify-between px-6 z-10 flex-shrink-0">
+<div class="flex items-center gap-4">
+<button class="md:hidden text-text-main dark:text-white">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h2 class="text-lg font-bold text-text-main dark:text-white hidden sm:block">Vue d'ensemble</h2>
+</div>
+<div class="flex items-center gap-4">
+<!-- Search -->
+<div class="hidden md:flex items-center bg-[#f0f2f4] dark:bg-gray-800 rounded-lg h-10 px-3 w-64 lg:w-96">
+<span class="material-symbols-outlined text-text-sub">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-full text-text-main dark:text-white placeholder:text-text-sub" placeholder="Rechercher un profil, un document..." type="text"/>
+</div>
+<!-- Actions -->
+<button class="relative h-10 w-10 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined text-text-main dark:text-white">notifications</span>
+<span class="absolute top-2 right-2 h-2.5 w-2.5 bg-red-500 rounded-full border-2 border-white dark:border-gray-900"></span>
+</button>
+<div class="h-8 w-px bg-gray-200 dark:bg-gray-700 mx-1"></div>
+<button class="flex items-center gap-2 text-sm font-medium text-text-main dark:text-white hover:opacity-80">
+<span>Déconnexion</span>
+<span class="material-symbols-outlined text-lg">logout</span>
+</button>
+</div>
+</header>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto p-6 lg:p-10 scroll-smooth">
+<div class="max-w-7xl mx-auto space-y-8">
+<!-- Stats Section -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-surface-light dark:bg-surface-dark p-5 rounded-xl border border-[#dbe0e6] dark:border-gray-700 shadow-sm flex flex-col justify-between h-32">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-text-sub text-sm font-medium mb-1">Profils en attente</p>
+<h3 class="text-3xl font-bold text-text-main dark:text-white">12</h3>
+</div>
+<div class="bg-blue-50 dark:bg-blue-900/20 p-2 rounded-lg text-primary">
+<span class="material-symbols-outlined">person_add</span>
+</div>
+</div>
+<div class="flex items-center gap-1 text-sm text-green-600 font-medium">
+<span class="material-symbols-outlined text-base">trending_up</span>
+<span>+2% cette semaine</span>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark p-5 rounded-xl border border-[#dbe0e6] dark:border-gray-700 shadow-sm flex flex-col justify-between h-32">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-text-sub text-sm font-medium mb-1">Documents à vérifier</p>
+<h3 class="text-3xl font-bold text-text-main dark:text-white">45</h3>
+</div>
+<div class="bg-orange-50 dark:bg-orange-900/20 p-2 rounded-lg text-orange-500">
+<span class="material-symbols-outlined">folder_open</span>
+</div>
+</div>
+<div class="flex items-center gap-1 text-sm text-orange-600 font-medium">
+<span class="material-symbols-outlined text-base">priority_high</span>
+<span>Action requise</span>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark p-5 rounded-xl border border-[#dbe0e6] dark:border-gray-700 shadow-sm flex flex-col justify-between h-32">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-text-sub text-sm font-medium mb-1">Litiges ouverts</p>
+<h3 class="text-3xl font-bold text-text-main dark:text-white">3</h3>
+</div>
+<div class="bg-red-50 dark:bg-red-900/20 p-2 rounded-lg text-red-500">
+<span class="material-symbols-outlined">report_problem</span>
+</div>
+</div>
+<div class="flex items-center gap-1 text-sm text-text-sub font-medium">
+<span>Délai moyen: 2 jours</span>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark p-5 rounded-xl border border-[#dbe0e6] dark:border-gray-700 shadow-sm flex flex-col justify-between h-32">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-text-sub text-sm font-medium mb-1">Utilisateurs actifs</p>
+<h3 class="text-3xl font-bold text-text-main dark:text-white">1,204</h3>
+</div>
+<div class="bg-green-50 dark:bg-green-900/20 p-2 rounded-lg text-green-500">
+<span class="material-symbols-outlined">group</span>
+</div>
+</div>
+<div class="flex items-center gap-1 text-sm text-green-600 font-medium">
+<span class="material-symbols-outlined text-base">trending_up</span>
+<span>+12% ce mois</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+<!-- Main Column: Validation Queue -->
+<div class="xl:col-span-2 space-y-8">
+<!-- Worker Profiles Table -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-[#dbe0e6] dark:border-gray-700 shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-[#dbe0e6] dark:border-gray-700 flex justify-between items-center bg-gray-50/50 dark:bg-gray-800/50">
+<h3 class="font-bold text-lg text-text-main dark:text-white">File d'attente de validation</h3>
+<button class="text-sm font-medium text-primary hover:text-blue-700">Voir tout</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="text-xs text-text-sub uppercase bg-gray-50 dark:bg-gray-800 border-b border-[#dbe0e6] dark:border-gray-700">
+<th class="px-6 py-3 font-semibold">Candidat</th>
+<th class="px-6 py-3 font-semibold">Rôle</th>
+<th class="px-6 py-3 font-semibold">Date d'inscription</th>
+<th class="px-6 py-3 font-semibold">Visibilité</th>
+<th class="px-6 py-3 font-semibold text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#dbe0e6] dark:divide-gray-700">
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat bg-cover rounded-full h-10 w-10 bg-gray-200" data-alt="Profile picture of Ali" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBLQGwTVPGB_lHNnJJP4bNdA02aGcF8cdRIJrWF0IVzxlN6AF-F3d6witiYPa246AQhguUxRh2kgArM-ZZ0tQkzoKcYRRuGxdouIQQzOmQ7t2RAXA8Mwt4Jam96T7X72Rct0mk0M1k-E9-qxht59pcgL8tceJAFs3tw-PRVrSsL_m6T1AycccKY6euW_6RQ--7DmwCkfR6b8YLqNdjSFXu8dPrckBjNOTHielrf7c3hmui7Et26x0MfyI_H3pmMCGcfaSh55dOdB2QG");'></div>
+<div>
+<div class="font-medium text-text-main dark:text-white">Ali Bennani</div>
+<div class="text-xs text-text-sub">Casablanca</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-text-main dark:text-gray-300">Assistant Social</td>
+<td class="px-6 py-4 text-sm text-text-sub">12/10/2023</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+<span class="material-symbols-outlined text-[14px]">visibility_off</span>
+                                                        Flouté
+                                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-2 rounded-lg text-green-600 hover:bg-green-50 dark:hover:bg-green-900/30 transition-colors" title="Valider">
+<span class="material-symbols-outlined">check_circle</span>
+</button>
+<button class="p-2 rounded-lg text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors" title="Refuser">
+<span class="material-symbols-outlined">cancel</span>
+</button>
+<button class="p-2 rounded-lg text-text-sub hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" title="Détails">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat bg-cover rounded-full h-10 w-10 bg-gray-200" data-alt="Profile picture of Fatima" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAa7DLBLkZVkFclGTqhvB6CzY4fpxKFMjsaNni1qT3dj2NYK3YoN-P_tRNwD21Pf8U7hzR7kz5p23DSORK06bGhCQct3c8skCH_DEKag0d8OUcYaL_TWIgoh1fvGjNOxaiP-h1o8ZW2kdwcuV-ZwY5lbaUTvvsAD7l84Ah_03sYalcrkXUGulMbpGSmwDJAc7z4D4y-bml_j02R_GAcW99ARlQGxklZH4ILArmBFDaCo36Yvl0n4ZS_3fsGxRaeDtow430Gq7ldsjXE");'></div>
+<div>
+<div class="font-medium text-text-main dark:text-white">Fatima Zahra</div>
+<div class="text-xs text-text-sub">Rabat</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-text-main dark:text-gray-300">Éducatrice Spécialisée</td>
+<td class="px-6 py-4 text-sm text-text-sub">11/10/2023</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+<span class="material-symbols-outlined text-[14px]">visibility_off</span>
+                                                        Flouté
+                                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-2 rounded-lg text-green-600 hover:bg-green-50 dark:hover:bg-green-900/30 transition-colors" title="Valider">
+<span class="material-symbols-outlined">check_circle</span>
+</button>
+<button class="p-2 rounded-lg text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors" title="Refuser">
+<span class="material-symbols-outlined">cancel</span>
+</button>
+<button class="p-2 rounded-lg text-text-sub hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" title="Détails">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat bg-cover rounded-full h-10 w-10 bg-gray-200" data-alt="Profile picture of Omar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDRGpf9XjE_Ukk7Bwhd8Oh3qEqkFRF_fMLnJbtoqpWYhIvqMPdsFuas-XY5xQ7GET4SvjSSIIWW5hOkaDe_6ZmzhUTsl9nYaDFGndiruGmTAxkI1R3E9yKfuUZgPb5axxNhZQHs4C_IrI0WAZmf_E3y7jcshTSznqKmUVYrcub8OSKBWZRnOZRZJi05GbDg_MkX8YdedjmT_iaKLEqv4ko5nFI3aSB0QYH5dbWnRXGV7tELoG_eBlFy97qTkLqgb-qpClkOd5IyksZg");'></div>
+<div>
+<div class="font-medium text-text-main dark:text-white">Omar Idrissi</div>
+<div class="text-xs text-text-sub">Tanger</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-text-main dark:text-gray-300">Médiateur</td>
+<td class="px-6 py-4 text-sm text-text-sub">10/10/2023</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+<span class="material-symbols-outlined text-[14px]">visibility_off</span>
+                                                        Flouté
+                                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-2 rounded-lg text-green-600 hover:bg-green-50 dark:hover:bg-green-900/30 transition-colors" title="Valider">
+<span class="material-symbols-outlined">check_circle</span>
+</button>
+<button class="p-2 rounded-lg text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors" title="Refuser">
+<span class="material-symbols-outlined">cancel</span>
+</button>
+<button class="p-2 rounded-lg text-text-sub hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" title="Détails">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Diplomas Verification Grid -->
+<div>
+<h3 class="font-bold text-lg text-text-main dark:text-white mb-4 px-1">Vérification des Documents</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Document Card 1 -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-[#dbe0e6] dark:border-gray-700 shadow-sm p-4 flex flex-col gap-3">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-primary font-bold">YT</div>
+<div>
+<p class="font-semibold text-sm text-text-main dark:text-white">Yassine Tazi</p>
+<p class="text-xs text-text-sub">Diplôme d'État</p>
+</div>
+</div>
+<span class="bg-orange-100 text-orange-700 text-xs font-bold px-2 py-1 rounded">En attente</span>
+</div>
+<div class="h-40 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center relative overflow-hidden group cursor-pointer border border-dashed border-gray-300 dark:border-gray-600">
+<div class="absolute inset-0 bg-cover bg-center opacity-50 blur-[2px]" data-alt="Blurry document preview" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB-AOHqs_doFgmGgs-b-XDkTqc5wLm3tE-rAIzOzTEoE20KDlYQ4gotLhBA-IT91XfXwwWUKrlc24VgC0jR9CCWHoGHpwyRh8WeLOcEUcVhcNjxPmRq4QJQLp-6s7Dh9BGkWdYW2wxcdJYEMNwS5za-ejoICkU1pbrkCYvrKp1StNS_i0rTYiy_SqoeXOEv_pnt4uE3JrJKdG8GVzhivr7IwBjQ9xgTgUq2xKI4e2UEjfRh-JEXOsL0dEn6Q46eLxzbDSdltZPdkNb3");'></div>
+<div class="relative z-10 flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-gray-500 text-4xl">visibility</span>
+<span class="text-sm font-medium text-gray-600 dark:text-gray-300">Aperçu du document</span>
+</div>
+</div>
+<div class="pt-2">
+<label class="text-xs font-medium text-text-sub mb-1 block">Motif du refus (si applicable)</label>
+<input class="w-full text-xs rounded border border-gray-300 dark:border-gray-600 bg-transparent px-2 py-1.5 focus:border-primary focus:ring-0" placeholder="Ex: Document illisible, date expirée..." type="text"/>
+</div>
+<div class="flex gap-2 mt-1">
+<button class="flex-1 bg-primary hover:bg-blue-700 text-white text-sm font-medium py-2 rounded-lg transition-colors">
+                                                Approuver
+                                            </button>
+<button class="flex-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-text-main dark:text-white text-sm font-medium py-2 rounded-lg transition-colors">
+                                                Rejeter
+                                            </button>
+</div>
+</div>
+<!-- Document Card 2 -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-[#dbe0e6] dark:border-gray-700 shadow-sm p-4 flex flex-col gap-3">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold">NB</div>
+<div>
+<p class="font-semibold text-sm text-text-main dark:text-white">Nadia Berrada</p>
+<p class="text-xs text-text-sub">Casier Judiciaire</p>
+</div>
+</div>
+<span class="bg-orange-100 text-orange-700 text-xs font-bold px-2 py-1 rounded">En attente</span>
+</div>
+<div class="h-40 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center relative overflow-hidden group cursor-pointer border border-dashed border-gray-300 dark:border-gray-600">
+<div class="absolute inset-0 bg-cover bg-center opacity-50 blur-[2px]" data-alt="Blurry document preview" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCYKwnDOcfMvV8M7aJ5VdEGmo0Hb6ysxkquVYmZgv4eOFmoC5eqL9xBgGOM87EoNlE5EkrouIqVW9cCwW0dD3dAJ93AhyMfFdio6-LD3pxNyVdwPIydfRa8gNLBwrO3g1mV879-jTVOv_fMOYFfuK052a_Cye1s3YwSbgZMrqRxzOxdh34oPJvhYKXEAWqWBpMd8F2yNcLpc26e4gfngOiKUVnlvpMmHw_irnh0tbo_CUSaW5TFy55SmPPbNUE9VsoQFqZwF82hn7_l");'></div>
+<div class="relative z-10 flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-gray-500 text-4xl">visibility</span>
+<span class="text-sm font-medium text-gray-600 dark:text-gray-300">Aperçu du document</span>
+</div>
+</div>
+<div class="pt-2">
+<label class="text-xs font-medium text-text-sub mb-1 block">Motif du refus (si applicable)</label>
+<input class="w-full text-xs rounded border border-gray-300 dark:border-gray-600 bg-transparent px-2 py-1.5 focus:border-primary focus:ring-0" placeholder="Ex: Document illisible, date expirée..." type="text"/>
+</div>
+<div class="flex gap-2 mt-1">
+<button class="flex-1 bg-primary hover:bg-blue-700 text-white text-sm font-medium py-2 rounded-lg transition-colors">
+                                                Approuver
+                                            </button>
+<button class="flex-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-text-main dark:text-white text-sm font-medium py-2 rounded-lg transition-colors">
+                                                Rejeter
+                                            </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Sidebar Column -->
+<div class="space-y-8">
+<!-- System Notifications Panel -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-[#dbe0e6] dark:border-gray-700 shadow-sm p-5">
+<h3 class="font-bold text-lg text-text-main dark:text-white mb-4">Notifications Système</h3>
+<div class="space-y-4">
+<div class="flex gap-3">
+<div class="mt-0.5 min-w-[20px]">
+<span class="material-symbols-outlined text-blue-500 text-sm">info</span>
+</div>
+<div>
+<p class="text-sm text-text-main dark:text-white font-medium">Nouvelle version déployée</p>
+<p class="text-xs text-text-sub mt-0.5">v2.4.0 - Correctifs de sécurité et amélioration de la messagerie.</p>
+<p class="text-[10px] text-text-sub mt-1">Il y a 2h</p>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="mt-0.5 min-w-[20px]">
+<span class="material-symbols-outlined text-orange-500 text-sm">warning</span>
+</div>
+<div>
+<p class="text-sm text-text-main dark:text-white font-medium">Pic d'inscriptions</p>
+<p class="text-xs text-text-sub mt-0.5">Charge serveur élevée détectée sur la région Casablanca-Settat.</p>
+<p class="text-[10px] text-text-sub mt-1">Il y a 5h</p>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="mt-0.5 min-w-[20px]">
+<span class="material-symbols-outlined text-green-500 text-sm">check_circle</span>
+</div>
+<div>
+<p class="text-sm text-text-main dark:text-white font-medium">Sauvegarde terminée</p>
+<p class="text-xs text-text-sub mt-0.5">La base de données a été sauvegardée avec succès.</p>
+<p class="text-[10px] text-text-sub mt-1">Hier</p>
+</div>
+</div>
+</div>
+<button class="w-full mt-4 text-xs font-semibold text-primary hover:underline">Voir l'historique</button>
+</div>
+<!-- Reported Disputes Section -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-[#dbe0e6] dark:border-gray-700 shadow-sm p-5">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-bold text-lg text-text-main dark:text-white">Signalements &amp; Litiges</h3>
+<span class="bg-red-100 text-red-600 text-xs font-bold px-2 py-0.5 rounded-full">3 Nouveaux</span>
+</div>
+<div class="space-y-3">
+<!-- Dispute Item 1 -->
+<div class="p-3 rounded-lg border border-red-100 dark:border-red-900/30 bg-red-50/50 dark:bg-red-900/10">
+<div class="flex justify-between items-start mb-1">
+<span class="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded uppercase">Urgent</span>
+<span class="text-xs text-text-sub">#LIT-204</span>
+</div>
+<p class="text-sm font-semibold text-text-main dark:text-white">Non-paiement de prestation</p>
+<p class="text-xs text-text-sub mt-1">Mission: Accompagnement scolaire</p>
+<div class="flex justify-between items-center mt-3">
+<div class="flex -space-x-2">
+<div class="h-6 w-6 rounded-full bg-gray-300 border border-white dark:border-gray-800" data-alt="Avatar 1" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDRjquxcszfjc14bRH0YFe8hlc9Lc05HErSUEVbhYodLwWiMwfRMNN53yD2Dr6sEdihjelK9JGFw_9aYKbrZL7017CS4IpEzLkEkpi5z-uORzEVNCPNpgliytsf2sNT2zlafFz3piul9fjvF-hb942qHggYjHhgUlKottduOG5gEfyVmbF4_uYOlpM8MipY8Gri7MlBjxbjY00zkfZKjFVF0exy6GjQIIv49oZXDKo4kR0pbT8hvP50D9j-t1F5wD34rwXUPd1LhQlH'); background-size: cover;"></div>
+<div class="h-6 w-6 rounded-full bg-gray-300 border border-white dark:border-gray-800" data-alt="Avatar 2" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC9OQiJjbuGGPPho7JaqHRC65q3FAdfKPhQ48McDC7kZMGCAFqqzahlNFLLOS0sP5nvLwP_bkgA_uXOdydfk7p4IYpXp8BVOFjMsN43v0P2iibzDDgScDpVCyu1rgbpbklry1Yh7BfwU41X2nU4zLcjAVLwRHuM380p6PZbLQjCTU7-Panka6lhjtyxv8_s4tfDhx7OlvKTnHWGpKUGKAX2O84lNIIyOaSr5YK32WWBODJ92THpk6NdSeA1eJ-8fyoEZ5EhA5adu7sN'); background-size: cover;"></div>
+</div>
+<button class="text-xs font-medium text-primary hover:underline">Intervenir</button>
+</div>
+</div>
+<!-- Dispute Item 2 -->
+<div class="p-3 rounded-lg border border-[#dbe0e6] dark:border-gray-700 bg-white dark:bg-gray-800">
+<div class="flex justify-between items-start mb-1">
+<span class="bg-yellow-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded uppercase">Moyen</span>
+<span class="text-xs text-text-sub">#LIT-201</span>
+</div>
+<p class="text-sm font-semibold text-text-main dark:text-white">Profil inapproprié</p>
+<p class="text-xs text-text-sub mt-1">Signalement par: Institution Al Amal</p>
+<div class="flex justify-end items-center mt-3">
+<button class="text-xs font-medium text-primary hover:underline">Examiner</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

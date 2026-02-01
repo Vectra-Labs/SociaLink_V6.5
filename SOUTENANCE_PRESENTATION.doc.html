@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"
+    xmlns="http://www.w3.org/TR/REC-html40" lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>SociaLink V6 - Présentation Soutenance</title>
+    <!--[if gte mso 9]>
+    <xml>
+        <w:WordDocument>
+            <w:View>Print</w:View>
+            <w:Zoom>100</w:Zoom>
+        </w:WordDocument>
+    </xml>
+    <![endif]-->
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+
+        body {
+            font-family: 'Calibri', 'Arial', sans-serif;
+            font-size: 11pt;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        h1 {
+            color: #5B21B6;
+            font-size: 24pt;
+            border-bottom: 3px solid #5B21B6;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+
+        h2 {
+            color: #7C3AED;
+            font-size: 16pt;
+            margin-top: 20px;
+            border-left: 4px solid #7C3AED;
+            padding-left: 10px;
+        }
+
+        h3 {
+            color: #4C1D95;
+            font-size: 13pt;
+            margin-top: 15px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 15px 0;
+        }
+
+        th {
+            background-color: #EDE9FE;
+            color: #5B21B6;
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #C4B5FD;
+            font-weight: bold;
+        }
+
+        td {
+            padding: 8px 10px;
+            border: 1px solid #E5E7EB;
+        }
+
+        tr:nth-child(even) {
+            background-color: #F9FAFB;
+        }
+
+        .highlight {
+            background-color: #FEF3C7;
+            padding: 15px;
+            border-left: 4px solid #F59E0B;
+            margin: 15px 0;
+        }
+
+        .success {
+            background-color: #D1FAE5;
+            padding: 15px;
+            border-left: 4px solid #10B981;
+            margin: 15px 0;
+        }
+
+        code {
+            font-family: 'Consolas', 'Courier New', monospace;
+            background-color: #F3F4F6;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        .code-block {
+            background-color: #1F2937;
+            color: #E5E7EB;
+            padding: 15px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 9pt;
+            white-space: pre;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .page-break {
+            page-break-before: always;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .check {
+            color: #10B981;
+            font-weight: bold;
+        }
+
+        ul {
+            margin: 10px 0;
+        }
+
+        li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Page de Titre -->
+    <div class="center" style="margin-top: 150px;">
+        <h1 style="font-size: 32pt; border: none;">🌐 SociaLink V6</h1>
+        <p style="font-size: 18pt; color: #7C3AED;">Réseau de Travailleurs Sociaux Indépendants</p>
+        <br><br>
+        <p style="font-size: 14pt;">Projet de Fin de Formation</p>
+        <p style="font-size: 14pt;">Développement Full-Stack 2025</p>
+        <br><br><br>
+        <p style="font-size: 12pt; color: #6B7280;">Janvier 2026</p>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- Sommaire -->
+    <h1>📋 Sommaire</h1>
+    <ol style="font-size: 12pt;">
+        <li>Présentation du Projet</li>
+        <li>Architecture Technique</li>
+        <li>Démonstration des Fonctionnalités</li>
+        <li>Conformité au Brief</li>
+        <li>Points Techniques Clés</li>
+        <li>Améliorations et Perspectives</li>
+        <li>Métriques du Projet</li>
+        <li>Questions Potentielles du Jury</li>
+    </ol>
+
+    <div class="page-break"></div>
+
+    <!-- Section 1 -->
+    <h1>1. Présentation du Projet</h1>
+
+    <h2>🎯 Objectif</h2>
+    <p>SociaLink est une <strong>plateforme de mise en relation</strong> entre :</p>
+    <ul>
+        <li><strong>Travailleurs sociaux indépendants</strong> : Aides-soignants, éducateurs, infirmiers, chefs de
+            projet</li>
+        <li><strong>Établissements médico-sociaux</strong> : EHPAD, crèches, centres sociaux, cliniques</li>
+    </ul>
+
+    <h2>💡 Proposition de Valeur</h2>
+    <table>
+        <tr>
+            <th>Différenciateur</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>🏆 Labellisation rigoureuse</td>
+            <td>Vérification des diplômes par administrateur</td>
+        </tr>
+        <tr>
+            <td>🔍 Matching qualifié</td>
+            <td>Filtres par compétences, expérience, proximité</td>
+        </tr>
+        <tr>
+            <td>⭐ Suivi qualité</td>
+            <td>Évaluations bidirectionnelles après missions</td>
+        </tr>
+        <tr>
+            <td>🤝 Lien durable</td>
+            <td>Limiter la multiplication des intervenants</td>
+        </tr>
+    </table>
+
+    <h2>Flux de la Plateforme</h2>
+    <div class="highlight">
+        <p><strong>Établissement</strong> → Publie mission → <strong>SociaLink</strong> → Matching → <strong>Travailleur
+                Labellisé</strong></p>
+        <p><strong>Travailleur</strong> → Postule → <strong>Établissement</strong> → Accepte/Refuse →
+            <strong>Intervention</strong> → <strong>Évaluation</strong></p>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- Section 2 -->
+    <h1>2. Architecture Technique</h1>
+
+    <h2>🏗️ Stack Technologique</h2>
+    <table>
+        <tr>
+            <th>Couche</th>
+            <th>Technologies</th>
+            <th>Justification</th>
+        </tr>
+        <tr>
+            <td><strong>Frontend</strong></td>
+            <td>React 19 + Vite 7</td>
+            <td>SPA performante, hot reload</td>
+        </tr>
+        <tr>
+            <td><strong>Styling</strong></td>
+            <td>Tailwind CSS 4</td>
+            <td>Responsive, utility-first</td>
+        </tr>
+        <tr>
+            <td><strong>Backend</strong></td>
+            <td>Node.js + Express 5</td>
+            <td>API REST modulaire</td>
+        </tr>
+        <tr>
+            <td><strong>ORM</strong></td>
+            <td>Prisma 6.x</td>
+            <td>Type-safe, migrations auto</td>
+        </tr>
+        <tr>
+            <td><strong>Database</strong></td>
+            <td>PostgreSQL</td>
+            <td>Relations complexes, ACID</td>
+        </tr>
+        <tr>
+            <td><strong>Auth</strong></td>
+            <td>JWT + HTTP-Only Cookies</td>
+            <td>Sécurité tokens</td>
+        </tr>
+        <tr>
+            <td><strong>Real-time</strong></td>
+            <td>Socket.io</td>
+            <td>Messagerie instantanée</td>
+        </tr>
+    </table>
+
+    <h2>📁 Structure du Projet</h2>
+    <table>
+        <tr>
+            <th>Dossier</th>
+            <th>Contenu</th>
+            <th>Quantité</th>
+        </tr>
+        <tr>
+            <td><code>backend/prisma/</code></td>
+            <td>Schema Prisma</td>
+            <td>25+ modèles, 762 lignes</td>
+        </tr>
+        <tr>
+            <td><code>backend/src/controllers/</code></td>
+            <td>Controllers API</td>
+            <td>15 fichiers</td>
+        </tr>
+        <tr>
+            <td><code>backend/src/routes/</code></td>
+            <td>Routes API</td>
+            <td>15 fichiers</td>
+        </tr>
+        <tr>
+            <td><code>frontend/src/pages/</code></td>
+            <td>Pages React</td>
+            <td>61+ pages</td>
+        </tr>
+        <tr>
+            <td><code>frontend/src/components/</code></td>
+            <td>Composants réutilisables</td>
+            <td>21 composants</td>
+        </tr>
+        <tr>
+            <td><code>frontend/src/context/</code></td>
+            <td>Context Providers</td>
+            <td>5 providers</td>
+        </tr>
+    </table>
+
+    <div class="page-break"></div>
+
+    <!-- Section 3 -->
+    <h1>3. Démonstration des Fonctionnalités</h1>
+
+    <h2>👤 Parcours Travailleur Social</h2>
+    <table>
+        <tr>
+            <th>Fonctionnalité</th>
+            <th>Route</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>Inscription enrichie</td>
+            <td><code>/register/worker</code></td>
+            <td>Formulaire multi-étapes</td>
+        </tr>
+        <tr>
+            <td>Profil complet</td>
+            <td><code>/worker/profile</code></td>
+            <td>Bio, expériences, spécialités</td>
+        </tr>
+        <tr>
+            <td>Upload diplômes</td>
+            <td><code>/worker/documents</code></td>
+            <td>PDF avec validation admin</td>
+        </tr>
+        <tr>
+            <td>Calendrier</td>
+            <td><code>/worker/calendar</code></td>
+            <td>Gestion disponibilités</td>
+        </tr>
+        <tr>
+            <td>Missions</td>
+            <td><code>/worker/missions</code></td>
+            <td>Recherche + candidature</td>
+        </tr>
+        <tr>
+            <td>Évaluations</td>
+            <td><code>/worker/reviews</code></td>
+            <td>Notes reçues</td>
+        </tr>
+    </table>
+
+    <h2>🏢 Parcours Établissement</h2>
+    <table>
+        <tr>
+            <th>Fonctionnalité</th>
+            <th>Route</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>Profil structure</td>
+            <td><code>/establishment/profile</code></td>
+            <td>Infos, logo, ICE</td>
+        </tr>
+        <tr>
+            <td>Créer mission</td>
+            <td><code>/establishment/missions/create</code></td>
+            <td>Formulaire détaillé</td>
+        </tr>
+        <tr>
+            <td>Mes missions</td>
+            <td><code>/establishment/missions</code></td>
+            <td>Liste + statuts</td>
+        </tr>
+        <tr>
+            <td>Recherche workers</td>
+            <td><code>/establishment/search-worker</code></td>
+            <td>Filtres avancés</td>
+        </tr>
+        <tr>
+            <td>Candidatures</td>
+            <td><code>/establishment/candidates</code></td>
+            <td>Accept/Reject</td>
+        </tr>
+    </table>
+
+    <h2>🛡️ Parcours Administrateur</h2>
+    <table>
+        <tr>
+            <th>Fonctionnalité</th>
+            <th>Route</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>Dashboard</td>
+            <td><code>/admin/dashboard</code></td>
+            <td>Métriques globales</td>
+        </tr>
+        <tr>
+            <td>Validations</td>
+            <td><code>/admin/validations</code></td>
+            <td>Approuver profils</td>
+        </tr>
+        <tr>
+            <td>Documents</td>
+            <td><code>/admin/documents</code></td>
+            <td>Vérifier diplômes</td>
+        </tr>
+        <tr>
+            <td>Litiges</td>
+            <td><code>/admin/disputes</code></td>
+            <td>Modération</td>
+        </tr>
+    </table>
+
+    <h2>👑 Parcours Super Admin</h2>
+    <table>
+        <tr>
+            <th>Fonctionnalité</th>
+            <th>Route</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>Vue globale</td>
+            <td><code>/super-admin/dashboard</code></td>
+            <td>KPIs plateforme</td>
+        </tr>
+        <tr>
+            <td>Finances</td>
+            <td><code>/super-admin/finance</code></td>
+            <td>Revenus, paiements</td>
+        </tr>
+        <tr>
+            <td>Utilisateurs</td>
+            <td><code>/super-admin/users</code></td>
+            <td>CRUD tous rôles</td>
+        </tr>
+        <tr>
+            <td>Paramètres</td>
+            <td><code>/super-admin/settings</code></td>
+            <td>Configuration système</td>
+        </tr>
+    </table>
+
+    <div class="highlight">
+        <p><strong>💡 Comptes de Test pour Démo :</strong></p>
+        <ul>
+            <li><strong>Worker:</strong> worker.premium@test.ma / test123</li>
+            <li><strong>Établissement:</strong> etab.pro@test.ma / test123</li>
+            <li><strong>Admin:</strong> admin@socialink.ma / admin123</li>
+            <li><strong>Super Admin:</strong> superadmin@socialink.ma / superadmin123</li>
+        </ul>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- Section 4 -->
+    <h1>4. Conformité au Brief</h1>
+
+    <div class="success">
+        <p style="font-size: 14pt; text-align: center;"><strong>✅ 100% des Exigences Couvertes</strong></p>
+    </div>
+
+    <h2>User Stories</h2>
+    <table>
+        <tr>
+            <th>Exigence Brief</th>
+            <th>Statut</th>
+            <th>Implémentation</th>
+        </tr>
+        <tr>
+            <td>Profil enrichi + diplômes</td>
+            <td class="check">✅</td>
+            <td>WorkerDocument, EditProfile.jsx</td>
+        </tr>
+        <tr>
+            <td>Calendrier disponibilités</td>
+            <td class="check">✅</td>
+            <td>CalendarEvent, WorkerCalendar.jsx</td>
+        </tr>
+        <tr>
+            <td>Postuler missions</td>
+            <td class="check">✅</td>
+            <td>Application, MissionMarket.jsx</td>
+        </tr>
+        <tr>
+            <td>Publier offres</td>
+            <td class="check">✅</td>
+            <td>Mission, CreateMission.jsx</td>
+        </tr>
+        <tr>
+            <td>Recherche filtres</td>
+            <td class="check">✅</td>
+            <td>SearchWorker.jsx, API filtres</td>
+        </tr>
+        <tr>
+            <td>Noter intervention</td>
+            <td class="check">✅</td>
+            <td>Review, WorkerReviews.jsx</td>
+        </tr>
+        <tr>
+            <td>Labelliser profils</td>
+            <td class="check">✅</td>
+            <td>verification_status, AdminValidations.jsx</td>
+        </tr>
+        <tr>
+            <td>Vue d'ensemble admin</td>
+            <td class="check">✅</td>
+            <td>AdminDashboard.jsx</td>
+        </tr>
+    </table>
+
+    <h2>Spécifications Non-Fonctionnelles</h2>
+    <table>
+        <tr>
+            <th>Catégorie</th>
+            <th>Exigence</th>
+            <th>Solution</th>
+        </tr>
+        <tr>
+            <td rowspan="3"><strong>🔐 Sécurité</strong></td>
+            <td>RGPD</td>
+            <td>Documents chiffrés, stockage sécurisé</td>
+        </tr>
+        <tr>
+            <td>Bcrypt</td>
+            <td>Hachage mots de passe robuste</td>
+        </tr>
+        <tr>
+            <td>JWT</td>
+            <td>Tokens HTTP-Only + refresh</td>
+        </tr>
+        <tr>
+            <td rowspan="3"><strong>⚡ Performance</strong></td>
+            <td>SPA Réactive</td>
+            <td>React 19 + React Query cache</td>
+        </tr>
+        <tr>
+            <td>API &lt; 500ms</td>
+            <td>Prisma optimisé, indexes DB</td>
+        </tr>
+        <tr>
+            <td>Scalabilité</td>
+            <td>Architecture MVC modulaire</td>
+        </tr>
+        <tr>
+            <td rowspan="2"><strong>🎨 UX/UI</strong></td>
+            <td>Responsive</td>
+            <td>Tailwind CSS mobile-first</td>
+        </tr>
+        <tr>
+            <td>Accessibilité</td>
+            <td>Contrastes, navigation clavier</td>
+        </tr>
+    </table>
+
+    <div class="page-break"></div>
+
+    <!-- Section 5 -->
+    <h1>5. Points Techniques Clés</h1>
+
+    <h2>🔐 Authentification JWT</h2>
+    <div class="code-block">// backend/src/middleware/authMiddleware.js
+        export const authenticateToken = (req, res, next) => {
+        const token = req.cookies.accessToken;
+        if (!token) return res.status(401).json({ error: 'Non authentifié' });
+
+        jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        if (err) return res.status(403).json({ error: 'Token invalide' });
+        req.user = user;
+        next();
+        });
+        };</div>
+
+    <h2>⚡ Caching React Query</h2>
+    <div class="code-block">// Caching intelligent côté client
+        const { data: missions, isLoading } = useQuery({
+        queryKey: ['missions', filters],
+        queryFn: () => fetchMissions(filters),
+        staleTime: 5 * 60 * 1000, // Cache 5 minutes
+        });</div>
+
+    <h2>📊 Modèle Relationnel</h2>
+    <table>
+        <tr>
+            <th>Entité</th>
+            <th>Relation</th>
+            <th>Entité Liée</th>
+        </tr>
+        <tr>
+            <td>User</td>
+            <td>1:1</td>
+            <td>WorkerProfile / EstablishmentProfile</td>
+        </tr>
+        <tr>
+            <td>User</td>
+            <td>1:1</td>
+            <td>Subscription</td>
+        </tr>
+        <tr>
+            <td>WorkerProfile</td>
+            <td>1:N</td>
+            <td>Application, WorkerDocument</td>
+        </tr>
+        <tr>
+            <td>EstablishmentProfile</td>
+            <td>1:N</td>
+            <td>Mission</td>
+        </tr>
+        <tr>
+            <td>Mission</td>
+            <td>1:N</td>
+            <td>Application</td>
+        </tr>
+        <tr>
+            <td>Application</td>
+            <td>1:1</td>
+            <td>Review</td>
+        </tr>
+    </table>
+
+    <div class="page-break"></div>
+
+    <!-- Section 6 -->
+    <h1>6. Améliorations et Perspectives</h1>
+
+    <h2>🚀 Fonctionnalités Bonus Implémentées</h2>
+    <table>
+        <tr>
+            <th>Feature</th>
+            <th>Description</th>
+            <th>Valeur Ajoutée</th>
+        </tr>
+        <tr>
+            <td>💳 Abonnements</td>
+            <td>BASIC / PREMIUM / PRO</td>
+            <td>Monétisation plateforme</td>
+        </tr>
+        <tr>
+            <td>👑 Super Admin</td>
+            <td>Dashboard finances complet</td>
+            <td>Gestion plateforme</td>
+        </tr>
+        <tr>
+            <td>💬 Messagerie</td>
+            <td>Socket.io temps réel</td>
+            <td>Communication directe</td>
+        </tr>
+        <tr>
+            <td>🧪 Tests E2E</td>
+            <td>Playwright</td>
+            <td>Qualité code</td>
+        </tr>
+    </table>
+
+    <h2>🔮 Roadmap V7</h2>
+    <ul>
+        <li>✅ <strong>Paiements Stripe</strong> - Intégration complète</li>
+        <li>📱 <strong>Application PWA</strong> - Mobile-first</li>
+        <li>🔔 <strong>Push Notifications</strong> - Alertes temps réel</li>
+        <li>🤖 <strong>IA Matching</strong> - Recommandations intelligentes</li>
+        <li>🌍 <strong>Multilingue</strong> - Arabe/Français</li>
+    </ul>
+
+    <div class="page-break"></div>
+
+    <!-- Section 7 -->
+    <h1>7. Métriques du Projet</h1>
+
+    <table>
+        <tr>
+            <th>Métrique</th>
+            <th>Valeur</th>
+        </tr>
+        <tr>
+            <td>Modèles Prisma</td>
+            <td><strong>25+</strong></td>
+        </tr>
+        <tr>
+            <td>Pages React</td>
+            <td><strong>61+</strong></td>
+        </tr>
+        <tr>
+            <td>Controllers API</td>
+            <td><strong>15</strong></td>
+        </tr>
+        <tr>
+            <td>Routes API</td>
+            <td><strong>15</strong></td>
+        </tr>
+        <tr>
+            <td>Composants réutilisables</td>
+            <td><strong>21</strong></td>
+        </tr>
+        <tr>
+            <td>Context Providers</td>
+            <td><strong>5</strong></td>
+        </tr>
+        <tr>
+            <td>Tests E2E</td>
+            <td><strong>Playwright ✅</strong></td>
+        </tr>
+    </table>
+
+    <div class="page-break"></div>
+
+    <!-- Section 8 -->
+    <h1>8. Questions Potentielles du Jury</h1>
+
+    <table>
+        <tr>
+            <th>Question</th>
+            <th>Réponse Clé</th>
+        </tr>
+        <tr>
+            <td><strong>Pourquoi React ?</strong></td>
+            <td>SPA performante, écosystème riche, compétence très demandée sur le marché, hooks et composition facile.
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Pourquoi Prisma plutôt que Sequelize ?</strong></td>
+            <td>Type-safe avec TypeScript, migrations automatiques, meilleure expérience développeur, syntaxe moderne.
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Comment gérez-vous la sécurité ?</strong></td>
+            <td>JWT en HTTP-Only cookies, bcrypt pour mots de passe, middleware vérification rôles, validation OTP par
+                email.</td>
+        </tr>
+        <tr>
+            <td><strong>Scalabilité future ?</strong></td>
+            <td>Architecture modulaire MVC, Socket.io ready, Stripe préparé, code découplé.</td>
+        </tr>
+        <tr>
+            <td><strong>Différence avec LinkedIn/Indeed ?</strong></td>
+            <td>Focus secteur social, labellisation qualité par admin, lien durable, marché marocain spécifique.</td>
+        </tr>
+    </table>
+
+    <br><br>
+
+    <div class="center" style="margin-top: 50px;">
+        <h1 style="border: none;">Merci pour votre attention ! 🙏</h1>
+        <p style="font-size: 14pt;">
+            <strong>SociaLink V6</strong> - Réseau de Travailleurs Sociaux<br>
+            Stack: React + Node.js + PostgreSQL
+        </p>
+        <p style="color: #6B7280;">
+            Projet de Fin de Formation • Développement Full-Stack 2025
+        </p>
+    </div>
+
+</body>
+
+</html>

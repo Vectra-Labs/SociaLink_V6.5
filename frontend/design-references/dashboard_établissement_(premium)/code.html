@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SociaLink - Dashboard Établissement Premium</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "primary-dark": "#0f65bd",
+                        "secondary": "#f0f2f4",
+                        "accent-urgent": "#f59e0b",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1a2633",
+                        "text-main": "#111418",
+                        "text-muted": "#617589",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        .blur-text {
+            color: transparent;
+            text-shadow: 0 0 8px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-main dark:text-white transition-colors duration-200">
+<div class="flex flex-col min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 bg-white dark:bg-surface-dark border-b border-gray-200 dark:border-gray-800 px-6 py-3 shadow-sm">
+<div class="flex items-center justify-between max-w-7xl mx-auto w-full">
+<!-- Logo & Brand -->
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3">
+<div class="size-8 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl">diversity_1</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">SociaLink</h1>
+</div>
+<!-- Desktop Nav Links -->
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-sm font-semibold text-primary" href="#">Tableau de bord</a>
+<a class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors" href="#">Mes Missions</a>
+<a class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors" href="#">Candidathèque</a>
+<a class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors" href="#">Facturation</a>
+</nav>
+</div>
+<!-- Right Actions -->
+<div class="flex items-center gap-4">
+<!-- Search Bar -->
+<div class="hidden lg:flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg px-3 py-2 w-64 border border-transparent focus-within:border-primary transition-colors">
+<span class="material-symbols-outlined text-gray-400">search</span>
+<input class="bg-transparent border-none outline-none text-sm ml-2 w-full text-gray-700 dark:text-gray-200 placeholder-gray-400 focus:ring-0" placeholder="Rechercher..." type="text"/>
+</div>
+<!-- Notification -->
+<button class="relative p-2 text-gray-500 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1 right-1 size-2 bg-red-500 rounded-full border-2 border-white dark:border-surface-dark"></span>
+</button>
+<!-- User Profile -->
+<div class="flex items-center gap-3 pl-4 border-l border-gray-200 dark:border-gray-700">
+<div class="text-right hidden sm:block">
+<p class="text-sm font-bold text-gray-900 dark:text-white leading-none">Maison d'Avenir</p>
+<span class="inline-flex items-center gap-1 text-[10px] font-bold text-white bg-primary px-1.5 py-0.5 rounded mt-1 uppercase tracking-wide">
+                                Premium
+                                <span class="material-symbols-outlined text-[10px]">verified</span>
+</span>
+</div>
+<div class="size-10 rounded-full bg-gray-200 overflow-hidden ring-2 ring-offset-2 ring-primary dark:ring-offset-background-dark cursor-pointer">
+<img alt="Profile of establishment manager" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCI3howdY5HxTXGWIY3aVj9xe75IyoWwThhG1o1BGywVMnf7asLk4diYeXCp3snrOGMdNUiDkhYp2-uHQETECuc6nY2fQgYtgn_y2vSQ74d0MZU0JVBg4B0CUQCod-J9Z5DsPW56VpLCdG6pJ3Po2AQHrwwmz3v00lMgdIAnml-XkVbaoy5mTgB91Df4pcOnzDUs3OPrQJadscC1yFYiP-VA9cOeCphHLUe8HLG-oBluxXo0J7l9IlOf4DJbEnDtjzqs8H8q-P95nKO"/>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 py-8">
+<!-- Page Heading & Welcome -->
+<div class="mb-8">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Bonjour, Maison d'Avenir 👋</h2>
+<p class="text-gray-600 dark:text-gray-400">Votre statut <span class="text-primary font-bold">Premium</span> est actif. Créez des missions sans limites et accédez aux meilleurs talents.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors shadow-sm font-medium text-sm">
+<span class="material-symbols-outlined text-lg">download</span>
+                            Rapport Mensuel
+                        </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-dark text-white rounded-lg transition-colors shadow-md shadow-primary/20 font-bold text-sm">
+<span class="material-symbols-outlined text-lg">add_circle</span>
+                            Nouvelle Mission
+                        </button>
+</div>
+</div>
+</div>
+<!-- Stats Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+<div class="bg-white dark:bg-surface-dark p-5 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm flex flex-col justify-between h-32 relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-primary">work</span>
+</div>
+<p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Missions Actives</p>
+<div class="flex items-baseline gap-2">
+<p class="text-3xl font-bold text-gray-900 dark:text-white">8</p>
+<span class="text-green-500 text-xs font-bold flex items-center">
+<span class="material-symbols-outlined text-sm">trending_up</span> +2
+                        </span>
+</div>
+</div>
+<div class="bg-white dark:bg-surface-dark p-5 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm flex flex-col justify-between h-32 relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-purple-500">group</span>
+</div>
+<p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Candidatures en attente</p>
+<div class="flex items-baseline gap-2">
+<p class="text-3xl font-bold text-gray-900 dark:text-white">24</p>
+<span class="text-xs text-gray-400">dont 5 urgentes</span>
+</div>
+</div>
+<div class="bg-white dark:bg-surface-dark p-5 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm flex flex-col justify-between h-32 relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-amber-500">star</span>
+</div>
+<p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Suggestion IA</p>
+<div class="flex items-baseline gap-2">
+<p class="text-3xl font-bold text-gray-900 dark:text-white">12</p>
+<span class="text-xs text-primary font-medium hover:underline cursor-pointer">Nouveaux profils</span>
+</div>
+</div>
+<div class="bg-gradient-to-br from-primary to-primary-dark p-5 rounded-xl shadow-lg shadow-primary/30 flex flex-col justify-between h-32 relative overflow-hidden">
+<div class="absolute -right-4 -bottom-4 opacity-20">
+<span class="material-symbols-outlined text-8xl text-white">lock_open</span>
+</div>
+<p class="text-blue-100 text-sm font-medium">Crédits Contacts</p>
+<div>
+<p class="text-3xl font-bold text-white flex items-center gap-2">
+                            Illimité
+                            <span class="material-symbols-outlined text-2xl">indeterminate_question_box</span>
+</p>
+<p class="text-blue-100 text-xs mt-1">Avantage Premium Actif</p>
+</div>
+</div>
+</div>
+<!-- Dashboard Columns -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Left Column (Main) -->
+<div class="lg:col-span-2 flex flex-col gap-8">
+<!-- Quick Mission Create Widget -->
+<div class="bg-white dark:bg-surface-dark rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
+<div class="p-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50/50 dark:bg-gray-800/50">
+<h3 class="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">post_add</span>
+                                Créer une mission rapide
+                            </h3>
+<span class="text-xs text-gray-500 bg-white dark:bg-gray-700 px-2 py-1 rounded border dark:border-gray-600">Brouillon auto-sauvegardé</span>
+</div>
+<div class="p-5">
+<div class="flex flex-col gap-4">
+<div>
+<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Titre de la mission</label>
+<input class="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-primary focus:border-primary transition-shadow" placeholder="Ex: Éducateur spécialisé pour remplacement..." type="text"/>
+</div>
+<div class="flex items-center justify-between p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800/30 rounded-lg">
+<div class="flex items-center gap-3">
+<div class="p-2 bg-amber-100 dark:bg-amber-800/40 rounded-full text-amber-600 dark:text-amber-400">
+<span class="material-symbols-outlined text-xl">bolt</span>
+</div>
+<div>
+<p class="text-sm font-bold text-gray-900 dark:text-white">Mission Urgente</p>
+<p class="text-xs text-gray-600 dark:text-gray-400">Boostez la visibilité de votre annonce (Premium)</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-amber-300 dark:peer-focus:ring-amber-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-amber-500"></div>
+</label>
+</div>
+<div class="flex justify-end pt-2">
+<button class="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 px-4 py-2 rounded-lg text-sm font-medium mr-2 transition-colors">Plus d'options</button>
+<button class="bg-primary hover:bg-primary-dark text-white px-6 py-2 rounded-lg text-sm font-bold transition-colors shadow-sm">Publier maintenant</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Applications List -->
+<div class="bg-white dark:bg-surface-dark rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden flex flex-col flex-1">
+<div class="p-5 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
+<h3 class="font-bold text-lg text-gray-900 dark:text-white">Candidatures Récentes</h3>
+<a class="text-sm text-primary font-medium hover:underline" href="#">Tout voir</a>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-gray-50 dark:bg-gray-800 text-xs uppercase text-gray-500 dark:text-gray-400 font-semibold">
+<tr>
+<th class="px-6 py-4">Candidat</th>
+<th class="px-6 py-4">Poste visé</th>
+<th class="px-6 py-4">Score</th>
+<th class="px-6 py-4 text-center">Contact</th>
+<th class="px-6 py-4 text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+<!-- Row 1 -->
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full overflow-hidden bg-gray-200">
+<img alt="Portrait of Amina B" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvty6bJ87ggSzGe3C5zc4rshcgvCBGxpBzsxAP1T9HkeOdz4Mb7laq71R_qldpX3kyZeK-wF_TYkjamHOjnrtCBawsdDTb7yXEdhvtsBQaBlyOe1GHMYnXG-CcFTtQHp2ZSxBCg3S5N_UgB5EAIIhLyobJ9xns3R2AcYGASvuCsb2Hw6r0w4MhWhiPBvT5LwHSrhkHdoA9ozSmtq0pM1z9fVrTnHl4Vo9eevmr6IkOzGls0ZLrFuqx7CYFrb1p1lvVIFLAO_QoM3Bw"/>
+</div>
+<div>
+<p class="font-semibold text-gray-900 dark:text-white">Amina B.</p>
+<p class="text-xs text-gray-500">5 ans d'exp.</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">Éducatrice Spécialisée</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                                                98% Match
+                                            </span>
+</td>
+<td class="px-6 py-4 text-center">
+<div class="flex justify-center items-center gap-2 text-gray-400" title="Contact masqué jusqu'à acceptation">
+<span class="material-symbols-outlined text-sm">lock</span>
+<span class="text-xs font-mono select-none blur-[3px]">06XXXXXXXX</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:text-primary-dark font-medium text-sm border border-primary/20 hover:border-primary rounded-lg px-3 py-1.5 transition-all bg-primary/5 hover:bg-primary/10">
+                                                Voir le profil
+                                            </button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full overflow-hidden bg-gray-200">
+<img alt="Portrait of Karim T" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTnMJHS8N1IK3jUF-wjTFRn1yBsNln5XlYrb570s-9AeIy3_pukLyn94Rmpni5MRuxG7DtKleRuedAyKruafstfyTpYWkZmQzpzmt1nGdA4rJV-sU4L5TE1fzlfK4cxp-Rk03pKK9gTfQEK60dtd5h4gChYQ0v9jMwuyZQKSPPHKKa0T5oXP6lgPkQvTOiylaxNe_FlF1SuA3Lep8ygT2i32FEFkAUmy4BlQ6uGzk9Fkg1hidcdessyYFBR5JBqYCOXpgpVqzCyz3J"/>
+</div>
+<div>
+<p class="font-semibold text-gray-900 dark:text-white">Karim T.</p>
+<p class="text-xs text-gray-500">3 ans d'exp.</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">Assistant Social</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
+                                                85% Match
+                                            </span>
+</td>
+<td class="px-6 py-4 text-center">
+<div class="flex justify-center items-center gap-2 text-gray-400" title="Contact masqué jusqu'à acceptation">
+<span class="material-symbols-outlined text-sm">lock</span>
+<span class="text-xs font-mono select-none blur-[3px]">06XXXXXXXX</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:text-primary-dark font-medium text-sm border border-primary/20 hover:border-primary rounded-lg px-3 py-1.5 transition-all bg-primary/5 hover:bg-primary/10">
+                                                Voir le profil
+                                            </button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full overflow-hidden bg-gray-200">
+<img alt="Portrait of Sara L" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDd7UDE7dU-T6oWbItm_EGMU-uByjK_SD4SmkFkh_fsgXKFJ-0p8YN1t2QfxHLUvk1zgSRsrsqRMIDgXt4omsDabgmk62wa6xZ2vf_4_iF8EfjH6mZIdGzhAPGXWZwtnLY_0Nd07JLPev4f-lwcAgdC3s39BAwqghQpmo4NZDE9TvpEthPwBaltXwrjm3eO1CbPsbe4P_IwgOs7UMVIn_UKTcS7C7y0AsO0FBU_Kl7gW0Unr1LenQLhu8UoobOPNftOkPvcm6pqv8az"/>
+</div>
+<div>
+<p class="font-semibold text-gray-900 dark:text-white">Sara L.</p>
+<p class="text-xs text-gray-500">Junior</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">Monitrice</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400">
+                                                72% Match
+                                            </span>
+</td>
+<td class="px-6 py-4 text-center">
+<div class="flex justify-center items-center gap-2 text-gray-400" title="Contact masqué jusqu'à acceptation">
+<span class="material-symbols-outlined text-sm">lock</span>
+<span class="text-xs font-mono select-none blur-[3px]">06XXXXXXXX</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:text-primary-dark font-medium text-sm border border-primary/20 hover:border-primary rounded-lg px-3 py-1.5 transition-all bg-primary/5 hover:bg-primary/10">
+                                                Voir le profil
+                                            </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Right Column (Sidebar) -->
+<div class="flex flex-col gap-8">
+<!-- Suggestions Widget -->
+<div class="bg-white dark:bg-surface-dark rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
+<div class="p-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
+<h3 class="font-bold text-gray-900 dark:text-white">Profils Suggérés</h3>
+<span class="material-symbols-outlined text-gray-400">auto_awesome</span>
+</div>
+<div class="p-4 flex flex-col gap-4">
+<!-- Suggestion 1 -->
+<div class="flex gap-3 items-start p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer border border-transparent hover:border-gray-200 dark:hover:border-gray-700">
+<div class="relative">
+<div class="size-12 rounded-lg bg-gray-200 overflow-hidden">
+<img alt="Portrait of Youssef" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCi9-CaCkRjuXLDwd3MlRkMj_lV1wDgdSFvjc0YfQInbxoZiGgOKxhynpaKnvx6exVBGol47Vx5JL-mG7A92Dn4VwNI-5j8p8K-eqtHiMYPOniwY47KSCQJEJMoEO0FNUmWyJXZBT0G8bAmg836zkLOMaH0HuR-sAAtugW9SJJ_ODG61bWvAP3NWr3QHBurQozzEi6YGdk15LjqInZg3j3niFgFFRUUcXklVtRDN5ext7TOZ11WebqgnR_jxFxwcq50ln_TnCvUsbm4"/>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-green-500 size-3 rounded-full border-2 border-white dark:border-surface-dark"></div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<h4 class="font-semibold text-sm text-gray-900 dark:text-white truncate">Youssef M.</h4>
+<span class="text-[10px] font-bold text-green-600 bg-green-50 px-1.5 py-0.5 rounded">Dispo</span>
+</div>
+<p class="text-xs text-gray-500 truncate">Psychologue Clinicien</p>
+<div class="flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[10px] text-amber-500">star</span>
+<span class="text-xs font-medium text-gray-700 dark:text-gray-300">4.9</span>
+</div>
+</div>
+</div>
+<!-- Suggestion 2 -->
+<div class="flex gap-3 items-start p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer border border-transparent hover:border-gray-200 dark:hover:border-gray-700">
+<div class="relative">
+<div class="size-12 rounded-lg bg-gray-200 overflow-hidden">
+<img alt="Portrait of Nadia" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUVO9r6Ll1pzsXBZy9iYtrNfHdUVsU_y4yQO4fpEJZwv31enS39rnuxHYycxBEQmRaGbnCBBEmOTScikkjab1K-1rAwWOuDJV_dJNVialgse1e1ULmG8uxraYlUGTx2BO9iCqmV4P2NMn5qARwk6yXr91CdL9Vg8bCY_zfNYBZyOQguy0PKIRRB1LOF56LjWLVXVilO3h00ZgWVHxpTK0K0X9vPXomuV4hRIgXBuyEss-JGEKxdxcBbjBlGqklCcTqCxbPi_mRmHBV"/>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-gray-400 size-3 rounded-full border-2 border-white dark:border-surface-dark"></div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<h4 class="font-semibold text-sm text-gray-900 dark:text-white truncate">Nadia K.</h4>
+<span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded">Mobile</span>
+</div>
+<p class="text-xs text-gray-500 truncate">Assistante de vie</p>
+<div class="flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[10px] text-amber-500">star</span>
+<span class="text-xs font-medium text-gray-700 dark:text-gray-300">4.7</span>
+</div>
+</div>
+</div>
+<button class="w-full py-2 text-sm text-primary font-medium hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors">
+                                Voir plus de suggestions
+                            </button>
+</div>
+</div>
+<!-- Info/Premium Tip Card -->
+<div class="bg-gradient-to-br from-gray-900 to-gray-800 dark:from-gray-800 dark:to-black rounded-xl p-5 text-white shadow-lg relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-8xl">verified_user</span>
+</div>
+<h4 class="font-bold text-lg mb-2 relative z-10">Rappel Sécurité</h4>
+<p class="text-sm text-gray-300 mb-4 relative z-10 leading-relaxed">
+                            Conformément à nos standards de transparence contrôlée, les coordonnées (téléphone, email) des candidats ne sont débloquées qu'après <strong>acceptation officielle</strong> de la candidature.
+                        </p>
+<div class="flex items-center gap-2 text-xs text-primary-300 bg-white/10 p-2 rounded relative z-10">
+<span class="material-symbols-outlined text-sm">info</span>
+<span>Vos crédits contacts sont illimités.</span>
+</div>
+</div>
+<!-- Support Card -->
+<div class="bg-white dark:bg-surface-dark rounded-xl border border-gray-200 dark:border-gray-700 p-4 flex flex-col gap-3">
+<h4 class="font-bold text-sm text-gray-900 dark:text-white">Besoin d'aide ?</h4>
+<p class="text-xs text-gray-500">Notre équipe support dédiée aux comptes Premium est disponible 24/7.</p>
+<button class="flex items-center justify-center gap-2 w-full py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg text-xs font-bold text-gray-700 dark:text-gray-300 transition-colors">
+<span class="material-symbols-outlined text-sm">chat</span>
+                            Contacter le support
+                         </button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

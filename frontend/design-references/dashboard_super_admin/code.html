@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SociaLink - Super Admin Dashboard</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "sans": ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#111418] dark:text-white font-display overflow-hidden">
+<div class="flex h-screen w-full">
+<!-- SIDEBAR -->
+<aside class="w-72 flex-shrink-0 bg-white dark:bg-[#1a2634] border-r border-[#e5e7eb] dark:border-gray-800 flex flex-col justify-between overflow-y-auto">
+<div class="p-4">
+<!-- Branding -->
+<div class="flex items-center gap-3 mb-8 px-2">
+<div class="bg-primary/10 flex items-center justify-center rounded-xl w-10 h-10">
+<span class="material-symbols-outlined text-primary">hub</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-[#111418] dark:text-white text-lg font-bold leading-tight">SociaLink</h1>
+<p class="text-[#617589] dark:text-gray-400 text-xs font-normal">Super Admin Panel</p>
+</div>
+</div>
+<!-- Navigation -->
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary" href="#">
+<span class="material-symbols-outlined fill">dashboard</span>
+<p class="text-sm font-semibold leading-normal">Tableau de bord</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-[#617589] dark:text-gray-400 hover:bg-[#f0f2f4] dark:hover:bg-gray-800 transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<p class="text-[#111418] dark:text-gray-200 text-sm font-medium leading-normal">Utilisateurs</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-[#617589] dark:text-gray-400 hover:bg-[#f0f2f4] dark:hover:bg-gray-800 transition-colors" href="#">
+<span class="material-symbols-outlined">domain</span>
+<p class="text-[#111418] dark:text-gray-200 text-sm font-medium leading-normal">Établissements</p>
+</a>
+<div class="my-2 border-t border-gray-100 dark:border-gray-700"></div>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-[#617589] dark:text-gray-400 hover:bg-[#f0f2f4] dark:hover:bg-gray-800 transition-colors" href="#">
+<span class="material-symbols-outlined">admin_panel_settings</span>
+<p class="text-[#111418] dark:text-gray-200 text-sm font-medium leading-normal">Gestion Admins</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-[#617589] dark:text-gray-400 hover:bg-[#f0f2f4] dark:hover:bg-gray-800 transition-colors" href="#">
+<span class="material-symbols-outlined">payments</span>
+<p class="text-[#111418] dark:text-gray-200 text-sm font-medium leading-normal">Abonnements</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-[#617589] dark:text-gray-400 hover:bg-[#f0f2f4] dark:hover:bg-gray-800 transition-colors" href="#">
+<span class="material-symbols-outlined">tune</span>
+<p class="text-[#111418] dark:text-gray-200 text-sm font-medium leading-normal">Paramètres Système</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-[#617589] dark:text-gray-400 hover:bg-[#f0f2f4] dark:hover:bg-gray-800 transition-colors" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<p class="text-[#111418] dark:text-gray-200 text-sm font-medium leading-normal">Logs &amp; Audit</p>
+</a>
+</nav>
+</div>
+<!-- Profile Footer -->
+<div class="p-4 border-t border-[#e5e7eb] dark:border-gray-800">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-gray-200" data-alt="Portrait of the current admin user" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA4qNxaqlpUbuu_JrRBXlNZMNaXommVAF-lo1AKulLIYMy3f7NnUXEu3v0--OwQjO3LTRMAWUvZLWH-NZcVRqyeUWZQRFR4pnN0mDbn-nhzlbTMbcDGRUoVBUA-Wb_WNGtpoQUejJqXiz9n60GtbrM4LbUWl3b_kQBsfj4E-YNFMLkuxR205yExpYrqe8ZOjKJuwY3YUuPdSt5SvP_8jcrtJJpjizeZYpEfBtrDHEBRUpCsPyll-C096KSQ9jy0l1PYdeHagDCw0Zz5");'>
+</div>
+<div class="flex flex-col">
+<p class="text-[#111418] dark:text-white text-sm font-bold">Admin Principal</p>
+<p class="text-[#617589] dark:text-gray-400 text-xs font-normal">admin@socialink.ma</p>
+</div>
+<button class="ml-auto text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- MAIN CONTENT -->
+<main class="flex-1 flex flex-col h-full overflow-y-auto bg-background-light dark:bg-background-dark relative">
+<div class="max-w-[1200px] w-full mx-auto p-6 md:p-10 flex flex-col gap-8">
+<!-- HEADER -->
+<div class="flex flex-wrap justify-between items-end gap-4">
+<div class="flex flex-col gap-2">
+<h1 class="text-[#111418] dark:text-white text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em]">Tableau de Bord Super Admin</h1>
+<p class="text-[#617589] dark:text-gray-400 text-base font-normal">Vue d'ensemble des performances et de la configuration système.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center justify-center gap-2 bg-white dark:bg-[#1a2634] border border-[#d1d5db] dark:border-gray-700 h-10 px-4 rounded-lg text-[#111418] dark:text-white text-sm font-bold shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+<span class="material-symbols-outlined text-[20px]">download</span>
+                            Rapport
+                        </button>
+<button class="flex items-center justify-center gap-2 bg-primary hover:bg-blue-600 text-white h-10 px-4 rounded-lg text-sm font-bold shadow-sm transition-colors">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                            Nouvel Admin
+                        </button>
+</div>
+</div>
+<!-- KPIS -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- Revenue -->
+<div class="flex flex-col justify-between gap-4 rounded-xl p-6 bg-white dark:bg-[#1a2634] shadow-sm border border-[#e5e7eb] dark:border-gray-800">
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<p class="text-[#617589] dark:text-gray-400 text-sm font-medium">Revenus (DH)</p>
+<p class="text-[#111418] dark:text-white text-2xl font-bold">125,000 DH</p>
+</div>
+<div class="bg-green-100 dark:bg-green-900/30 text-[#078838] dark:text-green-400 rounded-full px-2 py-1 text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>
+                                +12%
+                            </div>
+</div>
+<div class="h-1 w-full bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[75%] rounded-full"></div>
+</div>
+</div>
+<!-- Workers -->
+<div class="flex flex-col justify-between gap-4 rounded-xl p-6 bg-white dark:bg-[#1a2634] shadow-sm border border-[#e5e7eb] dark:border-gray-800">
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<p class="text-[#617589] dark:text-gray-400 text-sm font-medium">Travailleurs Actifs</p>
+<p class="text-[#111418] dark:text-white text-2xl font-bold">850</p>
+</div>
+<div class="bg-green-100 dark:bg-green-900/30 text-[#078838] dark:text-green-400 rounded-full px-2 py-1 text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>
+                                +5%
+                            </div>
+</div>
+<div class="flex -space-x-2 overflow-hidden">
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-[#1a2634]" data-alt="User avatar 1" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEnPI8EgVWMoT1_vhK7sMmjNy2xZAXsn6EQ5gMp1X7svUlUmrnj_0auScPAxUGgbp5Q3s3iLLuaet6Ib8b0rPkyDNh4Gil-bUYMP9yhi5tsnhN-l4CeBBed5qAio-olOO9a-fx79eo2Vr8pjQneguXBNZeerQbyjFI_u5-xMXinjsO7lIiSfc8hgmJc3WGb0cfDBI5w0oFCDPwECyLWFieXn1x5Td6VZqKBJwNEHqZB5OPVuYfMZG93uwK99xlDUxFGjMJwjowVcat"/>
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-[#1a2634]" data-alt="User avatar 2" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAClVywH6VWhBMhc_DmTe6G0GpmpAtXiGZcbBabhQYjqxMSqAA8MfRZ3qE0cIvME0rreIb-pQ9_LJ7kVPpt-9g3bR4rQiBa5Nhfs96zoYTVKMAUAkJ5AA9cvbtm8YjgocSWIUJZncoIi63wfB0g2l-xDayjUU95sntv8hIKD_OgkLWEvFDbGG8DIjtF-7QafmrmALUB03n0tA82Hd34zZ2M6tYgcJhEL0W8nikAoWUdzTP_Wm8VUKl8yFTGI_wC9pMYP7aj3ZtomL10"/>
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-[#1a2634]" data-alt="User avatar 3" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxoquHUQRP4dfBSKSfzQiufliNubZBy_SAvIGBXlI7osCUfLRSP0gq3aGKdB16i9iXiU6n900AsiAc7xTYTbqFuPI5HHE7WCPxtIxNv_hcFVFKecK4X8ZqbPAk_FSveH1ZGDiblDcS3yhmFGqzIdkPRYub5NvmXNYGAjMhgaJ88kKNxxrucvHbFosR1dXejW-dnC_MMNfHpNO5PQ8KRcvwehbXylMkvYl8lbIAbLEvxEQbJ16uw559wJ5fJMHfOmh3cqaIP9qEEoaK"/>
+<span class="flex items-center justify-center h-6 w-6 rounded-full ring-2 ring-white dark:ring-[#1a2634] bg-gray-100 dark:bg-gray-700 text-[10px] font-medium text-gray-600 dark:text-gray-300">+847</span>
+</div>
+</div>
+<!-- Establishments -->
+<div class="flex flex-col justify-between gap-4 rounded-xl p-6 bg-white dark:bg-[#1a2634] shadow-sm border border-[#e5e7eb] dark:border-gray-800">
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<p class="text-[#617589] dark:text-gray-400 text-sm font-medium">Établissements</p>
+<p class="text-[#111418] dark:text-white text-2xl font-bold">440</p>
+</div>
+<div class="bg-gray-100 dark:bg-gray-700 text-[#617589] dark:text-gray-400 rounded-full px-2 py-1 text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">remove</span>
+                                0%
+                            </div>
+</div>
+<div class="flex items-center gap-2 text-xs text-gray-500">
+<span class="w-2 h-2 rounded-full bg-green-500"></span> 98% Actifs
+                        </div>
+</div>
+<!-- Pending -->
+<div class="flex flex-col justify-between gap-4 rounded-xl p-6 bg-white dark:bg-[#1a2634] shadow-sm border border-[#e5e7eb] dark:border-gray-800 relative overflow-hidden group">
+<div class="absolute right-0 top-0 h-full w-1 bg-orange-500"></div>
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<p class="text-[#617589] dark:text-gray-400 text-sm font-medium">Comptes en Attente</p>
+<p class="text-[#111418] dark:text-white text-2xl font-bold">23</p>
+</div>
+<div class="bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 rounded-full px-2 py-1 text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">warning</span>
+                                Action requise
+                            </div>
+</div>
+<button class="text-xs font-semibold text-primary hover:text-blue-700 hover:underline text-left mt-1">
+                            Voir la liste &gt;
+                        </button>
+</div>
+</div>
+<!-- MAIN GRID: CHART & CONFIG -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- CHART SECTION -->
+<div class="lg:col-span-2 flex flex-col rounded-xl bg-white dark:bg-[#1a2634] shadow-sm border border-[#e5e7eb] dark:border-gray-800 p-6">
+<div class="flex justify-between items-center mb-6">
+<div>
+<h3 class="text-[#111418] dark:text-white text-lg font-bold">Évolution du Chiffre d'Affaires</h3>
+<p class="text-[#617589] dark:text-gray-400 text-sm">Comparaison annuelle (2023 vs 2024)</p>
+</div>
+<select class="bg-gray-50 dark:bg-gray-700 border-none text-sm rounded-lg p-2 font-medium text-gray-700 dark:text-gray-200 focus:ring-2 focus:ring-primary">
+<option>Cette année</option>
+<option>6 derniers mois</option>
+<option>30 derniers jours</option>
+</select>
+</div>
+<div class="flex-1 min-h-[250px] w-full relative">
+<!-- SVG Chart -->
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 478 150" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<lineargradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#137fec" stop-opacity="0.2"></stop>
+<stop offset="100%" stop-color="#137fec" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path d="M0 109C18.1538 109 18.1538 21 36.3077 21C54.4615 21 54.4615 41 72.6154 41C90.7692 41 90.7692 93 108.923 93C127.077 93 127.077 33 145.231 33C163.385 33 163.385 101 181.538 101C199.692 101 199.692 61 217.846 61C236 61 236 45 254.154 45C272.308 45 272.308 121 290.462 121C308.615 121 308.615 149 326.769 149C344.923 149 344.923 1 363.077 1C381.231 1 381.231 81 399.385 81C417.538 81 417.538 129 435.692 129C453.846 129 453.846 25 472 25V150H0V109Z" fill="url(#chartGradient)"></path>
+<path d="M0 109C18.1538 109 18.1538 21 36.3077 21C54.4615 21 54.4615 41 72.6154 41C90.7692 41 90.7692 93 108.923 93C127.077 93 127.077 33 145.231 33C163.385 33 163.385 101 181.538 101C199.692 101 199.692 61 217.846 61C236 61 236 45 254.154 45C272.308 45 272.308 121 290.462 121C308.615 121 308.615 149 326.769 149C344.923 149 344.923 1 363.077 1C381.231 1 381.231 81 399.385 81C417.538 81 417.538 129 435.692 129C453.846 129 453.846 25 472 25" fill="none" stroke="#137fec" stroke-linecap="round" stroke-width="3"></path>
+</svg>
+</div>
+<div class="flex justify-between mt-4 px-2">
+<p class="text-[#617589] dark:text-gray-500 text-xs font-bold uppercase tracking-wider">Jan</p>
+<p class="text-[#617589] dark:text-gray-500 text-xs font-bold uppercase tracking-wider">Fév</p>
+<p class="text-[#617589] dark:text-gray-500 text-xs font-bold uppercase tracking-wider">Mar</p>
+<p class="text-[#617589] dark:text-gray-500 text-xs font-bold uppercase tracking-wider">Avr</p>
+<p class="text-[#617589] dark:text-gray-500 text-xs font-bold uppercase tracking-wider">Mai</p>
+<p class="text-[#617589] dark:text-gray-500 text-xs font-bold uppercase tracking-wider">Juin</p>
+</div>
+</div>
+<!-- SYSTEM CONFIG SECTION -->
+<div class="lg:col-span-1 flex flex-col rounded-xl bg-white dark:bg-[#1a2634] shadow-sm border border-[#e5e7eb] dark:border-gray-800 p-0 overflow-hidden">
+<div class="p-5 border-b border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50">
+<h3 class="text-[#111418] dark:text-white text-lg font-bold">Configuration Rapide</h3>
+<p class="text-[#617589] dark:text-gray-400 text-sm">Paramètres globaux du système</p>
+</div>
+<div class="p-5 flex flex-col gap-6">
+<!-- Blur Level Slider -->
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<span class="text-sm font-medium text-[#111418] dark:text-white">Floutage Profils (Public)</span>
+<span class="text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">75%</span>
+</div>
+<input class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary" max="100" min="0" type="range" value="75"/>
+<p class="text-xs text-gray-500">Protection d'identité pour non-inscrits.</p>
+</div>
+<!-- Maintenance Toggle -->
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-sm font-medium text-[#111418] dark:text-white">Mode Maintenance</span>
+<span class="text-xs text-gray-500">Bloque l'accès sauf admin</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+</label>
+</div>
+<!-- Application Quota Input -->
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-sm font-medium text-[#111418] dark:text-white">Quota Candidatures</span>
+<span class="text-xs text-gray-500">Max par travailleur / mois</span>
+</div>
+<input class="w-16 h-8 text-center text-sm border-gray-300 rounded-md focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white" type="number" value="15"/>
+</div>
+<button class="w-full mt-2 py-2 px-4 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-white rounded-lg text-sm font-bold transition-colors">
+                                Paramètres Avancés
+                            </button>
+</div>
+</div>
+</div>
+<!-- BOTTOM SECTIONS: ADMINS & SUBSCRIPTIONS -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pb-6">
+<!-- RECENT ADMINS -->
+<div class="flex flex-col rounded-xl bg-white dark:bg-[#1a2634] shadow-sm border border-[#e5e7eb] dark:border-gray-800">
+<div class="p-5 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
+<h3 class="text-[#111418] dark:text-white text-lg font-bold">Administrateurs Actifs</h3>
+<button class="text-primary text-sm font-semibold hover:underline">Voir tout</button>
+</div>
+<div class="p-0 overflow-x-auto">
+<table class="w-full text-left text-sm text-[#111418] dark:text-gray-300">
+<thead class="bg-gray-50 dark:bg-gray-700/50 text-xs uppercase text-gray-500 font-semibold">
+<tr>
+<th class="px-5 py-3">Nom</th>
+<th class="px-5 py-3">Rôle</th>
+<th class="px-5 py-3 text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+<tr>
+<td class="px-5 py-3 font-medium flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-gray-200 bg-cover bg-center" data-alt="Avatar of Ahmed B." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAU4tV-wvrFX4IN54SSoGxGmqRcQnCz_Bqh4LRRGBz5uVocz44JJXJBejtfvyMcspLaqXfYS7tRcIKXTrEuPHs-3DA4tKuUhBU0X8Enctz4PeLl2Hk_1PPntvLCRymrOA-iabzcNquE07EUh5T20IpOBqL0K8Z4xTpMZcctJ7n7qG7F2TmdNeXg30Ayip6_OeSM_AwJu9yzVRK0GnuE8Yo0__TBsI8vbFGcLRfe0q5bRV5s3lrWSEi-WMLc7QzBqA5NUCL3nZZhYl5Z')"></div>
+                                            Ahmed B.
+                                        </td>
+<td class="px-5 py-3">
+<span class="px-2 py-1 rounded bg-purple-100 text-purple-700 text-xs font-bold">Super Admin</span>
+</td>
+<td class="px-5 py-3 text-right">
+<button class="text-gray-400 hover:text-primary"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+</td>
+</tr>
+<tr>
+<td class="px-5 py-3 font-medium flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-gray-200 bg-cover bg-center" data-alt="Avatar of Sara K." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBiPjVIcNOhZ8P9MvUOkwoBBRHOGNMozNROaaME7ejQVb3G3vUmuX0QmoJ6WOKdX9jVz7DJSIeUD51XR117m5bgsrqKH5rAlyAKuYZvo4JL7ASDUhyZBgvLzBLHeOV8YJBA3VsE_oq40eiW2CwFoLzmAyz2WkYRBf_AcRJ6Z2OtdYMM0dhCsTwk6cS3KsanNyf5OcrB9Bpwijucj5kXh096CG32HX1ANIW8-kb7W9L1cVdzb0r0ZGqomCGZTFObPQPxGvSzTjYKMlhp')"></div>
+                                            Sara K.
+                                        </td>
+<td class="px-5 py-3">
+<span class="px-2 py-1 rounded bg-blue-100 text-blue-700 text-xs font-bold">Support</span>
+</td>
+<td class="px-5 py-3 text-right">
+<button class="text-gray-400 hover:text-primary"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+</td>
+</tr>
+<tr>
+<td class="px-5 py-3 font-medium flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-gray-200 bg-cover bg-center" data-alt="Avatar of Karim L." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC1qmmepVpbuAfeKGADZrADfqai-pV7kyW6t_EFG_rYM6IwgfR6CDZ-Eda7k9J51y3vzJQHBRCOpAecDBIGGqrlAIWhQ9otUfG7zvPBd4qjzEykZ4NtmnLrGu-I3Aof2SJYkH-PpPLWzUSGZxCkKo4k1NzqJH5fh5JvSw3KWFl2oiBIKiLsrzKOMDK-DRpQYui55ZO5u7YC72NU5W_qAQGj85On_GM6cgDCoaEQ2xCSZpAYS4clgswXqLNYydOpsDWEsqi2es92W_3J')"></div>
+                                            Karim L.
+                                        </td>
+<td class="px-5 py-3">
+<span class="px-2 py-1 rounded bg-gray-100 text-gray-700 text-xs font-bold">Modérateur</span>
+</td>
+<td class="px-5 py-3 text-right">
+<button class="text-gray-400 hover:text-primary"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- SUBSCRIPTION PLANS SUMMARY -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<h3 class="text-[#111418] dark:text-white text-lg font-bold">Offres d'Abonnement</h3>
+<button class="bg-white dark:bg-[#1a2634] border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg p-2">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+</div>
+<div class="grid grid-cols-2 gap-4 h-full">
+<!-- Card 1 -->
+<div class="bg-gradient-to-br from-[#137fec] to-[#0b5bb5] rounded-xl p-5 text-white flex flex-col justify-between shadow-lg shadow-blue-200 dark:shadow-none">
+<div>
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined opacity-80">badge</span>
+<span class="bg-white/20 px-2 py-0.5 rounded text-xs font-bold">Travailleur</span>
+</div>
+<h4 class="mt-3 text-xl font-bold">Pro Connect</h4>
+<p class="text-white/80 text-sm mt-1">Accès complet aux offres</p>
+</div>
+<div class="mt-4">
+<p class="text-2xl font-black">99 DH <span class="text-sm font-normal opacity-80">/mois</span></p>
+<div class="mt-3 w-full bg-white/20 h-1 rounded-full overflow-hidden">
+<div class="bg-white w-[65%] h-full"></div>
+</div>
+<p class="text-xs mt-1 text-white/70">650 abonnés actifs</p>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-white dark:bg-[#1a2634] border border-gray-200 dark:border-gray-700 rounded-xl p-5 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-gray-400">apartment</span>
+<span class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-0.5 rounded text-xs font-bold">Établissement</span>
+</div>
+<h4 class="mt-3 text-xl font-bold text-[#111418] dark:text-white">Corporate</h4>
+<p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Recrutement illimité</p>
+</div>
+<div class="mt-4">
+<p class="text-2xl font-black text-[#111418] dark:text-white">499 DH <span class="text-sm font-normal text-gray-400">/mois</span></p>
+<div class="mt-3 w-full bg-gray-100 dark:bg-gray-700 h-1 rounded-full overflow-hidden">
+<div class="bg-green-500 w-[42%] h-full"></div>
+</div>
+<p class="text-xs mt-1 text-gray-400">120 abonnés actifs</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
