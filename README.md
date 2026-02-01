@@ -1,295 +1,526 @@
-# 🌐 SociaLink V6 - Plateforme de Recrutement Social
+# SociaLink V6.5 - Plateforme de Mise en Relation Professionnelle
 
-<div align="center">
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![React](https://img.shields.io/badge/React-18.3.1-61DAFB?logo=react)](https://reactjs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-20.x-339933?logo=node.js)](https://nodejs.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?logo=postgresql)](https://www.postgresql.org/)
 
-![SociaLink](https://img.shields.io/badge/SociaLink-V6-blue?style=for-the-badge)
-![React](https://img.shields.io/badge/React-19.2-61DAFB?style=for-the-badge&logo=react)
-![Node.js](https://img.shields.io/badge/Node.js-Express-339933?style=for-the-badge&logo=node.js)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Prisma-4169E1?style=for-the-badge&logo=postgresql)
-![Tailwind](https://img.shields.io/badge/Tailwind-CSS_4-06B6D4?style=for-the-badge&logo=tailwindcss)
+> **Marketplace** de mise en relation entre **travailleurs qualifiés** et **établissements** recherchant des collaborateurs pour missions temporaires ou permanentes.
 
-**Plateforme de mise en relation entre travailleurs sociaux et établissements médico-sociaux au Maroc**
+## 📋 Table des Matières
 
-[🚀 Installation](#-installation) • [📖 Documentation](#-documentation) • [📊 Fonctionnalités](#-fonctionnalités-clés) • [🧪 Tests](#-testing)
-
-</div>
-
----
-
-## 📋 Aperçu
-
-SociaLink est une plateforme web innovante dédiée à la mise en relation entre les **travailleurs sociaux** (aides-soignants, éducateurs, infirmiers, etc.) et les **établissements médico-sociaux** (EHPAD, crèches, centres sociaux, cliniques) au Maroc. Elle facilite le recrutement, la gestion des missions et la validation des candidatures via une interface fluide et sécurisée.
-
----
-
-## 🛠️ Stack Technique
-
-| Couche | Technologies |
-|--------|-------------|
-| **Frontend** | React 19 + Vite 7, Tailwind CSS 4, Lucide React, React Router 7, React Query |
-| **Backend** | Node.js, Express 5, Socket.io |
-| **Base de Données** | PostgreSQL via Prisma ORM 6.x |
-| **Authentification** | JWT + HTTP-Only Cookies + Bcrypt |
-| **Email** | Nodemailer (Support Brevo/SMTP) |
-| **Stockage** | Multer (local) + Supabase Storage (cloud) |
-| **Paiements** | Stripe (prêt à intégrer) |
-| **Tests** | Vitest, Playwright (E2E), Testing Library |
+- [Aperçu](#-aperçu)
+- [Fonctionnalités](#-fonctionnalités)
+- [Stack Technique](#-stack-technique)
+- [Architecture](#-architecture)
+- [Installation](#-installation)
+- [Configuration](#-configuration)
+- [Utilisation](#-utilisation)
+- [Structure du Projet](#-structure-du-projet)
+- [API Documentation](#-api-documentation)
+- [Tests](#-tests)
+- [Contribution](#-contribution)
+- [Licence](#-licence)
 
 ---
 
-## ✨ Fonctionnalités Clés
+## 🎯 Aperçu
 
-### 🔐 Authentification & Sécurité
-- **Inscription multi-rôle** : Travailleur ou Établissement
-- **Vérification Email (OTP)** : Code à 6 chiffres envoyé par email
-- **Mot de passe oublié** : Flux complet de réinitialisation avec lien sécurisé
-- **Protection des Routes** : Middleware vérifiant Token, Rôle et Statut de validation
+**SociaLink** est une plateforme web full-stack développée avec React et Node.js, offrant un écosystème complet pour :
 
-### 👷 Espace Travailleur
-- **Dashboard Personnel** : Vue d'ensemble des candidatures et missions
-- **Profil Complet** : Gestion des diplômes, expériences, spécialités et CV
-- **Marché des Missions** : Recherche et filtrage des missions disponibles
-- **Candidature** : Postuler aux missions (validation du profil requise)
-- **Calendrier** : Gestion des disponibilités
-- **Abonnement Premium** : Accès illimité aux missions et fonctionnalités avancées
+- 👷 **Travailleurs** : Créer un profil, chercher des missions, postuler, gérer les candidatures
+- 🏢 **Établissements** : Publier des missions, rechercher des candidats qualifiés, gérer les recrutements
+- 🛡️ **Administrateurs** : Valider les profils, modérer les missions, gérer les litiges
+- 👑 **Super Admins** : Gérer les admins, statistiques, finance, marketing, système
 
-### 🏥 Espace Établissement
-- **Gestion des Missions** : Création, modification et suivi des offres d'emploi
-- **Suivi des Candidats** : Réception des candidatures, consultation des profils
-- **Statistiques** : Vue sur les missions actives et suggestions de candidats
-- **Recherche de Travailleurs** : Filtrage par spécialités et localisation
+### Captures d'Écran
 
-### 🛡️ Administration
-- **Admin Dashboard** : Validation des profils et documents utilisateurs
-- **Gestion des Litiges** : Modération et arbitrage des conflits
-- **Centre de Notifications** : Communication avec les utilisateurs
-
-### 👑 Super Administration
-- **Dashboard Financier** : Revenus, abonnements, métriques globales
-- **Gestion des Plans** : Configuration des abonnements (BASIC, PREMIUM, PRO)
-- **Gestion des Admins** : CRUD complet des administrateurs
-- **Paramètres Système** : Configuration globale de la plateforme
+*Screenshots à ajouter dans `/docs/screenshots/`*
 
 ---
 
-## 💳 Système d'Abonnements
+## ✨ Fonctionnalités
 
-| Plan | Cible | Prix | Limitations |
-|------|-------|------|-------------|
-| **BASIC** | Workers | Gratuit | 3 candidatures, 5 missions visibles, délai 48h |
-| **PREMIUM** | Workers | 149 DH/mois | Illimité, accès instantané, auto-matching |
-| **PRO** | Établissements | 499 DH/mois | Missions illimitées, recherche workers, posts urgents |
+### Pour les Travailleurs
+- ✅ Profil complet avec CV, compétences, expériences
+- ✅ Upload de documents (diplômes, certifications)
+- ✅ Recherche avancée de missions (filtres par ville, secteur, salaire)
+- ✅ Candidature en un clic
+- ✅ Calendrier de disponibilité
+- ✅ Messagerie intégrée
+- ✅ Abonnement Premium (fonctionnalités avancées)
+
+### Pour les Établissements
+- ✅ Publication de missions (temporaires ou permanentes)
+- ✅ Recherche de travailleurs par compétences
+- ✅ Gestion des candidatures reçues
+- ✅ Profil entreprise détaillé
+- ✅ Statistiques de missions
+
+### Pour les Administrateurs
+- ✅ Dashboard de supervision
+- ✅ Validation des profils et documents
+- ✅ Modération des missions
+- ✅ Gestion des litiges
+- ✅ Messagerie support
+
+### Pour les Super Admins
+- ✅ Gestion complète des administrateurs
+- ✅ Gestion des utilisateurs (suspend/validate)
+- ✅ Plans d'abonnement
+- ✅ Campagnes marketing (bannières, notifications)
+- ✅ Statistiques financières (MRR, transactions)
+- ✅ Contrôle qualité
+- ✅ Configuration système
 
 ---
 
-## 📂 Structure du Projet
+## 🛠 Stack Technique
+
+### Frontend
+- **Framework** : React 18.3.1
+- **Routing** : React Router DOM v7
+- **Styling** : Tailwind CSS 3.4
+- **Icons** : Lucide React
+- **HTTP Client** : Axios
+- **State Management** : React Hooks (Context API)
+
+### Backend
+- **Runtime** : Node.js 20.x
+- **Framework** : Express.js 4.21
+- **ORM** : Prisma 6.3
+- **Database** : PostgreSQL 16
+- **Authentication** : JWT (jsonwebtoken)
+- **Security** : bcrypt, CORS, helmet
+- **File Upload** : Multer
+- **Payment** : Stripe API
+
+### DevOps & Tools
+- **Version Control** : Git + GitHub
+- **Package Manager** : npm
+- **Code Editor** : VS Code
+- **API Testing** : Postman
+- **DB Management** : Prisma Studio, pgAdmin 4
+
+---
+
+## 🏗 Architecture
 
 ```
-SociaLink_v6/
-├── backend/
-│   ├── prisma/
-│   │   ├── schema.prisma      # Schéma DB (25+ modèles)
-│   │   └── seed.js            # Données de test
-│   ├── src/
-│   │   ├── controllers/       # 14 controllers (auth, worker, mission, etc.)
-│   │   ├── routes/            # 13 fichiers de routes API
-│   │   ├── middleware/        # Auth, Role, Validation, Upload
-│   │   └── server.js          # Point d'entrée
-│   └── uploads/               # Fichiers uploadés
-│
-├── frontend/
-│   ├── src/
-│   │   ├── components/        # Layouts, UI réutilisables
-│   │   │   ├── WorkerLayout.jsx
-│   │   │   ├── EstablishmentLayout.jsx
-│   │   │   ├── AdminLayout.jsx
-│   │   │   └── SuperAdminLayout.jsx
-│   │   ├── pages/             # 46+ pages
-│   │   │   ├── worker/        # Dashboard, Missions, Profile, Subscription
-│   │   │   ├── establishment/ # Dashboard, Missions, Applications
-│   │   │   ├── admin/         # Validations, Documents, Users
-│   │   │   └── auth/          # Login, Register, Verify
-│   │   ├── context/           # AuthContext, SubscriptionContext
-│   │   └── hooks/             # useAuth, etc.
-│   └── public/                # Assets statiques
-│
-└── Documentation/
-    ├── ANALYSIS_V6.md         # Analyse technique complète
-    ├── SYSTEMES.md            # Documentation des systèmes
-    ├── RULES_ACCESS_CONTROL.md # Règles de contrôle d'accès
-    └── TESTING.md             # Guide de tests
+┌─────────────────────────────────┐
+│      Client (React SPA)         │
+│  ┌──────────┐  ┌──────────┐   │
+│  │ Worker   │  │Establish.│    │
+│  │ Dashboard│  │ Dashboard│    │
+│  └──────────┘  └──────────┘    │
+│  ┌──────────┐  ┌──────────┐   │
+│  │  Admin   │  │SuperAdmin│    │
+│  │ Dashboard│  │ Dashboard│    │
+│  └──────────┘  └──────────┘    │
+└────────────┬────────────────────┘
+             │ HTTP/HTTPS (Axios)
+             ▼
+┌─────────────────────────────────┐
+│    Express.js Backend API       │
+│                                 │
+│  ┌─────────────────────────┐  │
+│  │   Routes + Middleware   │  │
+│  │  (Auth, RBAC, Upload)   │  │
+│  └───────────┬─────────────┘  │
+│              ▼                  │
+│  ┌─────────────────────────┐  │
+│  │     Controllers         │  │
+│  │  (Business Logic)       │  │
+│  └───────────┬─────────────┘  │
+│              ▼                  │
+│  ┌─────────────────────────┐  │
+│  │      Prisma ORM         │  │
+│  │   (Query Builder)       │  │
+│  └───────────┬─────────────┘  │
+└──────────────┼─────────────────┘
+               ▼
+┌─────────────────────────────────┐
+│     PostgreSQL Database         │
+│   (Users, Missions, etc.)       │
+└─────────────────────────────────┘
 ```
 
 ---
 
-## 🚀 Installation
+## 📦 Installation
 
 ### Prérequis
-- Node.js v18+
-- PostgreSQL (Local ou Cloud)
-- npm ou yarn
+- Node.js **20.x** ou supérieur
+- PostgreSQL **16** ou supérieur
+- npm **10.x** ou supérieur
+- Git
 
-### 1. Cloner le projet
+### Étapes
+
+#### 1. Cloner le Repository
 ```bash
-git clone https://github.com/Vectra-Labs/SociaLink_V6_2.0.git
-cd SociaLink_V6_2.0
+git clone https://github.com/Vectra-Labs/SociaLink_V6.5.git
+cd SociaLink_V6.5
 ```
 
-### 2. Configuration du Backend
+#### 2. Installation Backend
 ```bash
 cd backend
 npm install
 ```
 
-Créez un fichier `.env` dans le dossier `backend`:
+#### 3. Installation Frontend
+```bash
+cd ../frontend
+npm install
+```
+
+#### 4. Configuration de la Base de Données
+```bash
+cd ../backend
+
+# Créer la base de données PostgreSQL
+createdb socialink
+
+# Configurer le fichier .env (voir section Configuration)
+
+# Générer le client Prisma
+npx prisma generate
+
+# Pousser le schéma vers la DB
+npx prisma db push
+
+# (Optionnel) Seed des données de test
+npm run seed
+```
+
+#### 5. Lancement
+
+**Backend** (Terminal 1)
+```bash
+cd backend
+npm run dev
+# API accessible sur http://localhost:5000
+```
+
+**Frontend** (Terminal 2)
+```bash
+cd frontend
+npm run dev
+# App accessible sur http://localhost:5173
+```
+
+---
+
+## ⚙️ Configuration
+
+### Backend Environment Variables
+
+Créer un fichier `.env` dans `/backend/` :
+
 ```env
-# Base de données
-DATABASE_URL="postgresql://user:password@localhost:5432/socialink_db"
+# Database
+DATABASE_URL=postgresql://user:password@localhost:5432/socialink
 
-# Authentification
-JWT_SECRET="votre_secret_super_securise"
-PORT=5001
+# Security
+JWT_SECRET=your_super_secret_key_change_in_production_min_32_characters
+PORT=5000
 
-# Email (SMTP)
-SMTP_HOST="smtp-relay.brevo.com"
+# Frontend URL (CORS)
+FRONTEND_URL=http://localhost:5173
+
+# Stripe (Payment)
+STRIPE_SECRET_KEY=sk_test_your_stripe_test_key
+
+# Email (Optional - pour vérification email)
+SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
-SMTP_USER="votre_email"
-SMTP_PASS="votre_clé"
-
-# Supabase (optionnel)
-SUPABASE_URL="votre_url_supabase"
-SUPABASE_SERVICE_ROLE_KEY="votre_clé_supabase"
+SMTP_USER=your-email@gmail.com
+SMTP_PASS=your-app-password
 ```
 
-Initialisez la base de données:
-```bash
-npx prisma migrate dev --name init
-npx prisma db seed
-npm run dev
-```
+### Frontend Environment Variables
 
-### 3. Configuration du Frontend
-```bash
-cd frontend
-npm install
-npm run dev
-```
+Créer un fichier `.env` dans `/frontend/` :
 
-L'application sera accessible sur `http://localhost:5173`
+```env
+VITE_API_URL=http://localhost:5000/api
+VITE_STRIPE_PUBLIC_KEY=pk_test_your_stripe_public_key
+```
 
 ---
 
-## 🧪 Testing
+## 🚀 Utilisation
 
-### Comptes de Test (après seed)
+### Comptes de Test
 
-| Rôle | Email | Mot de passe |
-|------|-------|--------------|
-| Super Admin | superadmin@socialink.ma | superadmin123 |
-| Admin | admin@socialink.ma | admin123 |
-| Worker Premium | worker.premium@test.ma | test123 |
-| Worker Basic | worker.nosub@test.ma | test123 |
-| Worker En Attente | worker.pending@test.ma | test123 |
-| Établissement Pro | etab.pro@test.ma | test123 |
-| Établissement Basic | etab.nosub@test.ma | test123 |
+Des comptes de test sont disponibles dans `TEST_ACCOUNTS.md` :
 
-### Commandes de Test
+```markdown
+# SUPER ADMIN
+Email: admin@socialink.ma
+Password: Admin@2024
 
+# WORKER
+Email: worker@test.com
+Password: Worker@123
+
+# ESTABLISHMENT
+Email: establishment@test.com
+Password: Establishment@123
+```
+
+### Workflows Principaux
+
+#### 1. Inscription Travailleur
+1. Naviguer vers `/register/worker`
+2. Remplir le formulaire (email, nom, prénom, mot de passe)
+3. Vérifier l'email (lien de confirmation)
+4. Compléter le profil (compétences, documents)
+5. Attendre validation admin
+
+#### 2. Publication de Mission (Établissement)
+1. Se connecter en tant qu'établissement
+2. Dashboard → "Publier une Mission"
+3. Remplir les détails (titre, description, salaire, dates)
+4. Soumettre
+5. Attendre validation admin
+6. Mission visible publiquement
+
+#### 3. Candidature à une Mission (Travailleur)
+1. Se connecter en tant que travailleur
+2. Dashboard → "Rechercher Missions"
+3. Filtrer par ville, secteur, salaire
+4. Consulter les détails d'une mission
+5. Cliquer sur "Postuler"
+6. Attendre réponse de l'établissement
+
+---
+
+## 📁 Structure du Projet
+
+```
+SociaLink_V6.5/
+├── backend/
+│   ├── public/
+│   │   └── uploads/          # Fichiers uploadés
+│   ├── src/
+│   │   ├── config/           # Configuration DB
+│   │   ├── controllers/      # Logique métier
+│   │   ├── middleware/       # Auth, RBAC, Upload
+│   │   ├── routes/           # Définition des routes
+│   │   ├── services/         # Services métier
+│   │   ├── prisma/
+│   │   │   └── schema.prisma # Schéma de DB
+│   │   └── server.js         # Point d'entrée
+│   ├── .env.example
+│   └── package.json
+│
+├── frontend/
+│   ├── public/               # Assets statiques
+│   ├── src/
+│   │   ├── api/              # Axios config
+│   │   ├── components/       # Composants React
+│   │   │   ├── Layout.jsx
+│   │   │   ├── WorkerLayout.jsx
+│   │   │   ├── EstablishmentLayout.jsx
+│   │   │   └── AdminLayout.jsx
+│   │   ├── pages/            # Pages de l'app
+│   │   │   ├── worker/
+│   │   │   ├── establishment/
+│   │   │   └── admin/
+│   │   ├── hooks/            # Custom hooks
+│   │   ├── utils/            # Utilitaires
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   ├── .env.example
+│   └── package.json
+│
+├── docs/                     # Documentation
+├── .gitignore
+├── README.md
+└── TEST_ACCOUNTS.md
+```
+
+---
+
+## 📚 API Documentation
+
+### Authentication
+
+#### POST `/api/auth/register`
+Inscription d'un nouvel utilisateur
+
+**Body:**
+```json
+{
+  "email": "user@example.com",
+  "password": "Password@123",
+  "role": "WORKER",
+  "prenom": "John",
+  "nom": "Doe"
+}
+```
+
+**Response:**
+```json
+{
+  "message": "Inscription réussie",
+  "userId": 123
+}
+```
+
+#### POST `/api/auth/login`
+Connexion utilisateur
+
+**Body:**
+```json
+{
+  "email": "user@example.com",
+  "password": "Password@123"
+}
+```
+
+**Response:**
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "user": {
+    "user_id": 123,
+    "email": "user@example.com",
+    "role": "WORKER",
+    "status": "VALIDATED"
+  }
+}
+```
+
+### Missions
+
+#### GET `/api/missions`
+Liste publique des missions (avec filtres)
+
+**Query Params:**
+- `city_id` (optional)
+- `sector` (optional)
+- `page` (default: 1)
+- `limit` (default: 20)
+
+#### POST `/api/establishment/missions`
+Créer une nouvelle mission (ESTABLISHMENT only)
+
+**Headers:**
+```
+Authorization: Bearer {token}
+```
+
+**Body:**
+```json
+{
+  "title": "Infirmier H/F",
+  "description": "Recherche infirmier qualifié...",
+  "salary_min": 5000,
+  "salary_max": 7000,
+  "start_date": "2026-03-01",
+  "end_date": "2026-12-31",
+  "city_id": 1,
+  "sector": "Santé"
+}
+```
+
+### Admin
+
+#### GET `/api/super-admin/users`
+Liste de tous les utilisateurs (SUPER_ADMIN only)
+
+**Headers:**
+```
+Authorization: Bearer {token}
+```
+
+**Response:**
+```json
+[
+  {
+    "user_id": 1,
+    "email": "worker@test.com",
+    "role": "WORKER",
+    "status": "VALIDATED",
+    "created_at": "2026-01-15T10:30:00Z"
+  }
+]
+```
+
+*Pour la documentation complète des endpoints, voir `/docs/API.md`*
+
+---
+
+## 🧪 Tests
+
+### Tests Manuels
+
+Des scénarios de test sont documentés dans `/docs/TESTING.md`
+
+### Exécution
 ```bash
-# Backend - Tests unitaires
+# Backend tests (si implémentés)
 cd backend
 npm test
 
-# Frontend - Tests unitaires
+# Frontend tests (si implémentés)
 cd frontend
 npm test
-
-# Frontend - Tests E2E (Playwright)
-npm run test:e2e
-
-# Frontend - Tests E2E avec UI
-npm run test:e2e:ui
 ```
-
----
-
-## 📖 Documentation
-
-| Document | Description |
-|----------|-------------|
-| [ANALYSIS_V6.md](./ANALYSIS_V6.md) | Analyse technique complète du projet |
-| [SYSTEMES.md](./SYSTEMES.md) | Documentation de tous les systèmes |
-| [RULES_ACCESS_CONTROL.md](./RULES_ACCESS_CONTROL.md) | Règles de contrôle d'accès par rôle |
-| [TESTING.md](./TESTING.md) | Guide complet de tests |
-
----
-
-## 🔐 Contrôle d'Accès par Rôle
-
-| Fonctionnalité | WORKER | ESTABLISHMENT | ADMIN | SUPER_ADMIN |
-|----------------|--------|---------------|-------|-------------|
-| Voir missions | ✅ (avec limites) | ✅ Propres | ✅ Toutes | ✅ Toutes |
-| Postuler | ✅ (si validé) | ❌ | ❌ | ❌ |
-| Publier missions | ❌ | ✅ | ❌ | ❌ |
-| Valider profils | ❌ | ❌ | ✅ | ✅ |
-| Gérer abonnements | ❌ | ❌ | ❌ | ✅ |
-| Dashboard financier | ❌ | ❌ | ❌ | ✅ |
-
----
-
-## 📈 Roadmap
-
-### V6 (Actuelle) ✅
-- [x] Système complet d'authentification multi-rôle
-- [x] Gestion des profils enrichis (Worker + Établissement)
-- [x] Système de missions et candidatures
-- [x] Administration et Super Administration complète
-- [x] Système d'abonnements (BASIC, PREMIUM, PRO)
-- [x] Documents avec validation admin
-- [x] Calendrier de disponibilité
-- [x] Dashboard Worker amélioré
-- [x] Système de messagerie (Socket.io)
-- [x] Tests E2E avec Playwright
-
-### V7 (Planifiée)
-- [ ] Paiements réels (Stripe intégration complète)
-- [ ] Application mobile (PWA)
-- [ ] Push Notifications
-- [ ] IA matching (recommandations intelligentes)
-- [ ] Support multilingue (Arabe, Français)
 
 ---
 
 ## 🤝 Contribution
 
-Les contributions sont les bienvenues ! Veuillez consulter les guidelines de contribution avant de soumettre une PR.
+Les contributions sont les bienvenues ! Merci de suivre ces étapes :
 
-1. Fork le projet
-2. Créer une branche feature (`git checkout -b feature/AmazingFeature`)
-3. Commit vos changements (`git commit -m 'Add: Amazing Feature'`)
-4. Push sur la branche (`git push origin feature/AmazingFeature`)
-5. Ouvrir une Pull Request
+1. **Fork** le projet
+2. Créer une **branche** pour votre fonctionnalité (`git checkout -b feature/AmazingFeature`)
+3. **Commit** vos changements (`git commit -m 'Add some AmazingFeature'`)
+4. **Push** vers la branche (`git push origin feature/AmazingFeature`)
+5. Ouvrir une **Pull Request**
 
----
-
-## 📞 Support
-
-Pour toute question technique:
-- **Email**: support@socialink.ma
-- **Documentation API**: `/api-docs` (Swagger)
+### Guidelines
+- Respecter les conventions de code existantes
+- Documenter les nouvelles fonctionnalités
+- Tester avant de soumettre
 
 ---
 
 ## 📄 Licence
 
-Ce projet est sous licence propriétaire. Tous droits réservés.
+Ce projet est sous licence **MIT**. Voir le fichier `LICENSE` pour plus de détails.
 
 ---
 
-<div align="center">
+## 👥 Auteurs
 
-**SociaLink V6** - Plateforme de Recrutement Social pour le Maroc
+**Vectra Labs**
+- GitHub: [@Vectra-Labs](https://github.com/Vectra-Labs)
+- Email: contact@vectra-labs.com
 
-*Dernière mise à jour: Janvier 2026*
+---
 
-</div>
+## 🙏 Remerciements
+
+- [React](https://reactjs.org/) - Framework Frontend
+- [Node.js](https://nodejs.org/) - Runtime JavaScript
+- [Prisma](https://www.prisma.io/) - ORM moderne
+- [Tailwind CSS](https://tailwindcss.com/) - Framework CSS utilitaire
+- [Stripe](https://stripe.com/) - Plateforme de paiement
+
+---
+
+## 📞 Support
+
+Pour toute question ou problème :
+- 📧 Email : support@socialink.ma
+- 🐛 Issues : [GitHub Issues](https://github.com/Vectra-Labs/SociaLink_V6.5/issues)
+- 📖 Documentation : `/docs/`
+
+---
+
+**Made with ❤️ by Vectra Labs**
