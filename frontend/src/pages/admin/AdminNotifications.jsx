@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
 import {
     Info, CheckCircle, AlertTriangle, AlertCircle, Bell, RefreshCw,
     CheckCheck, Trash2
@@ -6,9 +8,46 @@ import {
 import api from '../../api/client';
 
 const AdminNotifications = () => {
+    const { user } = useAuth();
+    const navigate = useNavigate();
+
     const [notifications, setNotifications] = useState([]);
     const [loading, setLoading] = useState(true);
     const [markingRead, setMarkingRead] = useState(null);
+
+    const getRedirectionLink = (notif) => {
+        if (notif.link) return notif.link;
+
+        // Fallback logic for legacy notifications
+        const msg = (notif.message || '').toLowerCase();
+        const type = (notif.type || '').toUpperCase();
+        const isWorker = user?.role === 'WORKER';
+        const isEst = user?.role === 'ESTABLISHMENT';
+        const isAdmin = user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN';
+
+        if (type === 'NEW_MESSAGE' || msg.includes('message')) {
+            if (isWorker) return '/worker/messages';
+            if (isEst) return '/establishment/messages';
+            if (isAdmin) return '/admin/messages';
+        }
+
+        if (msg.includes('candidature') || msg.includes('mission') || msg.includes('postuler')) {
+            if (isWorker) return '/worker/missions';
+            if (isEst) return '/establishment/candidates';
+        }
+
+        if (msg.includes('avis') && isWorker) return '/worker/reviews';
+
+        if (isWorker) return '/worker/dashboard';
+        if (isEst) return '/establishment/dashboard';
+        return '/admin/dashboard';
+    };
+
+    const handleNotificationClick = (notif) => {
+        if (!notif.is_read) markAsRead(notif.notification_id);
+        const link = getRedirectionLink(notif);
+        if (link) navigate(link);
+    };
 
     useEffect(() => {
         fetchNotifications();
@@ -148,7 +187,8 @@ const AdminNotifications = () => {
                         {notifications.map((notif) => (
                             <div
                                 key={notif.notification_id}
-                                className={`p-4 flex items-start gap-4 transition-colors ${getBgColor(notif.type, notif.is_read)}`}
+                                onClick={() => handleNotificationClick(notif)}
+                                className={`p-4 flex items-start gap-4 transition-colors cursor-pointer hover:bg-slate-50 ${getBgColor(notif.type, notif.is_read)}`}
                             >
                                 <div className="mt-0.5">
                                     {getIcon(notif.type)}

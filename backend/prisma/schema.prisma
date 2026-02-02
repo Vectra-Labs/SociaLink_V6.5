@@ -714,6 +714,7 @@ model AdminMessage {
 ///////////////////////
 
 enum DocumentType {
+  CV                // Curriculum Vitae
   DIPLOMA           // Diplôme
   CIN               // Carte d'identité nationale
   CASIER_JUDICIAIRE // Casier judiciaire
@@ -735,6 +736,9 @@ model WorkerDocument {
   issue_date   DateTime?     // Date d'obtention/délivrance
   expiry_date  DateTime?     // Date d'expiration (CIN, casier, etc.)
   document_number String?    // Numéro du document (étudiant, CIN, etc.)
+  specialty    String?       // Filière / Spécialité (ex: Infographie, Droit)
+  grade        String?       // Mention (Passable, Bien, Très Bien)
+  metadata     Json?         // Métadonnées supplémentaires (OCR raw data, ville, etc.)
   file_url     String        // URL fichier uploadé
   
   // Validation Admin

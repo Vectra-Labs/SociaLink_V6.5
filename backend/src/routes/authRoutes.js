@@ -1,5 +1,5 @@
 import express from "express";
-import { registerWorker, registerEstablishment, login, logout, getMe, verifyEmail, resendOtp, forgotPassword, resetPassword, changePassword } from "../controllers/authController.js";
+import { registerWorker, registerEstablishment, login, logout, getMe, verifyEmail, resendOtp, forgotPassword, resetPassword, changePassword, deleteAccount } from "../controllers/authController.js";
 import { protect } from "../middleware/authMiddleware.js";
 import {
     validate,
@@ -24,5 +24,6 @@ router.post("/reset-password", validate(resetPasswordSchema), resetPassword);
 router.post("/logout", logout);
 router.get("/me", protect, getMe);
 router.post("/change-password", protect, changePassword);
+router.delete("/delete", protect, deleteAccount);
 
 export default router;

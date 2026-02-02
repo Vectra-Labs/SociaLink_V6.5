@@ -1,0 +1,1999 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Rapport de Projet - SociaLink</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: 11pt;
+            line-height: 1.8;
+            color: #1a1a1a;
+        }
+
+        @page {
+            size: A4;
+            margin: 2.5cm;
+        }
+
+        @media print {
+            .page-break {
+                page-break-after: always;
+            }
+
+            body {
+                background: white;
+            }
+        }
+
+        .page-break {
+            page-break-after: always;
+        }
+
+        /* Page de garde */
+        .cover {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%);
+            color: white;
+            padding: 3rem;
+        }
+
+        .cover h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            letter-spacing: -1px;
+        }
+
+        .cover h2 {
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 3rem;
+            line-height: 1.4;
+        }
+
+        .cover-meta {
+            margin-top: 4rem;
+            font-size: 1.1rem;
+            line-height: 2.5;
+        }
+
+        .cover-meta strong {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Sections */
+        .dedication,
+        .thanks,
+        .abstract-page {
+            padding: 3rem 0;
+            text-align: justify;
+        }
+
+        .dedication h2,
+        .thanks h2,
+        .abstract-page h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #1e3a8a;
+            font-size: 1.8rem;
+        }
+
+        /* Table des matières */
+        .toc {
+            padding: 2rem 0;
+        }
+
+        .toc h1 {
+            text-align: center;
+            color: #1e3a8a;
+            margin-bottom: 3rem;
+            font-size: 2rem;
+        }
+
+        .toc-list {
+            list-style: none;
+            counter-reset: toc-counter;
+        }
+
+        .toc-list>li {
+            counter-increment: toc-counter;
+            margin: 1.5rem 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .toc-list>li::before {
+            content: counter(toc-counter) ". ";
+            color: #3b82f6;
+        }
+
+        .toc-list ul {
+            list-style: none;
+            margin-left: 2rem;
+            margin-top: 0.5rem;
+        }
+
+        .toc-list ul li {
+            font-weight: 400;
+            margin: 0.5rem 0;
+            color: #4b5563;
+        }
+
+        /* Chapitres */
+        .chapter {
+            padding: 2rem 0;
+        }
+
+        .chapter-title {
+            background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%);
+            color: white;
+            padding: 3rem;
+            text-align: center;
+            margin: -2rem 0 3rem 0;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        h1 {
+            color: #1e3a8a;
+            font-size: 1.8rem;
+            margin: 2.5rem 0 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #3b82f6;
+        }
+
+        h2 {
+            color: #1e40af;
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+        }
+
+        h3 {
+            color: #374151;
+            font-size: 1.2rem;
+            margin: 1.5rem 0 0.8rem;
+        }
+
+        p {
+            margin: 1rem 0;
+            text-align: justify;
+        }
+
+        ul,
+        ol {
+            margin: 1rem 0 1rem 2.5rem;
+        }
+
+        li {
+            margin: 0.6rem 0;
+        }
+
+        strong {
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        /* Tableaux */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 10.5pt;
+        }
+
+        th {
+            background: #3b82f6;
+            color: white;
+            padding: 0.9rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 0.8rem;
+            border: 1px solid #d1d5db;
+        }
+
+        tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        /* Boîtes */
+        .box {
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border-color: #3b82f6;
+        }
+
+        .problem-box {
+            background: #fef3c7;
+            border-color: #f59e0b;
+        }
+
+        .solution-box {
+            background: #d1fae5;
+            border-color: #10b981;
+        }
+
+        /* Code */
+        code {
+            background: #f3f4f6;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 10pt;
+        }
+
+        pre {
+            background: #1f2937;
+            color: #e5e7eb;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-size: 9.5pt;
+            line-height: 1.6;
+        }
+
+        /* Images */
+        img {
+            max-width: 100%;
+            height: auto;
+            margin: 2rem auto;
+            display: block;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .figure-caption {
+            text-align: center;
+            font-style: italic;
+            color: #6b7280;
+            margin-top: -1rem;
+            margin-bottom: 2rem;
+            font-size: 10pt;
+        }
+
+        /* Abréviations */
+        .abbr-list {
+            columns: 2;
+            column-gap: 3rem;
+        }
+
+        .abbr-list li {
+            break-inside: avoid;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- PAGE DE GARDE -->
+    <div class="cover">
+        <h1>SOCIALINK</h1>
+        <h2>
+            RAPPORT DE PROJET DE FIN DE FORMATION<br>
+            Conception et Développement d'une Plateforme Web<br>
+            de Mise en Relation de Travailleurs Sociaux Indépendants
+        </h2>
+        <div class="cover-meta">
+            <strong>Thème :</strong>
+            Application Full-Stack de Réseau Professionnel Spécialisé
+            <br><br>
+            <strong>Technologies :</strong>
+            React 19 • Node.js/Express • PostgreSQL • Prisma ORM
+            <br><br>
+            <strong>Etudiant :</strong> [À compléter]<br>
+            <strong>Filière :</strong> [À compléter]<br>
+            <strong>Encadrant :</strong> [À compléter]<br>
+            <strong>Année :</strong> 2025-2026
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- DÉDICACE -->
+    <div class="dedication">
+        <h2>Dédicace</h2>
+        <p>
+            Je dédie ce travail à tous ceux qui m'ont accompagné et soutenu tout au long de ce parcours de formation.
+        </p>
+        <p>
+            À ma famille, pour leur soutien indéfectible et leurs encouragements constants qui m'ont permis de
+            persévérer
+            dans les moments difficiles et de donner le meilleur de moi-même. Votre confiance en mes capacités a été une
+            source de motivation inestimable.
+        </p>
+        <p>
+            À mes amis et collègues, pour les échanges enrichissants, le partage de connaissances et l'entraide mutuelle
+            qui ont contribué à mon développement personnel et professionnel. Votre compagnie a rendu ce parcours plus
+            agréable et formateur.
+        </p>
+        <p>
+            À mes enseignants et formateurs, qui ont su transmettre leur passion et leurs connaissances avec pédagogie
+            et bienveillance. Vos enseignements, conseils avisés et corrections constructives ont été essentiels pour
+            forger mes compétences et ma vision du développement web moderne.
+        </p>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- REMERCIEMENTS -->
+    <div class="thanks">
+        <h2>Remerciements</h2>
+        <p>
+            Je tiens à exprimer mes sincères remerciements à toutes les personnes qui ont contribué à la réalisation
+            de ce projet et à mon développement professionnel.
+        </p>
+        <p>
+            Tout d'abord, j'aimerais remercier mon encadrant pédagogique pour sa guidance précieuse, ses conseils avisés
+            et sa disponibilité tout au long de ce projet. Sa vision stratégique et son expertise technique ont été des
+            atouts décisifs pour mener à bien ce travail dans les meilleures conditions.
+        </p>
+        <p>
+            Je souhaite également exprimer ma gratitude envers l'ensemble de l'équipe pédagogique pour la qualité de
+            l'enseignement dispensé. Leurs connaissances approfondies en développement web, leur méthodologie rigoureuse
+            et leur dévouement à notre réussite ont grandement contribué à notre formation et à notre préparation au
+            monde professionnel.
+        </p>
+        <p>
+            Mes remerciements vont également à tous ceux qui ont participé, de près ou de loin, à l'aboutissement de
+            ce projet, notamment les professionnels du secteur qui ont partagé leur expérience et leurs retours sur
+            les besoins réels du marché.
+        </p>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- ABRÉVIATIONS -->
+    <div class="chapter">
+        <h1>Liste des Abréviations</h1>
+        <ul class="abbr-list">
+            <li><strong>API</strong> : Application Programming Interface</li>
+            <li><strong>CRUD</strong> : Create, Read, Update, Delete</li>
+            <li><strong>CSRF</strong> : Cross-Site Request Forgery</li>
+            <li><strong>CSS</strong> : Cascading Style Sheets</li>
+            <li><strong>DB</strong> : Database (Base de Données)</li>
+            <li><strong>GMAO</strong> : Gestion de Maintenance Assistée par Ordinateur</li>
+            <li><strong>HTML</strong> : HyperText Markup Language</li>
+            <li><strong>HTTP</strong> : Hypertext Transfer Protocol</li>
+            <li><strong>HTTPS</strong> : HTTP Secure</li>
+            <li><strong>JSON</strong> : JavaScript Object Notation</li>
+            <li><strong>JWT</strong> : JSON Web Token</li>
+            <li><strong>MCD</strong> : Modèle Conceptuel de Données</li>
+            <li><strong>MLD</strong> : Modèle Logique de Données</li>
+            <li><strong>MPD</strong> : Modèle Physique de Données</li>
+            <li><strong>MVC</strong> : Modèle-Vue-Contrôleur</li>
+            <li><strong>NoSQL</strong> : Not Only SQL</li>
+            <li><strong>ORM</strong> : Object-Relational Mapping</li>
+            <li><strong>OTP</strong> : One-Time Password</li>
+            <li><strong>RBAC</strong> : Role-Based Access Control</li>
+            <li><strong>REST</strong> : Representational State Transfer</li>
+            <li><strong>SEO</strong> : Search Engine Optimization</li>
+            <li><strong>SGBD</strong> : Système de Gestion de Base de Données</li>
+            <li><strong>SPA</strong> : Single Page Application</li>
+            <li><strong>SQL</strong> : Structured Query Language</li>
+            <li><strong>UML</strong> : Unified Modeling Language</li>
+            <li><strong>URL</strong> : Uniform Resource Locator</li>
+            <li><strong>XSS</strong> : Cross-Site Scripting</li>
+        </ul>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- TABLE DES MATIÈRES -->
+    <div class="toc">
+        <h1>Table des Matières</h1>
+        <ol class="toc-list">
+            <li>
+                Contexte du Projet
+                <ul>
+                    <li>Introduction</li>
+                    <li>Problématique</li>
+                    <li>Objectifs du projet</li>
+                    <li>Méthodologie de gestion</li>
+                </ul>
+            </li>
+            <li>
+                Analyse des Besoins
+                <ul>
+                    <li>Besoins fonctionnels</li>
+                    <li>Besoins non fonctionnels</li>
+                    <li>Identification des acteurs</li>
+                    <li>Diagrammes UML (cas d'utilisation, classe)</li>
+                    <li>Modélisation base de données (MCD, MPD)</li>
+                </ul>
+            </li>
+            <li>
+                Étude Technique
+                <ul>
+                    <li>Choix des technologies</li>
+                    <li>Front-End Framework (React)</li>
+                    <li>Back-End Framework (Node.js/Express)</li>
+                    <li>Base de données (PostgreSQL)</li>
+                    <li>Justification des choix</li>
+                </ul>
+            </li>
+            <li>
+                Réalisation
+                <ul>
+                    <li>Architecture globale</li>
+                    <li>Sécurité (back-end et front-end)</li>
+                    <li>Installation et organisation</li>
+                    <li>Fonctionnalités implémentées</li>
+                    <li>Interfaces utilisateur</li>
+                </ul>
+            </li>
+            <li>
+                Conclusion et Perspectives
+            </li>
+            <li>
+                Bibliographie
+            </li>
+        </ol>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- RÉSUMÉ -->
+    <div class="abstract-page">
+        <h2>Résumé</h2>
+        <p>
+            Ce rapport présente le projet de conception et de développement d'une plateforme web complète destinée à
+            créer un réseau professionnel de travailleurs sociaux indépendants au Maroc. L'objectif principal était de
+            créer une application robuste et conviviale pour faciliter la mise en relation qualitative entre des
+            établissements (EHPAD, crèches, centres sociaux) et des professionnels qualifiés (éducateurs spécialisés,
+            assistants sociaux, psychologues).
+        </p>
+        <p>
+            Contrairement aux plateformes de recrutement classiques, <strong>SociaLink</strong> repose sur un système
+            de <strong>labellisation</strong> basé sur les diplômes et l'expérience, garantissant un haut niveau de
+            fiabilité et de qualité. La plateforme intègre également un système d'abonnements permettant de monétiser
+            le service tout en offrant des fonctionnalités premium aux utilisateurs.
+        </p>
+        <p>
+            Le développement a été réalisé avec une stack technologique moderne : <strong>React 19</strong> pour le
+            front-end, <strong>Node.js/Express</strong> pour le back-end, et <strong>PostgreSQL</strong> avec
+            <strong>Prisma ORM</strong> pour la gestion des données. L'architecture suit le modèle <strong>REST
+                API</strong>,
+            garantissant une séparation claire des responsabilités et une évolutivité optimale.
+        </p>
+        <p>
+            Les fonctionnalités principales incluent la gestion complète des profils utilisateurs avec validation
+            multi-niveaux (email, documents, admin), la publication et recherche de missions avec filtres avancés, un
+            système de candidatures avec suivi des statuts, une messagerie temps réel via Socket.io, et une intégration
+            Stripe pour les abonnements récurrents.
+        </p>
+        <p>
+            Une attention particulière a été portée à la sécurité avec l'implémentation de l'authentification JWT, du
+            hashing des mots de passe via Bcrypt, d'un contrôle d'accès par rôles (RBAC) strict, et de protections
+            contre les attaques courantes (XSS, CSRF, injections SQL).
+        </p>
+        <p>
+            En conclusion, ce projet démontre la capacité à concevoir et développer une application web professionnelle
+            complète, répondant à un besoin métier réel avec un haut niveau de qualité technique, de sécurité et
+            d'expérience utilisateur.
+        </p>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- ABSTRACT EN ANGLAIS -->
+    <div class="abstract-page">
+        <h2>Abstract</h2>
+        <p>
+            This report presents the design and development project of a comprehensive web platform intended to create
+            a professional network of independent social workers in Morocco. The main objective was to create a robust
+            and user-friendly application to facilitate quality connections between establishments (nursing homes,
+            daycare centers, social centers) and qualified professionals (specialized educators, social workers,
+            psychologists).
+        </p>
+        <p>
+            Unlike traditional recruitment platforms, <strong>SociaLink</strong> is based on a <strong>certification
+                system</strong> based on diplomas and experience, guaranteeing a high level of reliability and quality.
+            The platform also integrates a subscription system to monetize the service while offering premium features
+            to users.
+        </p>
+        <p>
+            Development was carried out with a modern technology stack: <strong>React 19</strong> for the front-end,
+            <strong>Node.js/Express</strong> for the back-end, and <strong>PostgreSQL</strong> with <strong>Prisma
+                ORM</strong> for data management. The architecture follows the <strong>REST API</strong> model, ensuring
+            clear separation of concerns and optimal scalability.
+        </p>
+        <p>
+            Main features include complete user profile management with multi-level validation (email, documents,
+            admin),
+            mission publishing and search with advanced filters, an application system with status tracking, real-time
+            messaging via Socket.io, and Stripe integration for recurring subscriptions.
+        </p>
+        <p>
+            Particular attention was paid to security with the implementation of JWT authentication, password hashing
+            via Bcrypt, strict Role-Based Access Control (RBAC), and protections against common attacks (XSS, CSRF,
+            SQL injections).
+        </p>
+        <p>
+            In conclusion, this project demonstrates the ability to design and develop a complete professional web
+            application, meeting a real business need with a high level of technical quality, security, and user
+            experience.
+        </p>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- INTRODUCTION GÉNÉRALE -->
+    <div class="chapter">
+        <h1>Introduction Générale</h1>
+        <p>
+            Dans un contexte où la digitalisation transforme profondément les modes de travail et de recrutement, le
+            secteur social marocain fait face à des défis spécifiques en matière de mise en relation entre
+            professionnels indépendants et établissements employeurs. Les structures médico-sociales (EHPAD, crèches,
+            centres d'accueil) rencontrent des difficultés croissantes pour trouver rapidement des profils qualifiés,
+            garantir la continuité de l'accompagnement et limiter la rotation excessive des intervenants.
+        </p>
+        <p>
+            Parallèlement, les travailleurs sociaux indépendants (éducateurs spécialisés, assistants sociaux,
+            psychologues, techniciens spécialisés) manquent d'une plateforme centralisée et fiable pour valoriser leurs
+            compétences, trouver des missions adaptées à leur profil et développer leur activité professionnelle de
+            manière pérenne.
+        </p>
+        <p>
+            C'est dans ce contexte que s'inscrit notre projet de fin de formation : <strong>SociaLink</strong>, une
+            plateforme web complète de mise en relation qualitative entre travailleurs sociaux indépendants et
+            établissements au Maroc. Contrairement aux plateformes de recrutement généralistes, SociaLink se distingue
+            par son approche axée sur la <strong>labellisation</strong> et la <strong>vérification des
+                compétences</strong>,
+            garantissant un niveau élevé de fiabilité et de qualité dans les mises en relation.
+        </p>
+        <p>
+            Ce projet s'appuie sur une stack technologique moderne et robuste, combinant <strong>React 19</strong> pour
+            une interface utilisateur fluide et réactive, <strong>Node.js/Express</strong> pour une API REST performante
+            et sécurisée, et <strong>PostgreSQL avec Prisma ORM</strong> pour une gestion optimale des données
+            relationnelles complexes.
+        </p>
+        <p>
+            L'architecture de SociaLink repose sur des principes de développement éprouvés : séparation des
+            responsabilités via le modèle MVC, authentification sécurisée par JWT, contrôle d'accès par rôles (RBAC),
+            et protection contre les vulnérabilités web courantes (XSS, CSRF, injections SQL). La plateforme intègre
+            également des fonctionnalités avancées telles que la messagerie temps réel via Socket.io et les paiements
+            récurrents via l'API Stripe.
+        </p>
+        <p>
+            Ce rapport détaille l'ensemble du processus de conception et de développement, en commençant par l'analyse
+            du contexte et de la problématique (Chapitre 1), suivie de l'analyse détaillée des besoins et de la
+            modélisation UML (Chapitre 2), l'étude et la justification des choix technologiques (Chapitre 3), et enfin
+            la réalisation concrète avec présentation de l'architecture, de la sécurité et des interfaces (Chapitre 4).
+        </p>
+        <p>
+            Au-delà de la dimension technique, ce projet illustre notre capacité à traduire un besoin métier réel en
+            solution logicielle aboutie, en appliquant les méthodologies et bonnes pratiques du développement web
+            moderne. Il démontre également notre maîtrise de l'ensemble de la chaîne de développement full-stack, de
+            la conception de base de données à l'expérience utilisateur, en passant par la sécurité et les intégrations
+            tierces.
+        </p>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- CHAPITRE 1 -->
+    <div class="chapter-title">CHAPITRE 1<br>Contexte du Projet</div>
+
+    <div class="chapter">
+        <h1>1. Introduction</h1>
+        <p>
+            La gestion efficace des ressources humaines dans le secteur social est un enjeu majeur pour de nombreuses
+            structures au Maroc. Les établissements médico-sociaux doivent faire face à des besoins fluctuants en
+            personnel qualifié, que ce soit pour des remplacements ponctuels, des renforts temporaires ou des
+            recrutements en CDI.
+        </p>
+        <p>
+            Dans ce premier chapitre, nous présentons le contexte global du projet SociaLink, en exposant la
+            problématique identifiée sur le terrain, les objectifs visés par la solution proposée, ainsi que la
+            méthodologie de gestion adoptée pour mener à bien ce projet de développement.
+        </p>
+
+        <h1>2. Problématique</h1>
+
+        <div class="problem-box box">
+            <h3>🔴 Problèmes identifiés côté Établissements</h3>
+            <ul>
+                <li><strong>Difficulté à trouver rapidement des profils qualifiés</strong> : Les processus de
+                    recrutement
+                    traditionnels (annonces, cabinets RH) sont longs et coûteux, inadaptés aux besoins ponctuels ou
+                    urgents.</li>
+                <li><strong>Manque de visibilité sur les compétences réelles</strong> : Les CV classiques ne permettent
+                    pas
+                    toujours de vérifier efficacement les diplômes, l'expérience terrain et les spécialités des
+                    candidats.</li>
+                <li><strong>Rotation excessive des intervenants</strong> : Le manque de stabilité des équipes nuit à la
+                    qualité de l'accompagnement et à la continuité du lien avec le public accompagné.</li>
+                <li><strong>Absence de centralisation des candidatures</strong> : Les établissements doivent gérer
+                    plusieurs
+                    canaux de recrutement simultanément, ce qui complique la gestion administrative.</li>
+            </ul>
+        </div>
+
+        <div class="problem-box box">
+            <h3>🔴 Problèmes identifiés côté Travailleurs Sociaux</h3>
+            <ul>
+                <li><strong>Manque de visibilité professionnelle</strong> : Les travailleurs indépendants peinent à se
+                    faire
+                    connaître auprès des établissements et à valoriser leurs compétences spécifiques.</li>
+                <li><strong>Difficulté à trouver des missions adaptées</strong> : L'absence de plateforme spécialisée
+                    oblige
+                    les professionnels à prospecter individuellement, avec peu de résultats.</li>
+                <li><strong>Processus de candidature chronophages</strong> : Multiplier les candidatures sur différents
+                    canaux sans retour clair représente une perte de temps et d'énergie.</li>
+                <li><strong>Absence de système de réputation</strong> : Aucun mécanisme ne permet de capitaliser sur les
+                    expériences réussies et de construire une réputation professionnelle vérifiable.</li>
+            </ul>
+        </div>
+
+        <h2>2.1 Conséquences de ces problèmes</h2>
+        <p>
+            L'absence de solution adaptée entraîne des conséquences négatives pour l'ensemble de l'écosystème :
+        </p>
+        <ul>
+            <li><strong>Pour les bénéficiaires</strong> : Discontinuité de l'accompagnement, nécessité de s'adapter
+                régulièrement à de nouveaux intervenants, baisse de la qualité du suivi.</li>
+            <li><strong>Pour les établissements</strong> : Surcharge administrative, coûts de recrutement élevés,
+                tensions organisationnelles liées aux manques d'effectifs.</li>
+            <li><strong>Pour les professionnels</strong> : Précarité, difficulté à développer une activité stable,
+                manque de reconnaissance de l'expertise.</li>
+        </ul>
+
+        <h1>3. Solution Proposée : SociaLink</h1>
+
+        <div class="solution-box box">
+            <h3>✅ Réponse aux besoins identifiés</h3>
+            <p>
+                SociaLink se positionne comme une <strong>plateforme de mise en relation qualitative</strong>,
+                s'inspirant des modèles de réseaux professionnels (LinkedIn) tout en se spécialisant sur le secteur
+                social marocain.
+            </p>
+            <p><strong>Trois piliers fondamentaux :</strong></p>
+            <ul>
+                <li><strong>Labellisation et vérification</strong> : Validation des diplômes et documents par une équipe
+                    d'administrateurs, garantissant la fiabilité des profils.</li>
+                <li><strong>Matching intelligent</strong> : Mise en relation basée sur les compétences, spécialités,
+                    expérience et localisation géographique.</li>
+                <li><strong>Traçabilité complète</strong> : Suivi des candidatures, historique des missions, système
+                    d'évaluation post-mission pour construire une réputation vérifiable.</li>
+            </ul>
+        </div>
+
+        <h2>3.1 Proposition de valeur pour les Établissements</h2>
+        <ul>
+            <li>Accès rapide à un vivier de professionnels qualifiés et vérifiés</li>
+            <li>Moteur de recherche avec filtres avancés (spécialité, expérience, disponibilité)</li>
+            <li>Gestion centralisée des candidatures et des communications</li>
+            <li>Réduction des coûts et délais de recrutement</li>
+            <li>Amélioration de la continuité de l'accompagnement</li>
+        </ul>
+
+        <h2>3.2 Proposition de valeur pour les Travailleurs Sociaux</h2>
+        <ul>
+            <li>Visibilité professionnelle accrue via un profil détaillé et labellisé</li>
+            <li>Accès à un flux constant de missions adaptées au profil</li>
+            <li>Simplicité de candidature et suivi transparent des statuts</li>
+            <li>Construction d'une réputation professionnelle grâce aux évaluations</li>
+            <li>Outils de gestion : calendrier de disponibilités, messagerie intégrée</li>
+        </ul>
+
+        <h1>4. Objectifs du Projet</h1>
+
+        <h2>4.1 Objectifs Métier</h2>
+        <ul>
+            <li><strong>Faciliter les mises en relation qualitatives</strong> entre professionnels et établissements
+            </li>
+            <li><strong>Garantir la fiabilité</strong> via un système de validation multi-niveaux</li>
+            <li><strong>Optimiser les processus de recrutement</strong> pour réduire les délais et coûts</li>
+            <li><strong>Améliorer la continuité</strong> de l'accompagnement social</li>
+            <li><strong>Créer un écosystème pérenne</strong> basé sur la confiance et la traçabilité</li>
+        </ul>
+
+        <h2>4.2 Objectifs Techniques</h2>
+        <ul>
+            <li><strong>Développer une application web full-stack moderne</strong> avec React et Node.js</li>
+            <li><strong>Implémenter une architecture REST API</strong> scalable et maintenable</li>
+            <li><strong>Garantir un haut niveau de sécurité</strong> (JWT, RBAC, protections XSS/CSRF)</li>
+            <li><strong>Assurer des performances optimales</strong> (temps de réponse < 500ms)</li>
+            <li><strong>Offrir une expérience utilisateur fluide</strong> sur différents devices</li>
+            <li><strong>Intégrer des services tiers professionnels</strong> (Stripe, Socket.io, emails)</li>
+        </ul>
+
+        <h2>4.3 Objectifs Pédagogiques</h2>
+        <p>Ce projet permet de valider les compétences suivantes :</p>
+        <table>
+            <tr>
+                <th>Domaine</th>
+                <th>Compétences Validées</th>
+            </tr>
+            <tr>
+                <td><strong>Front-End</strong></td>
+                <td>React SPA, gestion d'état, formulaires complexes, routing, responsive design</td>
+            </tr>
+            <tr>
+                <td><strong>Back-End</strong></td>
+                <td>API REST, authentification JWT, RBAC, logique métier, middleware</td>
+            </tr>
+            <tr>
+                <td><strong>Base de Données</strong></td>
+                <td>Modélisation relationnelle, PostgreSQL, ORM Prisma, migrations</td>
+            </tr>
+            <tr>
+                <td><strong>Sécurité</strong></td>
+                <td>Cryptographie, contrôle d'accès, validation données, protection attaques</td>
+            </tr>
+            <tr>
+                <td><strong>Intégrations</strong></td>
+                <td>API Stripe, Socket.io temps réel, envoi emails, upload fichiers</td>
+            </tr>
+            <tr>
+                <td><strong>Soft Skills</strong></td>
+                <td>Gestion projet, analyse besoins, documentation, résolution problèmes</td>
+            </tr>
+        </table>
+
+        <h1>5. Méthodologie de Gestion de Projet</h1>
+
+        <h2>5.1 Méthode en Cascade (Waterfall)</h2>
+        <p>
+            Nous avons choisi d'adopter la <strong>méthode en cascade</strong> pour ce projet, une approche séquentielle
+            et structurée particulièrement adaptée aux projets avec des exigences clairement définies.
+        </p>
+
+        <pre>
+┌─────────────────────────────────────────────────────────┐
+│              MÉTHODE EN CASCADE (WATERFALL)             │
+└─────────────────────────────────────────────────────────┘
+
+Phase 1: ANALYSE DES BESOINS (2 semaines)
+  ├─ Étude de la problématique
+  ├─ Identification des acteurs
+  ├─ Définition besoins fonctionnels/non-fonctionnels
+  └─ Validation cahier des charges
+             ↓
+Phase 2: CONCEPTION (3 semaines)
+  ├─ Diagrammes UML (cas d'utilisation, classe)
+  ├─ Modélisation BDD (MCD, MPD)
+  ├─ Architecture technique
+  └─ Maquettage interfaces
+             ↓
+Phase 3: DÉVELOPPEMENT (8 semaines)
+  ├─ Setup environnement
+  ├─ Développement back-end (API + BDD)
+  ├─ Développement front-end (React)
+  └─ Intégrations (Stripe, Socket.io)
+             ↓
+Phase 4: TESTS (2 semaines)
+  ├─ Tests unitaires
+  ├─ Tests d'intégration
+  ├─ Tests de sécurité
+  └─ Tests utilisateurs
+             ↓
+Phase 5: DÉPLOIEMENT (1 semaine)
+  ├─ Configuration serveur
+  ├─ Migration BDD production
+  ├─ Mise en ligne
+  └─ Documentation utilisateur
+    </pre>
+
+        <h2>5.2 Justification du choix méthodologique</h2>
+        <div class="info-box box">
+            <h3>Pourquoi la méthode en cascade ?</h3>
+            <ul>
+                <li><strong>Exigences claires et stables</strong> : Les besoins ont été définis précisément dès le
+                    départ</li>
+                <li><strong>Planification facilitée</strong> : Chaque phase a des livrables concrets et des délais
+                    définis</li>
+                <li><strong>Documentation complète</strong> : Production de documents (analyse, conception) utiles pour
+                    le rapport</li>
+                <li><strong>Traçabilité</strong> : Suivi rigoureux de l'avancement via les phases</li>
+                <li><strong>Maîtrise des risques</strong> : Validation de chaque phase avant passage à la suivante</li>
+            </ul>
+        </div>
+
+        <h2>5.3 Planification temporelle (Diagramme de Gantt)</h2>
+        <p>
+            Le diagramme de Gantt suivant illustre la répartition des tâches sur les 16 semaines du projet :
+        </p>
+
+        <table>
+            <tr>
+                <th>Phase</th>
+                <th>Tâches Principales</th>
+                <th>Durée</th>
+                <th>Période</th>
+            </tr>
+            <tr>
+                <td><strong>Analyse</strong></td>
+                <td>
+                    • Étude problématique<br>
+                    • Identification acteurs<br>
+                    • Spécification besoins
+                </td>
+                <td>2 semaines</td>
+                <td>Semaines 1-2</td>
+            </tr>
+            <tr>
+                <td><strong>Conception</strong></td>
+                <td>
+                    • Diagrammes UML<br>
+                    • Modélisation BDD<br>
+                    • Architecture technique<br>
+                    • Maquettage UI/UX
+                </td>
+                <td>3 semaines</td>
+                <td>Semaines 3-5</td>
+            </tr>
+            <tr>
+                <td><strong>Développement</strong></td>
+                <td>
+                    • Config environnement<br>
+                    • API REST + BDD<br>
+                    • Interfaces React<br>
+                    • Intégrations tierces
+                </td>
+                <td>8 semaines</td>
+                <td>Semaines 6-13</td>
+            </tr>
+            <tr>
+                <td><strong>Tests</strong></td>
+                <td>
+                    • Tests unitaires<br>
+                    • Tests intégration<br>
+                    • Tests sécurité<br>
+                    • Recette utilisateur
+                </td>
+                <td>2 semaines</td>
+                <td>Semaines 14-15</td>
+            </tr>
+            <tr>
+                <td><strong>Déploiement</strong></td>
+                <td>
+                    • Config serveur<br>
+                    • Migration production<br>
+                    • Documentation<br>
+                    • Formation
+                </td>
+                <td>1 semaine</td>
+                <td>Semaine 16</td>
+            </tr>
+        </table>
+
+        <h1>6. Conclusion du Chapitre</h1>
+        <p>
+            Ce premier chapitre a permis de poser le contexte global du projet SociaLink en identifiant clairement
+            la <strong>problématique du secteur social marocain</strong> en matière de mise en relation entre
+            professionnels et établissements.
+        </p>
+        <p>
+            La solution proposée répond de manière ciblée aux besoins identifiés grâce à un système de
+            <strong>labellisation</strong>, de <strong>matching intelligent</strong> et de <strong>traçabilité
+                complète</strong>. Les objectifs du projet, tant métier que techniques et pédagogiques, ont été
+            clairement définis.
+        </p>
+        <p>
+            La méthode en cascade adoptée assure une progression structurée et maîtrisée du développement, avec des
+            phases clairement délimitées et des livrables concrets à chaque étape.
+        </p>
+        <p>
+            Le chapitre suivant approfondira l'<strong>analyse détaillée des besoins</strong>, en spécifiant les
+            exigences fonctionnelles et non fonctionnelles, en identifiant les acteurs et leurs cas d'utilisation,
+            et en modélisant l'architecture des données via les diagrammes UML et les modèles conceptuels de base
+            de données.
+        </p>
+    </div>
+
+    <!-- FIN CHAPITRE 1 -->
+
+    <div class="page-break"></div>
+
+    <!-- CHAPITRE 2 - ANALYSE DES BESOINS -->
+    <div class="chapter-title">CHAPITRE 2<br>Analyse des Besoins</div>
+
+    <div class="chapter">
+        <h1>1. Introduction</h1>
+        <p>
+            Dans ce chapitre, nous abordons la phase d'analyse qui constitue une étape fondamentale dans le
+            développement
+            de notre application. Cette phase permet de clarifier les besoins et les objectifs du projet, de définir les
+            exigences fonctionnelles et non fonctionnelles, de concevoir l'architecture du système, d'identifier les
+            risques et les contraintes, et de planifier la mise en œuvre.
+        </p>
+
+        <h1>2. Analyse des Besoins</h1>
+
+        <h2>2.1 Les Besoins Fonctionnels</h2>
+
+        <h3>2.1.1 Gestion des Utilisateurs</h3>
+        <ul>
+            <li><strong>Inscription multi-rôles</strong> : Worker, Establishment, Admin</li>
+            <li><strong>Authentification sécurisée</strong> : JWT + vérification email (OTP)</li>
+            <li><strong>Gestion de profil</strong> : CRUD complet</li>
+            <li><strong>Upload de documents</strong> : Diplômes, CV, justificatifs</li>
+            <li><strong>Système d'abonnement</strong> : Free/Premium avec Stripe</li>
+        </ul>
+
+        <h3>2.1.2 Gestion des Missions</h3>
+        <ul>
+            <li><strong>Publication</strong> : Établissements créent des annonces</li>
+            <li><strong>Recherche avancée</strong> : Filtres spécialité/localisation/contrat</li>
+            <li><strong>Candidatures</strong> : Workers postulent</li>
+            <li><strong>Suivi statuts</strong> : Pending/Approved/Rejected/Completed</li>
+        </ul>
+
+        <h2>2.2 Les Besoins Non Fonctionnels</h2>
+        <table>
+            <tr>
+                <th>Critère</th>
+                <th>Exigence</th>
+            </tr>
+            <tr>
+                <td><strong>Sécurité</strong></td>
+                <td>JWT, Bcrypt, RBAC, protection XSS/CSRF</td>
+            </tr>
+            <tr>
+                <td><strong>Performance</strong></td>
+                <td>API < 500ms, chargement < 2s</td>
+            </tr>
+            <tr>
+                <td><strong>Disponibilité</strong></td>
+                <td>Uptime 99.5%</td>
+            </tr>
+            <tr>
+                <td><strong>Scalabilité</strong></td>
+                <td>Architecture REST stateless</td>
+            </tr>
+        </table>
+
+        <h1>3. Identification des Acteurs</h1>
+        <table>
+            <tr>
+                <th>Acteur</th>
+                <th>Permissions Clés</th>
+            </tr>
+            <tr>
+                <td><strong>Worker</strong></td>
+                <td>Gérer profil, rechercher missions, postuler, messagerie</td>
+            </tr>
+            <tr>
+                <td><strong>Establishment</strong></td>
+                <td>Publier missions, rechercher workers, gérer candidatures</td>
+            </tr>
+            <tr>
+                <td><strong>Admin</strong></td>
+                <td>Valider profils, CRUD utilisateurs, statistiques</td>
+            </tr>
+    </table>
+
+    <h1>4. Diagrammes UML</h1>
+
+    <h2>4.1 Diagramme de Cas d'Utilisation Global</h2>
+    <p>
+        Le diagramme suivant illustre les interactions entre les trois types d'acteurs (Worker, Establishment, Admin) 
+        et le système SociaLink :
+    </p>
+    
+    <img src="uml_use_case_global_1769959773720.png" alt="Diagramme de Cas d'Utilisation Global - SociaLink" style="max-width: 850px;">
+    <p class="figure-caption">Figure 1 : Diagramme de Cas d'Utilisation Global</p>
+
+    <h2>4.2 Diagramme de Classes</h2>
+    <p>
+        Le diagramme de classes simplifié présente les entités principales et leurs relations :
+    </p>
+    
+    <img src="uml_class_diagram_1769959858305.png" alt="Diagramme de Classes UML - SociaLink" style="max-width: 850px;">
+    <p class="figure-caption">Figure 2 : Diagramme de Classes Simplifié</p>
+
+    <h2>4.3 Modèle Conceptuel de Données (MCD)</h2>
+    <p>
+        Le MCD illustre la structure relationnelle de la base de données selon la notation Merise :
+    </p>
+    
+    <img src="database_mcd_schema_1769959905121.png" alt="MCD Base de Données - SociaLink" style="max-width: 850px;">
+    <p class="figure-caption">Figure 3 : Modèle Conceptuel de Données</p>
+
+    <p style="margin-top: 2rem;">
+
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- CHAPITRE 3 - ÉTUDE TECHNIQUE -->
+    <div class="chapter-title">CHAPITRE 3<br>Étude Technique et Choix Technologies</div>
+
+    <div class="chapter">
+        <h1>1. Introduction</h1>
+        <p>
+            Dans ce chapitre, nous examinerons les technologies utilisées pour développer SociaLink. Nous discuterons
+            des frameworks front-end et back-end, du système de gestion de base de données, et nous justifierons nos
+            choix par rapport aux alternatives disponibles.
+        </p>
+
+        <h1>2. Qu'est-ce qu'un Framework ?</h1>
+        <p>
+            Un framework est un ensemble de composants logiciels, de conventions de conception, de bibliothèques et de
+            modèles de programmation qui fournissent une base pour le développement d'applications. Il simplifie le
+            développement en offrant une structure réutilisable et des fonctionnalités courantes (routing, gestion BDD,
+            sécurité, validation, etc.).
+        </p>
+
+        <div class="info-box box">
+            <h3>Pourquoi utiliser un Framework ?</h3>
+            <ul>
+                <li><strong>Productivité accrue</strong> : Structure prédéfinie pour se concentrer sur la logique métier
+                </li>
+                <li><strong>Réutilisabilité</strong> : Bibliothèques communes pour plusieurs projets</li>
+                <li><strong>Standardisation</strong> : Conventions facilitant collaboration et maintenance</li>
+                <li><strong>Sécurité</strong> : Protections intégrées (SQL injection, XSS, CSRF)</li>
+                <li><strong>Évolutivité</strong> : Architecture modulaire facilitant la scalabilité</li>
+            </ul>
+        </div>
+
+        <h1>3. Stack Technologique Retenue</h1>
+
+        <table>
+            <tr>
+                <th>Couche</th>
+                <th>Technologie</th>
+                <th>Version</th>
+                <th>Rôle</th>
+            </tr>
+            <tr>
+                <td><strong>Front-End</strong></td>
+                <td>React</td>
+                <td>19.x</td>
+                <td>Interface utilisateur SPA</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>TailwindCSS</td>
+                <td>4.x</td>
+                <td>Styles responsives</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>React Router</td>
+                <td>6.x</td>
+                <td>Navigation SPA</td>
+            </tr>
+            <tr>
+                <td><strong>Back-End</strong></td>
+                <td>Node.js</td>
+                <td>20.x LTS</td>
+                <td>Runtime JavaScript serveur</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Express</td>
+                <td>5.x</td>
+                <td>Framework API REST</td>
+            </tr>
+            <tr>
+                <td><strong>Base de Données</strong></td>
+                <td>PostgreSQL</td>
+                <td>16.x</td>
+                <td>SGBD relationnel</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Prisma ORM</td>
+                <td>6.x</td>
+                <td>Mapping objet-relationnel</td>
+            </tr>
+            <tr>
+                <td><strong>Sécurité</strong></td>
+                <td>JWT</td>
+                <td>9.x</td>
+                <td>Authentification tokens</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Bcrypt</td>
+                <td>5.x</td>
+                <td>Hashing mots de passe</td>
+            </tr>
+            <tr>
+                <td><strong>Intégrations</strong></td>
+                <td>Stripe API</td>
+                <td>17.x</td>
+                <td>Paiements abonnements</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Socket.io</td>
+                <td>4.x</td>
+                <td>Messagerie temps réel</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Nodemailer</td>
+                <td>6.x</td>
+                <td>Envoi emails</td>
+            </tr>
+        </table>
+
+        <h1>4. Front-End : Pourquoi React ?</h1>
+
+        <h2>4.1 Analyse Comparative des Frameworks Front-End</h2>
+        <table>
+            <tr>
+                <th>Framework</th>
+                <th>Avantages</th>
+                <th>Inconvénients</th>
+            </tr>
+            <tr>
+                <td><strong>React</strong></td>
+                <td>
+                    • Écosystème mature<br>
+                    • Virtual DOM performant<br>
+                    • Large communauté<br>
+                    • Composants réutilisables
+                </td>
+                <td>
+                    • Courbe d'apprentissage<br>
+                    • Nécessite libs tierces
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Vue.js</strong></td>
+                <td>
+                    • Facile à apprendre<br>
+                    • Documentation claire<br>
+                    • Flexible
+                </td>
+                <td>
+                    • Communauté plus petite<br>
+                    • Moins d'offres d'emploi
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Angular</strong></td>
+                <td>
+                    • Framework complet<br>
+                    • TypeScript natif<br>
+                    • Structuré
+                </td>
+                <td>
+                    • Verbeux<br>
+                    • Courbe apprentissage raide<br>
+                    • Overhead important
+                </td>
+            </tr>
+        </table>
+
+        <div class="solution-box box">
+            <h3>✅ Choix : React 19</h3>
+            <p><strong>Justifications :</strong></p>
+            <ul>
+                <li><strong>Performance</strong> : Virtual DOM et React Compiler pour optimisations automatiques</li>
+                <li><strong>Écosystème riche</strong> : React Router, React Hook Form, nombreuses librairies UI</li>
+                <li><strong>Developer Experience</strong> : Hot reload, DevTools puissants, hooks modernes</li>
+                <li><strong>Communauté</strong> : Documentation extensive, tutoriels nombreux, support actif</li>
+                <li><strong>Marché de l'emploi</strong> : Compétence très demandée professionnellement</li>
+            </ul>
+        </div>
+
+        <h1>5. Back-End : Pourquoi Node.js/Express ?</h1>
+
+        <h2>5.1 Analyse Comparative des Frameworks Back-End</h2>
+        <table>
+            <tr>
+                <th>Framework</th>
+                <th>Langage</th>
+                <th>Avantages</th>
+                <th>Inconvénients</th>
+            </tr>
+            <tr>
+                <td><strong>Express (Node.js)</strong></td>
+                <td>JavaScript</td>
+                <td>
+                    • Performance I/O non-bloquant<br>
+                    • Même langage front/back<br>
+                    • npm écosystème immense<br>
+                    • Adapté temps réel
+                </td>
+                <td>
+                    • Callback hell (si mal géré)<br>
+                    • Typage faible (sans TS)
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Laravel</strong></td>
+                <td>PHP</td>
+                <td>
+                    • Framework complet<br>
+                    • ORM Eloquent puissant<br>
+                    • Adapté projets traditionnels
+                </td>
+                <td>
+                    • Performance inférieure<br>
+                    • Langages différents front/back
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Django</strong></td>
+                <td>Python</td>
+                <td>
+                    • "Batteries included"<br>
+                    • Admin auto-généré<br>
+                    • Sécurité par défaut
+                </td>
+                <td>
+                    • Monolithique<br>
+                    • Moins adapté aux API REST pures
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Spring Boot</strong></td>
+                <td>Java</td>
+                <td>
+                    • Enterprise-grade<br>
+                    • Typage fort<br>
+                    • Performant
+                </td>
+                <td>
+                    • Verbeux<br>
+                    • Courbe apprentissage importante<br>
+                    • Startup time lent
+                </td>
+            </tr>
+        </table>
+
+        <div class="solution-box box">
+            <h3>✅ Choix : Node.js 20 LTS + Express 5</h3>
+            <p><strong>Justifications :</strong></p>
+            <ul>
+                <li><strong>JavaScript full-stack</strong> : Même langage côté client et serveur, réutilisation code
+                </li>
+                <li><strong>Performance I/O</strong> : Event loop non-bloquant idéal pour API REST et Socket.io</li>
+                <li><strong>Écosystème npm</strong> : Accès à 2+ millions de packages (Prisma, JWT, Stripe, etc.)</li>
+                <li><strong>Scalabilité</strong> : Architecture asynchrone adaptée aux connexions concurrentes</li>
+                <li><strong>Temps réel</strong> : Socket.io natif pour messagerie instantanée</li>
+                <li><strong>Productivité</strong> : Express minimaliste permet architecture personnalisée</li>
+            </ul>
+        </div>
+
+        <h1>6. Base de Données : Pourquoi PostgreSQL + Prisma ?</h1>
+
+        <h2>6.1 Comparaison SQL vs NoSQL</h2>
+        <table>
+            <tr>
+                <th>Type</th>
+                <th>Exemples</th>
+                <th>Avantages</th>
+                <th>Cas d'usage SociaLink</th>
+            </tr>
+            <tr>
+                <td><strong>SQL (Relationnel)</strong></td>
+                <td>PostgreSQL, MySQL, SQL Server</td>
+                <td>
+                    • Structure rigide<br>
+                    • ACID (transactions)<br>
+                    • Intégrité référentielle<br>
+                    • Requêtes complexes (JOIN)
+                </td>
+                <td>
+                    ✅ <strong>ADAPTÉ</strong><br>
+                    Relations complexes entre User, Profile, Mission, Application, Review nécessitent JOINS et
+                    contraintes FK
+                </td>
+            </tr>
+            <tr>
+                <td><strong>NoSQL (Document)</strong></td>
+                <td>MongoDB, CouchDB</td>
+                <td>
+                    • Flexibilité schéma<br>
+                    • Scalabilité horizontale<br>
+                    • Performance lecture
+                </td>
+                <td>
+                    ❌ <strong>INADAPTÉ</strong><br>
+                    Pas de relations natives, duplication données, manque d'intégrité référentielle
+                </td>
+            </tr>
+        </table>
+
+        <h2>6.2 PostgreSQL vs MySQL</h2>
+        <table>
+            <tr>
+                <th>Critère</th>
+                <th>PostgreSQL</th>
+                <th>MySQL</th>
+            </tr>
+            <tr>
+                <td><strong>Conformité SQL</strong></td>
+                <td>✅ Plus stricte, respecte standards</td>
+                <td>⚠️ Permissif (modes SQL)</td>
+            </tr>
+            <tr>
+                <td><strong>Types de données</strong></td>
+                <td>✅ JSON, ARRAY, UUID natifs</td>
+                <td>⚠️ Support limité</td>
+            </tr>
+            <tr>
+                <td><strong>Performance</strong></td>
+                <td>✅ Requêtes complexes</td>
+                <td>✅ Lectures simples</td>
+            </tr>
+            <tr>
+                <td><strong>ACID</strong></td>
+                <td>✅ Complet</td>
+                <td>⚠️ Dépend moteur (InnoDB)</td>
+            </tr>
+            <tr>
+                <td><strong>Extensions</strong></td>
+                <td>✅ Rich (PostGIS, full-text)</td>
+                <td>⚠️ Limitées</td>
+            </tr>
+        </table>
+
+        <div class="solution-box box">
+            <h3>✅ Choix : PostgreSQL 16 + Prisma ORM 6</h3>
+            <p><strong>Justifications PostgreSQL :</strong></p>
+            <ul>
+                <li><strong>Types avancés</strong> : UUID pour clés primaires, ENUM natifs, JSON pour données flexibles
+                </li>
+                <li><strong>Intégrité</strong> : Contraintes FK strictes garantissant cohérence (User ↔ Profile ↔
+                    Mission)</li>
+                <li><strong>Performance</strong> : Optimiseur de requêtes puissant pour JOINs complexes</li>
+                <li><strong>Open Source</strong> : Gratuit, communauté active, pas de limitation</li>
+            </ul>
+            <p><strong>Justifications Prisma ORM :</strong></p>
+            <ul>
+                <li><strong>Type-safety</strong> : Typage auto-généré depuis schéma → 0 erreur runtime SQL</li>
+                <li><strong>Migrations</strong> : Gestion versionnée des changements de schéma</li>
+                <li><strong>Developer Experience</strong> : Auto-complétion, requêtes expressives, Prisma Studio</li>
+                <li><strong>Performance</strong> : Query optimization automatique, connection pooling</li>
+            </ul>
+        </div>
+
+        <h1>7. Outils de Développement</h1>
+
+        <h2>7.1 Visual Studio Code</h2>
+        <p>
+            Éditeur de code gratuit et extensible choisi pour ses extensions dédiées :
+        </p>
+        <ul>
+            <li><strong>ES7+ React/Redux Snippets</strong> : Génération rapide composants React</li>
+            <li><strong>Prisma Extension</strong> : Coloration syntaxe, auto-complétion schéma</li>
+            <li><strong>ESLint + Prettier</strong> : Linting et formatage automatique</li>
+            <li><strong>REST Client</strong> : Test API directement dans VS Code</li>
+        </ul>
+
+        <h2>7.2 Outils de Modélisation</h2>
+        <ul>
+            <li><strong>Draw.io</strong> : Création diagrammes UML (cas d'utilisation, classe)</li>
+            <li><strong>Prisma Studio</strong> : Interface visuelle PostgreSQL</li>
+            <li><strong>Postman</strong> : Test et documentation API REST</li>
+        </ul>
+
+        <h1>8. Conclusion du Chapitre</h1>
+        <p>
+            Ce chapitre a présenté et justifié la <strong>stack technologique</strong> retenue pour SociaLink, en
+            comparant les alternatives et en expliquant les critères de choix.
+        </p>
+        <p>
+            La combinaison <strong>React + Node.js/Express + PostgreSQL/Prisma</strong> offre un équilibre optimal entre
+            <strong>performance</strong>, <strong>productivité</strong>, <strong>scalabilité</strong> et
+            <strong>maintenabilité</strong>.
+            Cette stack moderne est également très demandée sur le marché de l'emploi, garantissant la pérennité des
+            compétences acquises.
+        </p>
+        <p>
+            Le chapitre suivant détaillera la <strong>phase de réalisation</strong>, en présentant l'architecture
+            globale,
+            les mesures de sécurité implémentées, l'organisation du code et les principales interfaces de l'application.
+        </p>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- CHAPITRE 4 - RÉALISATION -->
+    <div class="chapter-title">CHAPITRE 4<br>Réalisation et Implémentation</div>
+
+    <div class="chapter">
+        <h1>1. Introduction</h1>
+        <p>
+            Ce chapitre présente la phase de réalisation concrète du projet SociaLink. Nous détaillons l'architecture
+            globale de l'application, les mesures de sécurité implémentées côté front-end et back-end, l'organisation
+            du code, les fonctionnalités développées et les interfaces utilisateur finales.
+        </p>
+
+        <h1>2. Architecture Globale de l'Application</h1>
+
+        <pre>
+┌────────────────────────────────────────────────────────────┐
+│              ARCHITECTURE GLOBALEOF SOCIALINK                 │
+└────────────────────────────────────────────────────────────┘
+
+                        CLIENT (Browser)
+                              │
+                              │ HTTP/HTTPS
+                              │
+                ┌─────────────▼─────────────┐
+                │   REACT SPA (Port 5173)   │
+                │  ─────────────────────    │
+                │  • React Router (Routing) │
+                │  • TailwindCSS (Styles)   │
+                │  • Axios (HTTP Client)    │
+                │  • Socket.io Client       │
+                └─────────────┬─────────────┘
+                              │
+                              │ REST API + WebSocket
+                              │
+                ┌─────────────▼─────────────┐
+                │ NODE.JS/EXPRESS (Port 5001│
+                │  ─────────────────────    │
+                │  • Routes (API endpoints) │
+                │  • Controllers (Logic)    │
+                │  • Middleware (Auth/RBAC) │
+                │  • Socket.io Server       │
+                └─────────────┬─────────────┘
+                              │
+                              │ Prisma ORM
+                              │
+                ┌─────────────▼─────────────┐
+                │   POSTGRESQL (Port 5432)  │
+                │  ─────────────────────    │
+                │  • Tables relationnelles  │
+                │  • Contraintes FK         │
+                │  • Indexes optimisés      │
+                └───────────────────────────┘
+
+           Services Tiers (Intégrations)
+           ─────────────────────────────
+           • Stripe API (Abonnements)
+           • Nodemailer (Emails OTP)
+           • Multer (Upload fichiers)
+    </pre>
+
+        <h2>2.1 Architecture MVC Côté Back-End</h2>
+        <p>
+            Le back-end suit le pattern <strong>Modèle-Vue-Contrôleur</strong> adapté aux APIs REST :
+        </p>
+
+        <table>
+            <tr>
+                <th>Couche</th>
+                <th>Responsabilité</th>
+                <th>Exemple SociaLink</th>
+            </tr>
+            <tr>
+                <td><strong>Routes</strong></td>
+                <td>Définir les endpoints et associer aux contrôleurs</td>
+                <td><code>/api/auth/register</code> → <code>authController.register</code></td>
+            </tr>
+            <tr>
+                <td><strong>Middleware</strong></td>
+                <td>Vérifications transversales (auth, RBAC, validation)</td>
+                <td><code>authMiddleware</code>, <code>requireRole(['ADMIN'])</code></td>
+            </tr>
+            <tr>
+                <td><strong>Controllers</strong></td>
+                <td>Logique métier, orchestration des services</td>
+                <td><code>authController.js</code>, <code>missionController.js</code></td>
+            </tr>
+            <tr>
+                <td><strong>Models (Prisma)</strong></td>
+                <td>Définition schéma et accès base de données</td>
+                <td><code>schema.prisma</code> → <code>prisma.user.create()</code></td>
+            </tr>
+        </table>
+
+        <h1>3. Sécurité Côté Back-End</h1>
+
+        <div class="solution-box box">
+            <h3>🔒 Mesures de Sécurité Implémentées</h3>
+
+            <p><strong>1. Authentification JWT (JSON Web Token)</strong></p>
+            <ul>
+                <li>Génération token signé avec <code>JWT_SECRET</code> (256 bits)</li>
+                <li>Expiration 7 jours (équilibre sécurité/UX)</li>
+                <li>Stockage sécurisé : HttpOnly cookie + localStorage (fallback)</li>
+                <li>Verification à chaque requête via middleware</li>
+            </ul>
+
+            <p><strong>2. Hashing Mots de Passe (Bcrypt)</strong></p>
+            <pre><code>// Lors de l'inscription
+const hashedPassword = await bcrypt.hash(password, 10);
+
+// Lors de la connexion
+const isValid = await bcrypt.compare(inputPassword, user.password);</code></pre>
+
+            <p><strong>3. Contrôle d'Accès par Rôles (RBAC)</strong></p>
+            <pre><code>// Middleware requireRole
+export const requireRole = (roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({ message: "Access denied" });
+    }
+    next();
+  };
+};
+
+// Utilisation
+router.delete('/users/:id', authMiddleware, requireRole(['ADMIN']), deleteUser);</code></pre>
+
+            <p><strong>4. Protection contre Injections SQL</strong></p>
+            <ul>
+                <li>Prisma ORM avec requêtes préparées automatiques</li>
+                <li>Pas de concaténation SQL manuelle</li>
+                <li>Validation données entrantes (express-validator)</li>
+            </ul>
+
+            <p><strong>5. Protection CSRF (Cross-Site Request Forgery)</strong></p>
+            <ul>
+                <li>Tokens CSRF pour formulaires critiques</li>
+                <li>Vérification origin/referer header</li>
+                <li>SameSite cookie attribute</li>
+            </ul>
+        </div>
+
+        <h1>4. Sécurité Côté Front-End</h1>
+
+        <div class="solution-box box">
+            <h3>🔒 Protections Côté Client</h3>
+
+            <p><strong>1. Protection XSS (Cross-Site Scripting)</strong></p>
+            <ul>
+                <li>React échappe automatiquement les données affichées via JSX</li>
+                <li>Sanitization des inputs utilisateur (DOMPurify pour HTML riche)</li>
+                <li>Content Security Policy (CSP) headers</li>
+            </ul>
+
+            <p><strong>2. Validation Formulaires</strong></p>
+            <ul>
+                <li>Validation côté client (React Hook Form + Zod schema)</li>
+                <li>Double validation côté serveur (ne jamais faire confiance au client)</li>
+                <li>Messages d'erreur explicites sans révéler infos sensibles</li>
+            </ul>
+
+            <p><strong>3. Gestion Sécurisée des Tokens</strong></p>
+            <pre><code>// Axios interceptor pour ajouter JWT
+axios.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});</code></pre>
+        </div>
+
+        <h1>5. Installation et Organisation du Projet</h1>
+
+        <h2>5.1 Structure Back-End (Node.js/Express)</h2>
+        <pre>
+backend/
+├── src/
+│   ├── controllers/           # Logique métier
+│   │   ├── authController.js
+│   │   ├── missionController.js
+│   │   ├── profileController.js
+│   │   └── adminController.js
+│   ├── middleware/            # Auth, RBAC, validation
+│   │   ├── authMiddleware.js
+│   │   └── errorHandler.js
+│   ├── routes/                # Définition endpoints
+│   │   ├── authRoutes.js
+│   │   ├── missionRoutes.js
+│   │   └── adminRoutes.js
+│   ├── utils/                 # Helpers
+│   │   ├── generateToken.js
+│   │   └── sendEmail.js
+│   └── server.js              # Point d'entrée
+├── prisma/
+│   ├── schema.prisma          # Schéma base de données
+│   └── migrations/            # Historique migrations
+├── uploads/                   # Fichiers uploadés
+├── .env                       # Variables environnement
+└── package.json
+    </pre>
+
+        <h2>5.2 Structure Front-End (React)</h2>
+        <pre>
+frontend/
+├── src/
+│   ├── components/            # Composants réutilisables
+│   │   ├── Navbar.jsx
+│   │   ├── Footer.jsx
+│   │   └── PrivateRoute.jsx
+│   ├── pages/                 # Pages principales
+│   │   ├── worker/
+│   │   │   ├── WorkerDashboard.jsx
+│   │   │   ├── SearchMissions.jsx
+│   │   │   └── WorkerProfile.jsx
+│   │   ├── establishment/
+│   │   │   ├── EstablishmentDashboard.jsx
+│   │   │   ├── PublishMission.jsx
+│   │   │   └── Candidates.jsx
+│   │   └── admin/
+│   │       └── AdminDashboard.jsx
+│   ├── context/               # State management
+│   │   └── AuthContext.jsx
+│   ├── utils/                 # Helpers
+│   │   └── api.js             # Axios instance
+│   ├── App.jsx                # Routing principal
+│   └── main.jsx               # Point d'entrée
+├── public/
+└── package.json
+    </pre>
+
+        <h1>6. Fonctionnalités Implémentées</h1>
+
+        <h2>6.1 Module Authentification</h2>
+        <table>
+            <tr>
+                <th>Fonctionnalité</th>
+                <th>Description</th>
+                <th>Technologies</th>
+            </tr>
+            <tr>
+                <td>Inscription Worker</td>
+                <td>Formulaire multi-étapes avec infos perso + spécialités</td>
+                <td>React Hook Form, Bcrypt, OTP</td>
+            </tr>
+            <tr>
+                <td>Inscription Establishment</td>
+                <td>Création profil établissement avec type/coordonnées</td>
+                <td>React Hook Form, validation Zod</td>
+            </tr>
+            <tr>
+                <td>Vérification Email</td>
+                <td>Envoi code OTP 6 chiffres, expiration 15min</td>
+                <td>Nodemailer, crypto.randomInt()</td>
+            </tr>
+            <tr>
+                <td>Connexion</td>
+                <td>Auth JWT, redirection selon rôle</td>
+                <td>JWT, Bcrypt compare, AuthContext</td>
+            </tr>
+            <tr>
+                <td>Mot de passe oublié</td>
+                <td>Réinitialisation sécurisée par email</td>
+                <td>Token temporaire, hash SHA256</td>
+            </tr>
+        </table>
+
+        <h2>6.2 Module Gestion Profils</h2>
+        <ul>
+            <li><strong>Workers</strong> : Édition infos perso, ajout diplômes/expériences, upload CV, gestion
+                spécialités</li>
+            <li><strong>Establishments</strong> : Édition coordonnées, upload logo, description services</li>
+            <li><strong>Validation Admin</strong> : Interface validation documents, changement statuts
+                (PENDING/APPROVED/REJECTED)</li>
+        </ul>
+
+        <h2>6.3 Module Missions</h2>
+        <ul>
+            <li><strong>Publication</strong> : Formulaire complet (titre, description, spécialité, contrat, dates,
+                localisation)</li>
+            <li><strong>Recherche</strong> : Filtres avancés (spécialité, ville, type contrat, niveau expérience)</li>
+            <li><strong>Candidatures</strong> : Postulation en un clic, suivi statuts temps réel</li>
+            <li><strong>Gestion candidatures</strong> : Interface Establishment pour approuver/rejeter</li>
+        </ul>
+
+        <h2>6.4 Module Messagerie</h2>
+        <ul>
+            <li>Chat temps réel Socket.io entre Workers et Establishments</li>
+            <li>Notifications push nouveaux messages</li>
+            <li>Historique conversations persistant en BDD</li>
+        </ul>
+
+        <h2>6.5 Module Abonnements (Stripe)</h2>
+        <ul>
+            <li>Plans Free (limité) et Premium (illimité)</li>
+            <li>Intégration Stripe Checkout pour paiements sécurisés</li>
+            <li>Webhooks Stripe pour synchronisation statuts</li>
+            <li>Gestion renouvellements automatiques</li>
+        </ul>
+
+        <h1>7. Interfaces Utilisateur</h1>
+
+        <p style="text-align: center; margin: 2rem 0;">
+            <em>Les captures d'écran suivantes illustrent les principales interfaces de SociaLink</em>
+        </p>
+
+        <h2>7.1 Dashboard Worker</h2>
+        <p>
+            Interface centralisée présentant les statistiques du profil (candidatures actives, messages non lus,
+            missions
+            recommandées), un calendrier de disponibilités et les rappels importants.
+        </p>
+        <img src="worker_dashboard_mockup_1769959795398.png" alt="Dashboard Worker - SociaLink" style="max-width: 900px;">
+        <p class="figure-caption">Figure 4 : Interface Dashboard Worker</p>
+
+        <h2>7.2 Recherche de Missions</h2>
+        <p>
+            Moteur de recherche avec filtres avancés (spécialité, localisation, type de contrat) et affichage carte des
+            missions avec détails complets (description, établissement, salaire, dates).
+        </p>
+        <img src="search_missions_interface_1769959926693.png" alt="Recherche de Missions - SociaLink" style="max-width: 900px;">
+        <p class="figure-caption">Figure 5 : Interface Recherche de Missions avec Filtres Avancés</p>
+
+        <h2>7.3 Panel Admin de Validation</h2>
+        <p>
+            Interface administrative listant les profils en attente de validation avec prévisualisation des documents
+            uploadés (diplômes, CV) et boutons d'action (approuver/rejeter avec commentaire).
+        </p>
+        <img src="admin_validation_panel_1769959818069.png" alt="Panel Admin de Validation - SociaLink" style="max-width: 900px;">
+        <p class="figure-caption">Figure 6 : Interface Admin de Validation des Profils</p>
+
+        <h1>8. Conclusion du Chapitre</h1>
+        <p>
+            Ce chapitre a détaillé la <strong>phase de réalisation</strong> du projet SociaLink, en présentant
+            l'architecture MVC, les mesures de sécurité robustes (JWT, Bcrypt, RBAC, protections XSS/CSRF),
+            l'organisation modulaire du code et les principales fonctionnalités implémentées.
+        </p>
+        <p>
+            Les interfaces utilisateur développées démontrent une attention particulière à l'<strong>expérience
+                utilisateur</strong>, avec des dashboards intuitifs, des filtres avancés et une navigation fluide.
+        </p>
+        <p>
+            L'application finale répond aux <strong>objectifs métier</strong> fixés : faciliter les mises en relation
+            qualitatives, garantir la fiabilité via la labellisation, et optimiser les processus de recrutement dans
+            le secteur social marocain.
+        </p>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- CONCLUSION GÉNÉRALE -->
+    <div class="chapter">
+        <h1>Conclusion Générale</h1>
+        <p>
+            Au terme de ce projet de fin de formation, nous avons conçu et développé <strong>SociaLink</strong>, une
+            plateforme web complète de mise en relation entre travailleurs sociaux indépendants et établissements
+            médico-sociaux au Maroc. Ce projet a permis de répondre à une <strong>problématique réelle</strong> du
+            secteur social : l'absence d'outil centralisé et fiable pour faciliter le recrutement de professionnels
+            qualifiés.
+        </p>
+
+        <h2>Objectifs Atteints</h2>
+        <p>
+            Les <strong>objectifs métier</strong> ont été pleinement réalisés :
+        </p>
+        <ul>
+            <li>✅ Création d'un système de <strong>labellisation</strong> basé sur la validation administrative des
+                diplômes et documents</li>
+            <li>✅ Développement d'un <strong>moteur de recherche avancé</strong> permettant un matching intelligent
+                entre profils et missions</li>
+            <li>✅ Implémentation d'un <strong>système de candidatures</strong> avec suivi transparent des statuts</li>
+            <li>✅ Intégration de fonctionnalités modernes : messagerie temps réel, abonnements Stripe, notifications
+                email</li>
+        </ul>
+
+        <p>
+            Les <strong>objectifs techniques</strong> ont également été atteints avec succès :
+        </p>
+        <ul>
+            <li>✅ Architecture <strong>REST API</strong> scalable et maintenable (Node.js/Express)</li>
+            <li>✅ Interface utilisateur <strong>moderne et responsive</strong> (React 19 + TailwindCSS)</li>
+            <li>✅ Base de données <strong>relationnelle robuste</strong> (PostgreSQL + Prisma ORM)</li>
+            <li>✅ Sécurité de niveau <strong>production</strong> (JWT, Bcrypt, RBAC, protections XSS/CSRF)</li>
+            <li>✅ Intégrations tierces professionnelles (Stripe API, Socket.io, Nodemailer)</li>
+        </ul>
+
+        <h2>Compétences Acquises</h2>
+        <p>
+            Ce projet a permis de valider et d'approfondir de nombreuses compétences :
+        </p>
+
+        <table>
+            <tr>
+                <th>Domaine</th>
+                <th>Compétences Développées</th>
+            </tr>
+            <tr>
+                <td><strong>Analyse</strong></td>
+                <td>Identification besoins métier, modélisation UML, conception base de données</td>
+            </tr>
+            <tr>
+                <td><strong>Front-End</strong></td>
+                <td>React SPA, hooks, routing, gestion état, responsive design, formulaires complexes</td>
+            </tr>
+            <tr>
+                <td><strong>Back-End</strong></td>
+                <td>API REST, architecture MVC, authentification JWT, RBAC, logique métier</td>
+            </tr>
+            <tr>
+                <td><strong>Base de Données</strong></td>
+                <td>Modélisation relationnelle, PostgreSQL, ORM Prisma, migrations, optimisation requêtes</td>
+            </tr>
+            <tr>
+                <td><strong>Sécurité</strong></td>
+                <td>Cryptographie, contrôle d'accès, validation données, protection vulnérabilités web</td>
+            </tr>
+            <tr>
+                <td><strong>Intégrations</strong></td>
+                <td>API Stripe, Socket.io temps réel, envoi emails, upload/stockage fichiers</td>
+            </tr>
+            <tr>
+                <td><strong>Soft Skills</strong></td>
+                <td>Gestion projet, méthodologie cascade, documentation, résolution problèmes</td>
+            </tr>
+        </table>
+
+        <h2>Statistiques du Projet</h2>
+        <table>
+            <tr>
+                <td><strong>Durée</strong></td>
+                <td>16 semaines (4 mois)</td>
+            </tr>
+            <tr>
+                <td><strong>Lignes de code</strong></td>
+                <td>~15 000 lignes (back + front)</td>
+            </tr>
+            <tr>
+                <td><strong>Routes API</strong></td>
+                <td>45+ endpoints REST</td>
+            </tr>
+            <tr>
+                <td><strong>Tables BDD</strong></td>
+                <td>18 tables relationnelles</td>
+            </tr>
+            <tr>
+                <td><strong>Composants React</strong></td>
+                <td>60+ composants</td>
+            </tr>
+            <tr>
+                <td><strong>Pages</strong></td>
+                <td>25+ pages distinctes</td>
+            </tr>
+        </table>
+
+        <h2>Perspectives d'Évolution</h2>
+        <p>
+            Plusieurs axes d'amélioration et d'extension sont envisageables pour SociaLink :
+        </p>
+
+        <div class="info-box box">
+            <h3>🚀 Évolutions Futures</h3>
+            <p><strong>Court terme (3-6 mois)</strong></p>
+            <ul>
+                <li><strong>Application mobile</strong> : Développement apps iOS/Android via React Native</li>
+                <li><strong>Système de recommandation</strong> : Algorithme ML suggérant missions pertinentes</li>
+                <li><strong>Géolocalisation avancée</strong> : Carte interactive, calcul distances, itinéraires</li>
+                <li><strong>Notifications push</strong> : Alertes temps réel via Firebase Cloud Messaging</li>
+            </ul>
+
+            <p><strong>Moyen terme (6-12 mois)</strong></p>
+            <ul>
+                <li><strong>Multi-factor Authentication (MFA)</strong> : Renforcement sécurité connexion</li>
+                <li><strong>Rate limiting</strong> : Protection contre attaques par force brute</li>
+                <li><strong>RGPD Compliance</strong> : Export données personnelles, droit à l'oubli</li>
+                <li><strong>Analytiques avancées</strong> : Dashboard metrics performance établissements/workers</li>
+                <li><strong>Système de badges</strong> : Gamification (profil complet, missions réussies, etc.)</li>
+            </ul>
+
+            <p><strong>Long terme (1-2 ans)</strong></p>
+            <ul>
+                <li><strong>Internationalisation</strong> : Extension à d'autres pays francophones</li>
+                <li><strong>API publique</strong> : Permettre intégrations tierces (job boards, RH software)</li>
+                <li><strong>Blockchain certifications</strong> : NFTs pour diplômes vérifiés infalsifiables</li>
+                <li><strong>IA conversationnelle</strong> : Chatbot assistance 24/7 via GPT-4</li>
+            </ul>
+        </div>
+
+        <h2>Réflexion Personnelle</h2>
+        <p>
+            Ce projet a représenté un <strong>défi technique et méthodologique</strong> considérable, nécessitant la
+            maîtrise de technologies modernes et la résolution de problématiques complexes (sécurité, temps réel,
+            paiements).
+        </p>
+        <p>
+            Au-delà des compétences techniques, il a permis de développer une approche <strong>orientée
+                produit</strong>,
+            en mettant l'accent sur la valeur métier apportée aux utilisateurs finaux plutôt que sur la technologie
+            pour elle-même.
+        </p>
+        <p>
+            La <strong>méthodologie en cascade</strong> adoptée, bien que parfois rigide, a assuré une progression
+            structurée et a facilité la traçabilité du projet via une documentation exhaustive.
+        </p>
+
+        <h2>Mot de Fin</h2>
+        <p>
+            <strong>SociaLink</strong> démontre qu'il est possible de développer une <strong>solution logicielle
+                professionnelle et aboutie</strong> en réponse à un besoin métier réel, en appliquant les bonnes
+            pratiques
+            du développement web moderne : architecture scalable, sécurité renforcée, expérience utilisateur soignée.
+        </p>
+        <p>
+            Ce projet illustre ma capacité à <strong>concevoir, développer et déployer</strong> une application
+            full-stack complète, validant ainsi l'ensemble des compétences acquises durant ma formation et ma
+            préparation au monde professionnel du développement web.
+        </p>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- BIBLIOGRAPHIE -->
+    <div class="chapter">
+        <h1>Bibliographie et Références</h1>
+
+        <h2>Documentation Officielle</h2>
+        <ol>
+            <li><strong>React Documentation</strong> - https://react.dev/</li>
+            <li><strong>Node.js Documentation</strong> - https://nodejs.org/docs/</li>
+            <li><strong>Express.js Guide</strong> - https://expressjs.com/</li>
+            <li><strong>PostgreSQL Documentation</strong> - https://www.postgresql.org/docs/</li>
+            <li><strong>Prisma Documentation</strong> - https://www.prisma.io/docs/</li>
+            <li><strong>TailwindCSS Documentation</strong> - https://tailwindcss.com/docs</li>
+            <li><strong>Stripe API Reference</strong> - https://stripe.com/docs/api</li>
+            <li><strong>Socket.io Documentation</strong> - https://socket.io/docs/</li>
+        </ol>
+
+        <h2>Sécurité Web</h2>
+        <ol start="9">
+            <li><strong>OWASP Top 10</strong> - https://owasp.org/www-project-top-ten/</li>
+            <li><strong>JWT Best Practices</strong> - https://tools.ietf.org/html/rfc7519</li>
+            <li><strong>Bcrypt Node.js</strong> - https://www.npmjs.com/package/bcrypt</li>
+        </ol>
+
+        <h2>Ressources Pédagogiques</h2>
+        <ol start="12">
+            <li><strong>MDN Web Docs</strong> - https://developer.mozilla.org/</li>
+            <li><strong>JavaScript.info</strong> - https://javascript.info/</li>
+            <li><strong>freeCodeCamp</strong> - https://www.freecodecamp.org/</li>
+        </ol>
+
+        <h2>Méthodologie et Gestion de Projet</h2>
+        <ol start="15">
+            <li><strong>UML Diagram Types</strong> - https://www.uml-diagrams.org/</li>
+            <li><strong>Waterfall Methodology Guide</strong></li>
+            <li><strong>Database Design Best Practices</strong></li>
+        </ol>
+
+        <h2>Outils Utilisés</h2>
+        <ol start="18">
+            <li><strong>Visual Studio Code</strong> - https://code.visualstudio.com/</li>
+            <li><strong>Postman</strong> - https://www.postman.com/</li>
+            <li><strong>Draw.io</strong> - https://www.drawio.com/</li>
+            <li><strong>Git & GitHub</strong> - https://github.com/</li>
+        </ol>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- PAGE FINALE -->
+    <div
+        style="text-align: center; padding: 6rem 2rem; background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%); color: white; border-radius: 8px;">
+        <h1 style="font-size: 3rem; margin-bottom: 2rem; color: white; border: none;">SOCIALINK</h1>
+        <h2 style="font-size: 1.5rem; font-weight: 400; margin-bottom: 3rem; color: white;">
+            Rapport de Projet de Fin de Formation
+        </h2>
+        <p style="font-size: 1.2rem; line-height: 2;">
+            Plateforme de Mise en Relation<br>
+            de Travailleurs Sociaux Indépendants
+        </p>
+        <p style="margin-top: 4rem; font-size: 0.9rem; opacity: 0.8;">
+            React 19 • Node.js 20 • Express 5 • PostgreSQL 16 • Prisma 6
+        </p>
+        <p style="margin-top: 2rem; font-size: 0.9rem; opacity: 0.8;">
+            Document généré pour export PDF • 2026
+        </p>
+    </div>

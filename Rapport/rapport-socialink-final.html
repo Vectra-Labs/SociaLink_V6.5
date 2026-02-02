@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Rapport de Projet – Réseau de Travailleurs Sociaux</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  font-family:'Inter',sans-serif;
+  font-size:11pt;
+  line-height:1.6;
+  color:#1f2937;
+  background:#fff;
+}
+
+@page{
+  size:A4;
+  margin:2cm;
+}
+
+.page-break{page-break-after:always}
+
+h1{
+  font-size:24pt;
+  color:#1e3a8a;
+  margin:1.5rem 0 1rem;
+  border-bottom:3px solid #3b82f6;
+  padding-bottom:.4rem;
+}
+
+h2{
+  font-size:17pt;
+  color:#1e40af;
+  margin:1.2rem 0 .6rem;
+}
+
+h3{
+  font-size:13pt;
+  color:#1e40af;
+  margin:1rem 0 .4rem;
+}
+
+p{text-align:justify;margin:.5rem 0}
+
+ul{margin:.5rem 0 .5rem 2rem}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin:1rem 0;
+  font-size:10pt;
+}
+
+th{
+  background:#3b82f6;
+  color:#fff;
+  padding:.6rem;
+  text-align:left;
+}
+
+td{
+  border:1px solid #e5e7eb;
+  padding:.5rem;
+}
+
+tr:nth-child(even){background:#f9fafb}
+
+.box{
+  background:#eff6ff;
+  border-left:4px solid #3b82f6;
+  padding:1rem;
+  margin:1rem 0;
+}
+
+.warning{
+  background:#fef3c7;
+  border-left:4px solid #f59e0b;
+  padding:1rem;
+  margin:1rem 0;
+}
+
+.cover{
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  color:#fff;
+}
+
+.cover h1{font-size:3rem;margin-bottom:1rem}
+.cover h2{font-weight:400;margin-bottom:2rem}
+.cover p{font-size:1rem}
+
+pre{
+  background:#1f2937;
+  color:#e5e7eb;
+  padding:1rem;
+  border-radius:6px;
+  font-size:9pt;
+  margin:1rem 0;
+}
+</style>
+</head>
+
+<body>
+
+<!-- PAGE DE GARDE -->
+<div class="cover">
+  <h1>Réseau de Travailleurs Sociaux</h1>
+  <h2>Plateforme de mise en relation qualitative<br>Travailleurs Indépendants × Établissements</h2>
+  <p>Projet de fin de formation – Développement Full-Stack</p>
+  <p style="margin-top:2rem;">Année 2025 – 2026</p>
+</div>
+
+<div class="page-break"></div>
+
+<!-- INTRODUCTION -->
+<h1>1. Contexte du projet</h1>
+
+<p>
+Ce projet consiste à concevoir et développer une plateforme numérique dédiée à la création
+d’un <strong>réseau sélectif de travailleurs sociaux indépendants</strong>.
+La solution vise à connecter des établissements à la recherche de renforts avec
+des professionnels qualifiés, tout en garantissant un haut niveau de qualité.
+</p>
+
+<p>
+Contrairement à une simple plateforme de mise en relation,
+le système repose sur un <strong>processus de labellisation</strong>
+basé sur les diplômes et l’expérience professionnelle.
+</p>
+
+<div class="box">
+<strong>Objectif principal :</strong><br>
+Limiter la multiplication des intervenants et favoriser
+un accompagnement durable et de qualité auprès du public accueilli.
+</div>
+
+<div class="page-break"></div>
+
+<!-- OBJECTIFS PEDAGOGIQUES -->
+<h1>2. Objectifs pédagogiques</h1>
+
+<ul>
+  <li>Développer une application web full-stack complète</li>
+  <li>Mettre en œuvre une architecture REST sécurisée</li>
+  <li>Gérer des rôles utilisateurs distincts</li>
+  <li>Concevoir une base de données relationnelle cohérente</li>
+  <li>Créer des interfaces adaptées aux usages professionnels</li>
+</ul>
+
+<div class="page-break"></div>
+
+<!-- PARCOURS UTILISATEURS -->
+<h1>3. Parcours utilisateurs</h1>
+
+<h2>Travailleur social indépendant</h2>
+<ul>
+  <li>Création d’un profil détaillé</li>
+  <li>Ajout des diplômes (PDF) et expériences</li>
+  <li>Gestion des disponibilités</li>
+  <li>Candidature aux missions</li>
+</ul>
+
+<h2>Établissement</h2>
+<ul>
+  <li>Publication d’offres de mission</li>
+  <li>Recherche de professionnels labellisés</li>
+  <li>Validation des prestations</li>
+  <li>Évaluation après mission</li>
+</ul>
+
+<h2>Administrateur</h2>
+<ul>
+  <li>Vérification des diplômes</li>
+  <li>Labellisation des profils</li>
+  <li>Suivi global des mises en relation</li>
+</ul>
+
+<div class="page-break"></div>
+
+<!-- ARCHITECTURE -->
+<h1>4. Architecture technique</h1>
+
+<pre>
+[ Interface React (SPA) ]
+          ↓
+[ API REST Node.js / Express ]
+          ↓
+[ Base de données SQL ]
+</pre>
+
+<p>
+Cette architecture permet une séparation claire des responsabilités,
+une maintenance facilitée et une évolution future du système.
+</p>
+
+<div class="page-break"></div>
+
+<!-- SECURITE -->
+<h1>5. Sécurité et conformité</h1>
+
+<ul>
+  <li>Authentification sécurisée par JWT</li>
+  <li>Hachage des mots de passe (bcrypt)</li>
+  <li>Protection des routes selon les rôles</li>
+  <li>Stockage sécurisé des documents sensibles</li>
+</ul>
+
+<div class="warning">
+<strong>RGPD :</strong><br>
+Les données personnelles et professionnelles sont protégées,
+accessibles uniquement aux utilisateurs autorisés,
+et utilisées exclusivement dans le cadre du service.
+</div>
+
+<div class="page-break"></div>
+
+<!-- CONCLUSION -->
+<h1>6. Conclusion</h1>
+
+<p>
+Ce projet démontre la capacité à concevoir une application
+répondant à un besoin métier réel,
+tout en respectant les contraintes techniques,
+sécuritaires et pédagogiques.
+</p>
+
+<p>
+Il valide les compétences attendues en développement full-stack
+et illustre une approche orientée qualité, évolutivité et responsabilité.
+</p>
+
+<p style="margin-top:3rem;text-align:center;">
+<strong>Rapport de fin de formation – 2025 / 2026</strong>
+</p>
+
+</body>
+</html>

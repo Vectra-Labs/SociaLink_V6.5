@@ -46,6 +46,15 @@ export default function WorkerDocuments() {
     // Upload state
     const [selectedFile, setSelectedFile] = useState(null);
     const [selectedType, setSelectedType] = useState('');
+    const [docMetadata, setDocMetadata] = useState({
+        name: '',
+        institution: '',
+        issue_date: '',
+        expiry_date: '',
+        document_number: '',
+        specialty: '',
+        grade: ''
+    });
     const fileInputRef = useRef(null);
 
     useEffect(() => {
@@ -89,46 +98,82 @@ export default function WorkerDocuments() {
         }
     };
 
+    const MAX_FILE_SIZE = 15 * 1024 * 1024; // 15MB
+
     const handleDrop = (e) => {
         e.preventDefault();
         e.stopPropagation();
         setDragActive(false);
         if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-            setSelectedFile(e.dataTransfer.files[0]);
+            const file = e.dataTransfer.files[0];
+            if (file.size > MAX_FILE_SIZE) {
+                alert("Le fichier est trop volumineux. La taille maximum est de 15 MB.");
+                return;
+            }
+            setSelectedFile(file);
+            setDocMetadata(prev => ({ ...prev, name: file.name }));
         }
     };
 
     const handleFileSelect = (e) => {
         if (e.target.files && e.target.files[0]) {
-            setSelectedFile(e.target.files[0]);
+            const file = e.target.files[0];
+            if (file.size > MAX_FILE_SIZE) {
+                alert("Le fichier est trop volumineux. La taille maximum est de 15 MB.");
+                return;
+            }
+            setSelectedFile(file);
+            setDocMetadata(prev => ({ ...prev, name: file.name }));
         }
     };
 
     const handleUpload = async () => {
-        if (!selectedFile || !selectedType) {
-            alert("Veuillez sélectionner un fichier et une catégorie.");
+        if (!selectedFile || !selectedType || !docMetadata.name) {
+            alert("Veuillez remplir tous les champs obligatoires.");
             return;
         }
 
         try {
             setUploading(true);
             const formData = new FormData();
-            formData.append('file', selectedFile);
+            
+            // Append fields FIRST (Best practice for Multer)
             formData.append('type', selectedType);
-            formData.append('name', selectedFile.name); // Default name is filename
+            formData.append('name', docMetadata.name);
+            
+            if (docMetadata.institution) formData.append('institution', docMetadata.institution);
+            if (docMetadata.issue_date) formData.append('issue_date', docMetadata.issue_date);
+            if (docMetadata.expiry_date) formData.append('expiry_date', docMetadata.expiry_date);
+            if (docMetadata.document_number) formData.append('document_number', docMetadata.document_number);
+            
+            // New fields
+            if (docMetadata.specialty) formData.append('specialty', docMetadata.specialty);
+            if (docMetadata.grade) formData.append('grade', docMetadata.grade);
 
-            await api.post('/worker/documents', formData, {
-                headers: { 'Content-Type': 'multipart/form-data' }
-            });
+            // Append file LAST
+            formData.append('file', selectedFile);
+
+            await api.post('/worker/documents', formData);
 
             // Reset interaction
             setSelectedFile(null);
             setSelectedType('');
+            setDocMetadata({
+                name: '',
+                institution: '',
+                issue_date: '',
+                expiry_date: '',
+                document_number: '',
+                specialty: '',
+                grade: ''
+            });
             fetchDocuments();
 
         } catch (err) {
             console.error(err);
-            alert("Erreur lors de l'upload.");
+            console.log("Upload Error Details:", err.response?.data);
+            const message = err.response?.data?.message || "Erreur lors de l'upload.";
+            alert(message);
         } finally {
             setUploading(false);
         }
@@ -161,7 +206,7 @@ export default function WorkerDocuments() {
                 onDragOver={handleDrag}
                 onDrop={handleDrop}
             >
-                <div className="flex flex-col items-center justify-center text-center">
+                <div className="flex flex-col items-center justify-center text-center w-full">
                     <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mb-4">
                         <Upload className="w-6 h-6" />
                     </div>
@@ -191,43 +236,186 @@ export default function WorkerDocuments() {
                             </div>
                         </>
                     ) : (
-                        <div className="w-full max-w-md bg-slate-50 rounded-lg p-4 flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                                <FileText className="w-8 h-8 text-blue-600" />
-                                <div className="text-left">
-                                    <p className="font-medium text-slate-900 truncate max-w-[200px]">{selectedFile.name}</p>
-                                    <p className="text-xs text-slate-500">{(selectedFile.size / 1024).toFixed(1)} KB</p>
+                        <div className="w-full max-w-xl bg-slate-50 rounded-xl p-6 text-left">
+                            <div className="flex items-start justify-between mb-6">
+                                <div className="flex items-center gap-3">
+                                    <div className="p-3 bg-white rounded-lg border border-slate-200 shadow-sm">
+                                        <FileText className="w-6 h-6 text-blue-600" />
+                                    </div>
+                                    <div>
+                                        <p className="font-medium text-slate-900 truncate max-w-[200px]">{selectedFile.name}</p>
+                                        <p className="text-xs text-slate-500">{(selectedFile.size / 1024).toFixed(1)} KB</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <select
-                                    value={selectedType}
-                                    onChange={(e) => setSelectedType(e.target.value)}
-                                    className="text-sm border border-slate-200 rounded px-2 py-1"
-                                >
-                                    <option value="">Catégorie...</option>
-                                    {DOCUMENT_TYPES.map(type => (
-                                        <option key={type.id} value={type.id}>{type.label}</option>
-                                    ))}
-                                </select>
-                                <button
-                                    onClick={handleUpload}
-                                    disabled={!selectedType || uploading}
-                                    className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm disabled:opacity-50"
-                                >
-                                    {uploading ? '...' : 'Envoyer'}
-                                </button>
                                 <button
                                     onClick={() => setSelectedFile(null)}
                                     className="p-1 hover:bg-slate-200 rounded text-slate-500"
                                 >
-                                    <X className="w-4 h-4" />
+                                    <X className="w-5 h-5" />
                                 </button>
+                            </div>
+
+                            <div className="grid gap-4">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700 mb-1">Catégorie <span className="text-red-500">*</span></label>
+                                        <select
+                                            value={selectedType}
+                                            onChange={(e) => setSelectedType(e.target.value)}
+                                            className="w-full text-sm border border-slate-200 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+                                        >
+                                            <option value="">Choisir...</option>
+                                            {DOCUMENT_TYPES.map(type => (
+                                                <option key={type.id} value={type.id}>{type.label}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700 mb-1">Nom du document <span className="text-red-500">*</span></label>
+                                        <input
+                                            type="text"
+                                            value={docMetadata.name}
+                                            onChange={(e) => setDocMetadata({...docMetadata, name: e.target.value})}
+                                            className="w-full text-sm border border-slate-200 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+                                            placeholder="Ex: Mon Diplôme"
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Dynamic Fields */}
+                                {selectedType === 'CIN' && (
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700 mb-1">Numéro de CIN <span className="text-red-500">*</span></label>
+                                        <input
+                                            type="text"
+                                            value={docMetadata.document_number}
+                                            onChange={(e) => setDocMetadata({...docMetadata, document_number: e.target.value})}
+                                            className="w-full text-sm border border-slate-200 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+                                            placeholder="Ex: AB123456"
+                                        />
+                                    </div>
+                                )}
+
+                                {(selectedType === 'DIPLOMA' || selectedType === 'CERTIFICATE') && (
+                                    <>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div>
+                                                <label className="block text-sm font-medium text-slate-700 mb-1">Établissement / École</label>
+                                                <input
+                                                    type="text"
+                                                    value={docMetadata.institution}
+                                                    onChange={(e) => setDocMetadata({...docMetadata, institution: e.target.value})}
+                                                    className="w-full text-sm border border-slate-200 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+                                                    placeholder="Ex: Université Hassan II"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-medium text-slate-700 mb-1">Date d'obtention</label>
+                                                <input
+                                                    type="date"
+                                                    value={docMetadata.issue_date}
+                                                    onChange={(e) => setDocMetadata({...docMetadata, issue_date: e.target.value})}
+                                                    className="w-full text-sm border border-slate-200 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div>
+                                                <label className="block text-sm font-medium text-slate-700 mb-1">Filière / Spécialité</label>
+                                                <input
+                                                    type="text"
+                                                    value={docMetadata.specialty}
+                                                    onChange={(e) => setDocMetadata({...docMetadata, specialty: e.target.value})}
+                                                    className="w-full text-sm border border-slate-200 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+                                                    placeholder="Ex: Développement Informatique"
+                                                />
+                                            </div>
+                                            {selectedType === 'DIPLOMA' && (
+                                                <div>
+                                                    <label className="block text-sm font-medium text-slate-700 mb-1">Mention</label>
+                                                    <select
+                                                        value={docMetadata.grade}
+                                                        onChange={(e) => setDocMetadata({...docMetadata, grade: e.target.value})}
+                                                        className="w-full text-sm border border-slate-200 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+                                                    >
+                                                        <option value="">Choisir...</option>
+                                                        <option value="Passable">Passable</option>
+                                                        <option value="Assez Bien">Assez Bien</option>
+                                                        <option value="Bien">Bien</option>
+                                                        <option value="Très Bien">Très Bien</option>
+                                                        <option value="Excellent">Excellent</option>
+                                                    </select>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </>
+                                )}
+
+                                {selectedType === 'ATTESTATION_TRAVAIL' && (
+                                    <>
+                                        <div>
+                                            <label className="block text-sm font-medium text-slate-700 mb-1">Nom de l'entreprise</label>
+                                            <input
+                                                type="text"
+                                                value={docMetadata.institution}
+                                                onChange={(e) => setDocMetadata({...docMetadata, institution: e.target.value})}
+                                                className="w-full text-sm border border-slate-200 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+                                                placeholder="Ex: Société X"
+                                            />
+                                        </div>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div>
+                                                <label className="block text-sm font-medium text-slate-700 mb-1">Date de début</label>
+                                                <input
+                                                    type="date"
+                                                    value={docMetadata.issue_date}
+                                                    onChange={(e) => setDocMetadata({...docMetadata, issue_date: e.target.value})}
+                                                    className="w-full text-sm border border-slate-200 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-medium text-slate-700 mb-1">Date de fin</label>
+                                                <input
+                                                    type="date"
+                                                    value={docMetadata.expiry_date}
+                                                    onChange={(e) => setDocMetadata({...docMetadata, expiry_date: e.target.value})}
+                                                    className="w-full text-sm border border-slate-200 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+                                                />
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+
+                                <div className="flex justify-end gap-3 mt-2">
+                                    <button
+                                        onClick={() => setSelectedFile(null)}
+                                        className="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-medium transition-colors"
+                                    >
+                                        Annuler
+                                    </button>
+                                    <button
+                                        onClick={handleUpload}
+                                        disabled={!selectedType || !docMetadata.name || uploading}
+                                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                                    >
+                                        {uploading ? (
+                                            <>
+                                                <Loader2 className="w-4 h-4 animate-spin" />
+                                                Envoi en cours...
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Upload className="w-4 h-4" />
+                                                Envoyer le document
+                                            </>
+                                        )}
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     )}
 
-                    <p className="text-xs text-slate-400 mt-4">Formats acceptés : PDF, JPG, PNG (max 5 MB)</p>
+                    <p className="text-xs text-slate-400 mt-4">Formats acceptés : PDF, JPG, PNG (max 15 MB)</p>
                     <input
                         type="file"
                         ref={fileInputRef}
@@ -236,6 +424,7 @@ export default function WorkerDocuments() {
                         accept=".pdf,.jpg,.jpeg,.png"
                     />
                 </div>
+
             </div>
 
             {/* Tabs */}

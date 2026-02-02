@@ -1,3 +1,4 @@
+import { createNotification } from "../services/notificationService.js";
 import { prisma } from "../config/db.js";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/generateToken.js";
@@ -12,7 +13,7 @@ const generateOTP = () => {
 //----------------------------- worker Registration -----------------------------//
 export const registerWorker = async (req, res) => {
   try {
-    const { email, password, first_name, last_name, phone } = req.body;
+    const { email, password, first_name, last_name, phone, address, city, region, cnie, birth_place, linkedin_url } = req.body;
 
     const existingUser = await prisma.user.findUnique({ where: { email } });
 
@@ -49,6 +50,12 @@ export const registerWorker = async (req, res) => {
           first_name,
           last_name,
           phone,
+          address: address || null,
+          city: city || null,
+          region: region || null,
+          cnie: cnie || null,
+          birth_place: birth_place || null,
+          linkedin_url: linkedin_url || null,
           verification_status: "PENDING",
         },
       });
@@ -109,6 +116,25 @@ export const registerEstablishment = async (req, res) => {
         },
       });
     });
+
+    // Notify Admins
+    try {
+      const admins = await prisma.user.findMany({
+        where: { role: { in: ['ADMIN', 'SUPER_ADMIN'] } },
+        select: { user_id: true }
+      });
+
+      if (admins.length > 0) {
+        await Promise.all(admins.map(admin => createNotification({
+          userId: admin.user_id,
+          type: 'INFO',
+          message: `Nouvel établissement inscrit: ${name}`,
+          link: '/admin/verification/establishments' 
+        })));
+      }
+    } catch (notifError) {
+      console.error("NOTIFICATION ERROR:", notifError);
+    }
 
     await sendVerificationEmail(email, verificationCode);
 
@@ -489,5 +515,55 @@ export const getMe = async (req, res) => {
     res.status(500).json({
       message: "Failed to fetch user data",
     });
+  }
+};
+
+//----------------------------- Delete Account -----------------------------//
+export const deleteAccount = async (req, res) => {
+  try {
+    const userId = req.user.user_id;
+
+    const user = await prisma.user.findUnique({ where: { user_id: userId } });
+
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur non trouvé" });
+    }
+
+    await prisma.$transaction(async (tx) => {
+      // Manual cleanup for non-cascading relations
+      await tx.payment.deleteMany({ where: { user_id: userId } });
+      
+      await tx.dispute.deleteMany({ 
+        where: { 
+          OR: [
+            { reporter_id: userId },
+            { target_id: userId }
+          ] 
+        } 
+      });
+
+      await tx.adminMessage.deleteMany({
+        where: {
+            OR: [
+                { sender_id: userId },
+                { receiver_id: userId }
+            ]
+        }
+      });
+      
+      // Delete the user (cascades to profile, messages, logs, etc.)
+      await tx.user.delete({
+        where: { user_id: userId }
+      });
+    });
+
+    res.status(200).json({
+      status: "success",
+      message: "Compte supprimé avec succès"
+    });
+
+  } catch (error) {
+    console.error("DELETE ACCOUNT ERROR:", error);
+    res.status(500).json({ message: "Erreur lors de la suppression du compte", error: error.message });
   }
 };

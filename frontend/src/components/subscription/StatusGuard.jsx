@@ -52,21 +52,21 @@ export default function StatusGuard({ children, blockPending = false }) {
                             <div className="flex items-center gap-2">
                                 <Link
                                     to="/worker/profile"
-                                    className="flex items-center gap-1 px-3 py-1.5 bg-white/20 hover:bg-white/30 rounded-lg text-sm font-medium text-white transition-colors"
+                                    className="flex items-center gap-1 px-3 py-1.5 bg-white text-blue-600 rounded-lg text-sm font-medium hover:bg-blue-50 transition-colors shadow-sm"
                                 >
                                     <User className="w-4 h-4" />
                                     Profil
                                 </Link>
                                 <Link
                                     to="/worker/documents"
-                                    className="flex items-center gap-1 px-3 py-1.5 bg-white/20 hover:bg-white/30 rounded-lg text-sm font-medium text-white transition-colors"
+                                    className="flex items-center gap-1 px-3 py-1.5 bg-white text-blue-600 rounded-lg text-sm font-medium hover:bg-blue-50 transition-colors shadow-sm"
                                 >
                                     <FileText className="w-4 h-4" />
                                     Documents
                                 </Link>
                                 <Link
                                     to="/worker/specialities"
-                                    className="flex items-center gap-1 px-3 py-1.5 bg-white/20 hover:bg-white/30 rounded-lg text-sm font-medium text-white transition-colors"
+                                    className="flex items-center gap-1 px-3 py-1.5 bg-white text-blue-600 rounded-lg text-sm font-medium hover:bg-blue-50 transition-colors shadow-sm"
                                 >
                                     <Award className="w-4 h-4" />
                                     Compétences

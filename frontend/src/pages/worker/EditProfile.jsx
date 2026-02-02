@@ -135,11 +135,9 @@ export default function EditProfile() {
         setCvUploading(true);
         try {
             const formData = new FormData();
-            formData.append('file', file);
             formData.append('type', 'CV');
-            await api.post('/worker/documents', formData, {
-                headers: { 'Content-Type': 'multipart/form-data' }
-            });
+            formData.append('file', file);
+            await api.post('/worker/documents', formData);
             window.location.reload();
         } catch (err) {
             console.error("CV Upload failed", err);

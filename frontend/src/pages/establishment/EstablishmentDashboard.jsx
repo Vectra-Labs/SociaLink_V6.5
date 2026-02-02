@@ -130,7 +130,7 @@ const EstablishmentDashboard = () => {
                         </div>
                     </div>
                     <Link to="/establishment/missions/create">
-                        <Button className="bg-white text-blue-700 hover:bg-blue-50 border-none shadow-md font-bold px-6 h-12">
+                        <Button variant="secondary" className="border-none shadow-md font-bold px-6 h-12 text-blue-700 bg-white hover:bg-blue-50">
                             <Plus className="w-5 h-5 mr-2" />
                             Nouvelle Mission
                         </Button>
@@ -250,23 +250,23 @@ const EstablishmentDashboard = () => {
                                                     <tr key={app.id} className="hover:bg-slate-50/80 transition-colors group">
                                                         <td className="px-6 py-4">
                                                             <div className="flex items-center gap-3">
-                                                                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-sm">
+                                                                <div className="w-10 h-10 shrink-0 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-sm">
                                                                     {app.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
                                                                 </div>
-                                                                <div>
-                                                                    <p className="font-bold text-slate-800 group-hover:text-blue-700 transition-colors">{app.name}</p>
-                                                                    <p className="text-xs text-slate-500 font-medium">{app.experience}</p>
+                                                                <div className="min-w-0">
+                                                                    <p className="font-bold text-slate-800 group-hover:text-blue-700 transition-colors truncate">{app.name}</p>
+                                                                    <p className="text-xs text-slate-500 font-medium truncate">{app.experience}</p>
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td className="px-6 py-4 text-sm font-medium text-slate-600">{app.position}</td>
+                                                        <td className="px-6 py-4 text-sm font-medium text-slate-600 whitespace-nowrap max-w-[200px] truncate" title={app.position}>{app.position}</td>
                                                         <td className="px-6 py-4">
-                                                            <Badge variant={app.matchScore >= 80 ? 'blue' : 'secondary'} className={app.matchScore >= 80 ? 'bg-blue-100 text-blue-700 border-blue-200' : ''}>
+                                                            <Badge variant={app.matchScore >= 80 ? 'blue' : 'secondary'} className={`whitespace-nowrap ${app.matchScore >= 80 ? 'bg-blue-100 text-blue-700 border-blue-200' : ''}`}>
                                                                 {app.matchScore}% Match
                                                             </Badge>
                                                         </td>
                                                         <td className="px-6 py-4">
-                                                            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${badgeStyle.bg} ${badgeStyle.text} border ${badgeStyle.border || 'border-transparent'}`}>
+                                                            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide whitespace-nowrap ${badgeStyle.bg} ${badgeStyle.text} border ${badgeStyle.border || 'border-transparent'}`}>
                                                                 {app.status === 'ACCEPTED' ? (
                                                                     <><CheckCircle className="w-3.5 h-3.5" /> Acceptée</>
                                                                 ) : app.status === 'REJECTED' ? (

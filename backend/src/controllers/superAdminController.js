@@ -944,7 +944,7 @@ export const getWorkerFullDetails = async (req, res) => {
                 },
                 diplomas: {
                     orderBy: {
-                        obtained_at: 'desc'
+                        issue_date: 'desc'
                     }
                 },
                 experiences: {
@@ -953,11 +953,7 @@ export const getWorkerFullDetails = async (req, res) => {
                     }
                 },
                 documents: true,
-                languages: { // Assuming this relation exists or similar
-                    include: {
-                        language: true
-                    }
-                }
+                languages: true
             }
         });
 
@@ -1125,6 +1121,61 @@ export const reviewProfile = async (req, res) => {
         });
     } catch (error) {
         console.error("Review Profile Error:", error);
+        res.status(500).json({ message: "Erreur serveur" });
+    }
+};
+
+export const updateDocumentStatus = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { type, status, reason } = req.body; // type: 'DIPLOMA' | 'DOCUMENT', status: 'VERIFIED' | 'REJECTED'
+        const adminId = req.user.user_id;
+        const docId = parseInt(id);
+
+        let newStatus;
+        if (status === 'VERIFIED' || status === 'APPROVED') newStatus = 'VERIFIED';
+        else if (status === 'REJECTED') newStatus = 'REJECTED';
+        else return res.status(400).json({ message: "Statut invalide" });
+
+        if (type === 'DIPLOMA') {
+            await prisma.diploma.update({
+                where: { diploma_id: docId },
+                data: { verification_status: newStatus }
+            });
+        } else if (type === 'DOCUMENT' || type === 'CNIE_RECTO' || type === 'CNIE_VERSO' || type === 'CV' || type === 'CRIMINAL_RECORD') {
+            // Check if it's a generic document (WorkerDocument)
+             // Since we merge them in frontend, we need to know the source.
+             // Best to rely on 'type' being explicitly 'DIPLOMA' or 'DOCUMENT'.
+             // If frontend passes specific types like 'CNIE_RECTO', we treat as WorkerDocument.
+            await prisma.workerDocument.update({
+                where: { document_id: docId },
+                data: { 
+                    status: newStatus,
+                    verified_by: adminId,
+                    verified_at: new Date(),
+                    rejection_reason: reason || null
+                }
+            });
+        } else {
+             // Fallback or specific EstablishmentDocument handling if needed
+             return res.status(400).json({ message: "Type de document invalide" });
+        }
+
+        // Log
+        await prisma.adminLog.create({
+            data: {
+                admin_id: adminId,
+                action: 'VERIFY_DOCUMENT',
+                target_type: 'DOCUMENT',
+                target_id: id,
+                details: { type, status: newStatus, reason }
+            }
+        });
+
+        res.json({ message: "Statut du document mis à jour", status: newStatus });
+
+    } catch (error) {
+        console.error("Update Document Status Error:", error);
         res.status(500).json({ message: "Erreur serveur" });
     }
 };

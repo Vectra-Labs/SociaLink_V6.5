@@ -5,7 +5,7 @@ const api = axios.create({
     baseURL: '/api', // Vite proxy will forward this to http://localhost:5001/api
     withCredentials: true, // Important: Send cookies with requests
     headers: {
-        'Content-Type': 'application/json',
+        // 'Content-Type': 'application/json', // Let axios set this automatically
     },
 });
 

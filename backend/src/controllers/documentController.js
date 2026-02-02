@@ -42,7 +42,14 @@ export const getDocuments = async (req, res) => {
 export const uploadDocument = async (req, res) => {
     try {
         const workerId = req.user.user_id;
-        let { type, name, institution, issue_date, expiry_date, document_number } = req.body;
+        console.log('[DEBUG] Upload Request Body:', req.body);
+        console.log('[DEBUG] Upload Request File:', req.file ? { 
+            originalname: req.file.originalname, 
+            mimetype: req.file.mimetype, 
+            size: req.file.size 
+        } : 'MISSING');
+
+        let { type, name, institution, issue_date, expiry_date, document_number, specialty, grade } = req.body;
 
         // Check if file was uploaded
         if (!req.file) {
@@ -58,13 +65,14 @@ export const uploadDocument = async (req, res) => {
         }
 
         // Validate document type
-        const validTypes = ['DIPLOMA', 'CIN', 'CASIER_JUDICIAIRE', 'ATTESTATION_TRAVAIL', 'CARTE_CNSS', 'CERTIFICATE', 'OTHER'];
+        const validTypes = ['CV', 'DIPLOMA', 'CIN', 'CASIER_JUDICIAIRE', 'ATTESTATION_TRAVAIL', 'CARTE_CNSS', 'CERTIFICATE', 'OTHER'];
         if (!validTypes.includes(type)) {
             return res.status(400).json({ message: 'Type de document invalide' });
         }
 
         // === OCR Processing (optional) ===
         let ocrData = null;
+        let metadata = {};
         const filePath = req.file.path;
         const fileExt = path.extname(req.file.originalname).toLowerCase();
         const imageExts = ['.jpg', '.jpeg', '.png', '.webp', '.bmp'];
@@ -75,6 +83,7 @@ export const uploadDocument = async (req, res) => {
 
                 if (ocrResult.success && ocrResult.data) {
                     ocrData = ocrResult.data;
+                    metadata.ocr_raw = ocrData.rawText; // Keep raw text for debug or advanced analysis
 
                     // Auto-fill empty fields with OCR data
                     if (!institution && ocrData.institution) {
@@ -90,6 +99,9 @@ export const uploadDocument = async (req, res) => {
                     if (!document_number && ocrData.documentNumber) {
                         document_number = ocrData.documentNumber;
                     }
+                    // Try to extract extra fields from OCR if not provided
+                    if (!specialty && ocrData.specialty) specialty = ocrData.specialty;
+                    if (!grade && ocrData.grade) grade = ocrData.grade;
                 }
             } catch (ocrError) {
                 console.error('[OCR] Error (non-blocking):', ocrError.message);
@@ -122,6 +134,9 @@ export const uploadDocument = async (req, res) => {
                 issue_date: issue_date ? new Date(issue_date) : null,
                 expiry_date: expiry_date ? new Date(expiry_date) : null,
                 document_number: document_number || null,
+                specialty: specialty || null,
+                grade: grade || null,
+                metadata: Object.keys(metadata).length > 0 ? metadata : null,
                 file_url,
                 status: 'PENDING' // En attente de validation admin
             }
@@ -153,7 +168,7 @@ export const uploadDocument = async (req, res) => {
                     userId: admin.user_id,
                     type: 'INFO',
                     message: `${workerName} a uploadé un nouveau document (${type}) à vérifier.`,
-                    link: '/admin/documents'
+                    link: `/admin/verification/workers/${workerId}`
                 })));
             }
         } catch (notifError) {
@@ -206,6 +221,8 @@ export const updateDocument = async (req, res) => {
                 issue_date: issue_date ? new Date(issue_date) : existing.issue_date,
                 expiry_date: expiry_date ? new Date(expiry_date) : existing.expiry_date,
                 document_number: document_number !== undefined ? document_number : existing.document_number,
+                specialty: req.body.specialty !== undefined ? req.body.specialty : existing.specialty,
+                grade: req.body.grade !== undefined ? req.body.grade : existing.grade,
                 status: 'PENDING' // Reset to pending on update
             }
         });

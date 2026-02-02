@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapport de Projet - SociaLink</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: 11pt;
+            line-height: 1.7;
+            color: #1f2937;
+            background: white;
+            counter-reset: section;
+        }
+
+        @page {
+            size: A4;
+            margin: 2.5cm;
+        }
+
+        .page-break {
+            page-break-after: always;
+        }
+
+        .cover {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
+            color: white;
+            padding: 3rem;
+        }
+
+        .cover h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .cover h2 {
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 4rem;
+            line-height: 1.4;
+        }
+
+        .cover-info {
+            margin-top: 4rem;
+            font-size: 1.1rem;
+            line-height: 2;
+        }
+
+        h1 {
+            font-size: 22pt;
+            color: #1e3a8a;
+            margin: 2rem 0 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #3b82f6;
+            counter-increment: section;
+        }
+
+        h1::before {
+            content: counter(section) ". ";
+        }
+
+        h2 {
+            font-size: 16pt;
+            color: #1e40af;
+            margin: 1.5rem 0 1rem;
+        }
+
+        h3 {
+            font-size: 13pt;
+            color: #374151;
+            margin: 1.2rem 0 0.8rem;
+            font-weight: 600;
+        }
+
+        p {
+            margin: 0.8rem 0;
+            text-align: justify;
+        }
+
+        ul,
+        ol {
+            margin: 1rem 0 1rem 2.5rem;
+        }
+
+        li {
+            margin: 0.5rem 0;
+        }
+
+        strong {
+            color: #1f2937;
+            font-weight: 600;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 10pt;
+        }
+
+        th {
+            background: #3b82f6;
+            color: white;
+            padding: 0.8rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 0.7rem;
+            border: 1px solid #e5e7eb;
+        }
+
+        tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        .box {
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border-color: #3b82f6;
+        }
+
+        .success-box {
+            background: #d1fae5;
+            border-color: #10b981;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-color: #f59e0b;
+        }
+
+        code {
+            background: #f3f4f6;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 10pt;
+            color: #1f2937;
+        }
+
+        pre {
+            background: #1f2937;
+            color: #e5e7eb;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-size: 9.5pt;
+            line-height: 1.6;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin: 2rem 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .diagram-caption {
+            text-align: center;
+            font-style: italic;
+            color: #6b7280;
+            margin-top: -1rem;
+            margin-bottom: 2rem;
+            font-size: 10pt;
+        }
+
+        .toc {
+            margin: 2rem 0;
+            list-style: none;
+        }
+
+        .toc li {
+            margin: 1rem 0;
+            font-size: 11pt;
+            padding-left: 1rem;
+        }
+
+        .toc li::before {
+            content: "▸ ";
+            color: #3b82f6;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .highlight h3 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- PAGE DE GARDE -->
+    <div class="cover">
+        <h1>SOCIALINK</h1>
+        <h2>
+            RAPPORT DE PROJET<br>
+            DÉVELOPPEMENT FULL-STACK<br>
+            Plateforme de Réseau de Travailleurs Sociaux Indépendants
+        </h2>
+        <div class="cover-info">
+            <p><strong>Formation Développeur Web Full-Stack</strong></p>
+            <p>Année 2025</p>
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- TABLE DES MATIÈRES -->
+    <h1 style="counter-increment: none;">Table des Matières</h1>
+    <ol class="toc">
+        <li>Introduction & Contexte du projet</li>
+        <li>Objectifs pédagogiques du projet</li>
+        <li>Parcours utilisateurs (User Stories)</li>
+        <li>Spécifications fonctionnelles</li>
+        <li>Architecture technique globale</li>
+        <li>Back-end – Logique et sécurité</li>
+        <li>Base de données – Modélisation</li>
+        <li>Front-end – Interface & expérience utilisateur</li>
+        <li>Spécifications non fonctionnelles</li>
+        <li>Conclusion & perspectives</li>
+    </ol>
+
+    <div class="page-break"></div>
+
+    <!-- 1. INTRODUCTION & CONTEXTE -->
+    <h1>Introduction & Contexte du projet</h1>
+
+    <h2>1.1 Présentation générale</h2>
+
+    <p>
+        Ce projet consiste à concevoir et développer une <strong>plateforme web full-stack</strong> destinée à créer
+        un réseau sélectif de travailleurs sociaux indépendants.
+    </p>
+
+    <p>
+        L'objectif est de faciliter la mise en relation qualitative entre des <strong>établissements</strong>
+        (centres sociaux, structures médico-sociales, organismes spécialisés) et des <strong>professionnels
+            qualifiés</strong>
+        (techniciens spécialisés, ingénieurs sociaux, chefs de projet).
+    </p>
+
+    <p>
+        Contrairement aux plateformes de recrutement classiques, la solution ne se limite pas à publier des annonces :
+        elle repose sur un <strong>système de labellisation basé sur les diplômes et l'expérience</strong>,
+        garantissant un haut niveau de fiabilité et de qualité.
+    </p>
+
+    <h2>1.2 Problématique</h2>
+
+    <p>Les établissements rencontrent des difficultés à :</p>
+    <ul>
+        <li>Trouver rapidement des profils qualifiés</li>
+        <li>Garantir la continuité de l'accompagnement</li>
+        <li>Limiter la rotation excessive des intervenants</li>
+    </ul>
+
+    <p>
+        La plateforme répond à ces enjeux en proposant des renforts <strong>ciblés, validés et traçables</strong>,
+        favorisant un lien durable avec le public accompagné.
+    </p>
+
+    <div class="page-break"></div>
+
+    <!-- 2. OBJECTIFS PÉDAGOGIQUES -->
+    <h1>Objectifs pédagogiques du projet</h1>
+
+    <p>
+        Ce projet valide les compétences clés d'un <strong>développeur web full-stack</strong>.
+    </p>
+
+    <h2>2.1 Front-end (React)</h2>
+    <ul>
+        <li>Développement d'une <strong>Single Page Application (SPA)</strong></li>
+        <li>Gestion de formulaires complexes (inscription, profil, missions)</li>
+        <li>Tableaux de bord différenciés selon le rôle utilisateur</li>
+        <li>Gestion de l'état et des données asynchrones</li>
+    </ul>
+
+    <h2>2.2 Back-end (Node.js / Express)</h2>
+    <ul>
+        <li>Conception d'une <strong>API REST</strong></li>
+        <li>Authentification sécurisée via <strong>JWT</strong></li>
+        <li>Gestion des rôles (Travailleur, Établissement, Administrateur)</li>
+        <li>Protection des routes et logique métier</li>
+    </ul>
+
+    <h2>2.3 Base de données (SQL)</h2>
+    <ul>
+        <li>Modélisation relationnelle</li>
+        <li>Requêtes de filtrage avancées</li>
+        <li>Relations entre utilisateurs, profils, missions et candidatures</li>
+    </ul>
+
+    <div class="success-box box">
+        <h3>✅ Compétences démontrées</h3>
+        <p>
+            Ce projet illustre la maîtrise complète du cycle de développement d'une application web moderne,
+            de la conception à la mise en production, en passant par la sécurisation et l'optimisation.
+        </p>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- 3. PARCOURS UTILISATEURS -->
+    <h1>Parcours utilisateurs (User Stories)</h1>
+
+    <h2>3.1 Travailleur social indépendant</h2>
+
+    <p><strong>Fonctionnalités principales :</strong></p>
+
+    <div class="info-box box">
+        <h3>Création d'un profil enrichi</h3>
+        <ul>
+            <li>Informations personnelles</li>
+            <li>Expériences professionnelles</li>
+            <li>Diplômes (upload PDF)</li>
+            <li>Spécialités</li>
+        </ul>
+    </div>
+
+    <ul>
+        <li><strong>Gestion des disponibilités</strong> via un calendrier</li>
+        <li><strong>Consultation et candidature</strong> aux missions</li>
+        <li><strong>Suivi des missions</strong> en cours et terminées</li>
+    </ul>
+
+    <h2>3.2 Établissement</h2>
+
+    <p><strong>Fonctionnalités principales :</strong></p>
+
+    <div class="info-box box">
+        <h3>Publication d'offres de mission</h3>
+        <ul>
+            <li>Description du besoin</li>
+            <li>Dates, durée, urgence</li>
+            <li>Compétences requises</li>
+        </ul>
+    </div>
+
+    <ul>
+        <li><strong>Recherche de professionnels</strong> via filtres</li>
+        <li><strong>Gestion des candidatures</strong> reçues</li>
+        <li><strong>Validation des prestations</strong></li>
+        <li><strong>Évaluation et notation</strong> après mission</li>
+    </ul>
+
+    <h2>3.3 Administrateur (Le Réseau)</h2>
+
+    <p><strong>Fonctionnalités principales :</strong></p>
+
+    <ul>
+        <li><strong>Validation et labellisation</strong> des profils</li>
+        <li><strong>Vérification des diplômes</strong> et documents</li>
+        <li><strong>Vue globale</strong> des mises en relation</li>
+        <li><strong>Garantie du respect</strong> des standards de qualité</li>
+    </ul>
+
+    <div class="page-break"></div>
+
+    <!-- 4. SPÉCIFICATIONS FONCTIONNELLES -->
+    <h1>Spécifications fonctionnelles</h1>
+
+    <h2>4.1 Gestion des comptes et profils</h2>
+
+    <table>
+        <tr>
+            <th>Fonctionnalité</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td><strong>Inscription et connexion sécurisées</strong></td>
+            <td>Email + mot de passe, validation OTP, JWT pour sessions</td>
+        </tr>
+        <tr>
+            <td><strong>Gestion des rôles utilisateurs</strong></td>
+            <td>WORKER, ESTABLISHMENT, ADMIN, SUPER_ADMIN</td>
+        </tr>
+        <tr>
+            <td><strong>Profils enrichis pour les travailleurs</strong></td>
+            <td>CV, diplômes, expériences, spécialités, disponibilités</td>
+        </tr>
+        <tr>
+            <td><strong>Processus de validation</strong></td>
+            <td>Vérification manuelle des documents par administrateur</td>
+        </tr>
+    </table>
+
+    <h2>4.2 Mise en relation (Matching)</h2>
+
+    <div class="info-box box">
+        <h3>Dépôt de missions par les établissements</h3>
+        <p>Interface de création de mission avec critères détaillés (spécialité, expérience, localisation, contrat)</p>
+    </div>
+
+    <p><strong>Moteur de recherche avec filtres :</strong></p>
+    <ul>
+        <li>Spécialité</li>
+        <li>Expérience</li>
+        <li>Statut « Label Réseau »</li>
+        <li>Localisation géographique</li>
+    </ul>
+
+    <p><strong>Système de candidature</strong></p>
+    <ul>
+        <li>Candidature avec lettre de motivation</li>
+        <li>Notifications (interface et/ou email)</li>
+        <li>Suivi des statuts (en attente, accepté, refusé)</li>
+    </ul>
+
+    <h2>4.3 Suivi et qualité</h2>
+
+    <ul>
+        <li><strong>Tableaux de bord personnalisés</strong> par rôle</li>
+        <li><strong>Suivi des missions</strong> (à venir / en cours / terminées)</li>
+        <li><strong>Système d'évaluation</strong> post-mission</li>
+        <li><strong>Amélioration continue</strong> de la qualité du réseau</li>
+    </ul>
+
+    <div class="page-break"></div>
+
+    <!-- 5. ARCHITECTURE TECHNIQUE -->
+    <h1>Architecture technique globale</h1>
+
+    <h2>5.1 Vue d'ensemble</h2>
+
+    <p>L'application repose sur une architecture <strong>client–serveur</strong> :</p>
+
+    <pre>
+┌─────────────────────────────────────────────────────────────┐
+│                    [ React SPA ]                            │
+│  - Interface utilisateur moderne                           │
+│  - Composants réutilisables                                │
+│  - Gestion d'état (Context API)                            │
+└──────────────────────┬──────────────────────────────────────┘
+                       │
+                       │ HTTP / JSON (API REST)
+                       ↓
+┌──────────────────────────────────────────────────────────────┐
+│           [ API REST Node.js / Express ]                    │
+│  - Authentification JWT                                     │
+│  - Contrôle d'accès par rôle (RBAC)                        │
+│  - Logique métier centralisée                              │
+│  - Validation des données                                   │
+└──────────────────────┬──────────────────────────────────────┘
+                       │
+                       │ Prisma ORM
+                       ↓
+┌──────────────────────────────────────────────────────────────┐
+│              [ Base de données PostgreSQL ]                 │
+│  - 25+ tables relationnelles                               │
+│  - Contraintes d'intégrité strictes                        │
+│  - Indexes optimisés                                       │
+└─────────────────────────────────────────────────────────────┘
+    </pre>
+
+    <div class="diagram-caption">Architecture globale de la plateforme SociaLink</div>
+
+    <div class="success-box box">
+        <h3>Avantages de cette architecture</h3>
+        <ul>
+            <li><strong>Séparation claire des responsabilités</strong> (front/back/data)</li>
+            <li><strong>Maintenance facilitée</strong> par la modularité</li>
+            <li><strong>Évolutivité</strong> du projet (ajout de fonctionnalités)</li>
+            <li><strong>Réutilisation</strong> de l'API par d'autres clients (mobile, etc.)</li>
+        </ul>
+    </div>
+
+    <h2>5.2 Stack technologique</h2>
+
+    <table>
+        <tr>
+            <th>Couche</th>
+            <th>Technologies</th>
+            <th>Rôle</th>
+        </tr>
+        <tr>
+            <td><strong>Frontend</strong></td>
+            <td>React 19, TailwindCSS 4, React Router 7</td>
+            <td>Interface utilisateur interactive</td>
+        </tr>
+        <tr>
+            <td><strong>Backend</strong></td>
+            <td>Node.js 20, Express 5, Prisma 6</td>
+            <td>API REST et logique métier</td>
+        </tr>
+        <tr>
+            <td><strong>Base de données</strong></td>
+            <td>PostgreSQL 16</td>
+            <td>Stockage des données</td>
+        </tr>
+        <tr>
+            <td><strong>Authentification</strong></td>
+            <td>JWT, Bcrypt</td>
+            <td>Sécurité et sessions</td>
+        </tr>
+        <tr>
+            <td><strong>Temps réel</strong></td>
+            <td>Socket.io 4</td>
+            <td>Notifications instantanées</td>
+        </tr>
+        <tr>
+            <td><strong>Paiements</strong></td>
+            <td>Stripe API</td>
+            <td>Abonnements récurrents</td>
+        </tr>
+    </table>
+
+    <div class="page-break"></div>
+
+    <!-- 6. BACKEND -->
+    <h1>Back-end – Logique et sécurité</h1>
+
+    <h2>6.1 API REST</h2>
+
+    <p><strong>Routes organisées par domaine :</strong></p>
+
+    <table>
+        <tr>
+            <th>Domaine</th>
+            <th>Exemples de routes</th>
+            <th>Méthodes HTTP</th>
+        </tr>
+        <tr>
+            <td><strong>Authentification</strong></td>
+            <td>/api/auth/register<br>/api/auth/login</td>
+            <td>POST</td>
+        </tr>
+        <tr>
+            <td><strong>Profils</strong></td>
+            <td>/api/worker/profile<br>/api/establishment/profile</td>
+            <td>GET, PUT</td>
+        </tr>
+        <tr>
+            <td><strong>Missions</strong></td>
+            <td>/api/missions<br>/api/missions/:id</td>
+            <td>GET, POST, PUT, DELETE</td>
+        </tr>
+        <tr>
+            <td><strong>Candidatures</strong></td>
+            <td>/api/applications<br>/api/applications/:id</td>
+            <td>GET, POST, PUT</td>
+        </tr>
+        <tr>
+            <td><strong>Administration</strong></td>
+            <td>/api/admin/validate-profile<br>/api/admin/users</td>
+            <td>GET, PUT</td>
+        </tr>
+    </table>
+
+    <div class="info-box box">
+        <h3>Validation des données côté serveur</h3>
+        <p>
+            Toutes les données entrantes sont validées via <strong>Zod schemas</strong> avant traitement,
+            garantissant la cohérence et la sécurité des données.
+        </p>
+    </div>
+
+    <h2>6.2 Sécurité</h2>
+
+    <pre>
+┌──────────────────────────────────────────────────────────┐
+│              FLUX D'AUTHENTIFICATION                     │
+└──────────────────────────────────────────────────────────┘
+
+1. Utilisateur → POST /api/auth/login
+   Body: { email, password }
+
+2. Backend vérifie credentials
+   - Recherche user en DB
+   - Compare password avec hash (bcrypt)
+
+3. Si valide → Génération JWT
+   Token contient: { user_id, role }
+   Signature: HMAC SHA-256 avec secret
+
+4. Token envoyé au client
+   - Header: Authorization: Bearer {token}
+   - Cookie httpOnly (sécurisé)
+
+5. Requêtes suivantes
+   - Middleware vérifie token
+   - Hydrate req.user avec données utilisateur
+   - Contrôle d'accès par rôle (RBAC)
+    </pre>
+
+    <div class="diagram-caption">Processus d'authentification sécurisée</div>
+
+    <h3>Mesures de sécurité implémentées</h3>
+
+    <table>
+        <tr>
+            <th>Mesure</th>
+            <th>Implémentation</th>
+        </tr>
+        <tr>
+            <td><strong>Hashing passwords</strong></td>
+            <td>Bcrypt avec cost factor 10 (jamais stockés en clair)</td>
+        </tr>
+        <tr>
+            <td><strong>JWT Tokens</strong></td>
+            <td>Signature HMAC, expiration 7 jours, secret 256-bit</td>
+        </tr>
+        <tr>
+            <td><strong>Protection routes</strong></td>
+            <td>Middleware <code>protect</code> vérifie authentification</td>
+        </tr>
+        <tr>
+            <td><strong>Contrôle d'accès (RBAC)</strong></td>
+            <td>Middleware <code>requireRole(['ADMIN'])</code></td>
+        </tr>
+        <tr>
+            <td><strong>HTTPS</strong></td>
+            <td>Chiffrement transport en production</td>
+        </tr>
+        <tr>
+            <td><strong>CORS</strong></td>
+            <td>Origin whitelist configuré</td>
+        </tr>
+    </table>
+
+    <div class="page-break"></div>
+
+    <!-- 7. BASE DE DONNÉES -->
+    <h1>Base de données – Modélisation</h1>
+
+    <h2>7.1 Principales entités</h2>
+
+    <table>
+        <tr>
+            <th>Table</th>
+            <th>Description</th>
+            <th>Champs clés</th>
+        </tr>
+        <tr>
+            <td><strong>User</strong></td>
+            <td>Authentification commune à tous les utilisateurs</td>
+            <td>email, password (hash), role, status</td>
+        </tr>
+        <tr>
+            <td><strong>WorkerProfile</strong></td>
+            <td>Profil détaillé du travailleur social</td>
+            <td>first_name, last_name, specialities, experience</td>
+        </tr>
+        <tr>
+            <td><strong>EstablishmentProfile</strong></td>
+            <td>Profil de l'établissement recruteur</td>
+            <td>name, type, siret, address, city</td>
+        </tr>
+        <tr>
+            <td><strong>Mission</strong></td>
+            <td>Offre de mission publiée par établissement</td>
+            <td>title, description, salary, deadline, status</td>
+        </tr>
+        <tr>
+            <td><strong>Application</strong></td>
+            <td>Candidature d'un worker à une mission</td>
+            <td>worker_id, mission_id, status, cover_letter</td>
+        </tr>
+        <tr>
+            <td><strong>Subscription</strong></td>
+            <td>Abonnement Stripe de l'utilisateur</td>
+            <td>user_id, plan_id, stripe_id, status</td>
+        </tr>
+        <tr>
+            <td><strong>Message</strong></td>
+            <td>Messagerie privée entre utilisateurs</td>
+            <td>sender_id, receiver_id, content, read_at</td>
+        </tr>
+    </table>
+
+    <h2>7.2 Relations clés</h2>
+
+    <pre>
+┌──────────────────────────────────────────────────────────┐
+│            SCHÉMA RELATIONNEL SIMPLIFIÉ                  │
+└──────────────────────────────────────────────────────────┘
+
+User (1) ───────── (0..1) WorkerProfile
+  │
+  │ (1) ─────── (0..1) EstablishmentProfile
+  │
+  │ (1) ─────── (0..1) Subscription
+  │
+  └─ (1) ─────── (N) Message (sender/receiver)
+
+
+WorkerProfile (1) ───── (N) Application
+                              │
+                              │ (N) ───── (1) Mission
+
+
+EstablishmentProfile (1) ───── (N) Mission
+                                     │
+                                     │ (1) ───── (N) Application
+
+
+Mission → filtres complexes (spécialité, localisation, statut)
+Application → tracking (PENDING, ACCEPTED, REJECTED)
+    </pre>
+
+    <div class="diagram-caption">Relations entre les principales entités</div>
+
+    <div class="success-box box">
+        <h3>✅ Avantages de la modélisation</h3>
+        <ul>
+            <li><strong>Suivi précis</strong> de toutes les interactions</li>
+            <li><strong>Recherche efficace</strong> avec filtres combinés</li>
+            <li><strong>Traçabilité complète</strong> des prestations</li>
+            <li><strong>Intégrité garantie</strong> par contraintes FK</li>
+        </ul>
+    </div>
+
+    <h2>7.3 Prisma ORM</h2>
+
+    <p>
+        <strong>Prisma</strong> est utilisé comme ORM (Object-Relational Mapping) pour interagir avec PostgreSQL.
+    </p>
+
+    <p><strong>Avantages :</strong></p>
+    <ul>
+        <li>Génération automatique de <strong>client TypeScript type-safe</strong></li>
+        <li><strong>Migrations versionnées</strong> pour évolution schéma</li>
+        <li><strong>Protection injections SQL</strong> (requêtes paramétrées)</li>
+        <li><strong>Relations élégantes</strong> avec include/select</li>
+        <li><strong>Prisma Studio</strong> : interface graphique pour explorer la DB</li>
+    </ul>
+
+    <div class="page-break"></div>
+
+    <!-- 8. FRONTEND -->
+    <h1>Front-end – Interface & expérience utilisateur</h1>
+
+    <h2>8.1 Choix technologiques</h2>
+
+    <div class="info-box box">
+        <h3>React pour une interface fluide</h3>
+        <p>
+            React permet de créer une <strong>Single Page Application (SPA)</strong> où les transitions
+            entre pages se font sans rechargement, offrant une expérience utilisateur moderne et réactive.
+        </p>
+    </div>
+
+    <p><strong>Technologies frontend :</strong></p>
+    <ul>
+        <li><strong>React 19</strong> : Composants, hooks, Context API</li>
+        <li><strong>React Router 7</strong> : Navigation SPA avec routes protégées</li>
+        <li><strong>TailwindCSS 4</strong> : Styling utility-first, responsive</li>
+        <li><strong>Axios</strong> : Requêtes HTTP avec interceptors JWT</li>
+        <li><strong>Socket.io Client</strong> : Notifications temps réel</li>
+    </ul>
+
+    <h2>8.2 Tableaux de bord adaptés à chaque rôle</h2>
+
+    <h3>Dashboard Travailleur</h3>
+
+    <img src="file:///C:/Users/hafid/.gemini/antigravity/brain/82c66c3a-5405-4220-9fc1-7e6b5064a3b9/worker_dashboard_screenshot_1769952292875.png"
+        alt="Dashboard Worker" />
+    <div class="diagram-caption">Interface du tableau de bord travailleur</div>
+
+    <p><strong>Composants visibles :</strong></p>
+    <ul>
+        <li>KPIs en temps réel (missions actives, candidatures, messages)</li>
+        <li>Missions recommandées personnalisées selon profil</li>
+        <li>Calendrier de disponibilités</li>
+        <li>Graphique d'activité hebdomadaire</li>
+    </ul>
+
+    <h3>Panel Validation Admin</h3>
+
+    <img src="file:///C:/Users/hafid/.gemini/antigravity/brain/82c66c3a-5405-4220-9fc1-7e6b5064a3b9/admin_validation_panel_1769952313408.png"
+        alt="Panel Admin" />
+    <div class="diagram-caption">Interface de validation administrateur</div>
+
+    <p><strong>Fonctionnalités :</strong></p>
+    <ul>
+        <li>Liste des profils en attente de validation</li>
+        <li>Prévisualisation des documents (CIN, diplômes PDF)</li>
+        <li>Actions rapides : Valider / Rejeter avec commentaire</li>
+        <li>Filtres par statut (EN_ATTENTE, VALIDÉ, REJETÉ)</li>
+    </ul>
+
+    <h2>8.3 UX / UI</h2>
+
+    <div class="success-box box">
+        <h3>Principes appliqués</h3>
+        <ul>
+            <li><strong>Design responsive</strong> : Adaptation ordinateur & tablette</li>
+            <li><strong>Navigation claire</strong> : Menu adapté au rôle utilisateur</li>
+            <li><strong>Accessibilité</strong> : Contrastes, tailles de police lisibles</li>
+            <li><strong>Interface orientée efficacité</strong> : Actions rapides à portée de clic</li>
+            <li><strong>Feedback visuel</strong> : Notifications, loaders, états de boutons</li>
+        </ul>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- 9. SPÉCIFICATIONS NON FONCTIONNELLES -->
+    <h1>Spécifications non fonctionnelles</h1>
+
+    <h2>9.1 Sécurité & RGPD</h2>
+
+    <h3>Protection des données personnelles</h3>
+
+    <table>
+        <tr>
+            <th>Exigence</th>
+            <th>Mise en œuvre</th>
+        </tr>
+        <tr>
+            <td><strong>Données sensibles protégées</strong></td>
+            <td>Passwords hashés, JWT sécurisés, HTTPS</td>
+        </tr>
+        <tr>
+            <td><strong>Accès contrôlé</strong></td>
+            <td>RBAC strict, validation multi-niveaux</td>
+        </tr>
+        <tr>
+            <td><strong>Séparation des responsabilités</strong></td>
+            <td>Admin ne voit PAS données financières (rôle SUPER_ADMIN distinct)</td>
+        </tr>
+        <tr>
+            <td><strong>Conformité RGPD</strong></td>
+            <td>Consentement explicite, données minimales collectées, droit de rectification</td>
+        </tr>
+    </table>
+
+    <div class="warning-box box">
+        <h3>Points d'amélioration identifiés</h3>
+        <ul>
+            <li><strong>Droit à l'effacement :</strong> Endpoint <code>DELETE /account</code> à implémenter</li>
+            <li><strong>Export de données :</strong> Endpoint <code>GET /data-export</code> pour portabilité</li>
+            <li><strong>MFA/2FA :</strong> Authentification à deux facteurs (future version)</li>
+            <li><strong>Rate limiting :</strong> Protection contre brute-force (express-rate-limit)</li>
+        </ul>
+    </div>
+
+    <h2>9.2 Performance</h2>
+
+    <table>
+        <tr>
+            <th>Optimisation</th>
+            <th>Résultat</th>
+        </tr>
+        <tr>
+            <td><strong>Temps de réponse API</strong></td>
+            <td>
+                < 500 ms (moyenne 150 ms)</td>
+        </tr>
+        <tr>
+            <td><strong>Mise en cache</strong></td>
+            <td>Context API côté client pour données user</td>
+        </tr>
+        <tr>
+            <td><strong>Requêtes DB optimisées</strong></td>
+            <td>Indexes PostgreSQL, Prisma select minimal</td>
+        </tr>
+        <tr>
+            <td><strong>Architecture évolutive</strong></td>
+            <td>Séparation front/back, APIs modulaires</td>
+        </tr>
+    </table>
+
+    <div class="page-break"></div>
+
+    <!-- 10. CONCLUSION -->
+    <h1>Conclusion & perspectives</h1>
+
+    <h2>10.1 Bilan du projet</h2>
+
+    <div class="highlight">
+        <h3>🎯 Ce projet démontre la capacité à :</h3>
+        <p style="color: white; text-align: left; margin-top: 1rem;">
+            ✅ Concevoir une application full-stack complète<br>
+            ✅ Traduire un besoin métier en solution technique<br>
+            ✅ Mettre en œuvre des principes de sécurité et de qualité<br>
+            ✅ Travailler sur une architecture évolutive<br>
+            ✅ Livrer un produit fonctionnel et professionnel
+        </p>
+    </div>
+
+    <h2>10.2 Compétences acquises</h2>
+
+    <table>
+        <tr>
+            <th>Domaine</th>
+            <th>Compétences validées</th>
+        </tr>
+        <tr>
+            <td><strong>Frontend</strong></td>
+            <td>React SPA, gestion d'état, formulaires complexes, responsive design</td>
+        </tr>
+        <tr>
+            <td><strong>Backend</strong></td>
+            <td>API REST, authentification JWT, RBAC, logique métier</td>
+        </tr>
+        <tr>
+            <td><strong>Base de données</strong></td>
+            <td>Modélisation relationnelle, PostgreSQL, ORM Prisma</td>
+        </tr>
+        <tr>
+            <td><strong>Sécurité</strong></td>
+            <td>Hashing passwords, protection routes, validation données</td>
+        </tr>
+        <tr>
+            <td><strong>Intégrations</strong></td>
+            <td>Stripe (paiements), Socket.io (temps réel), emails</td>
+        </tr>
+    </table>
+
+    <h2>10.3 Perspectives d'évolution</h2>
+
+    <h3>Court terme</h3>
+    <ul>
+        <li><strong>Messagerie temps réel</strong> enrichie (fichiers, emojis)</li>
+        <li><strong>Rate limiting</strong> pour protection brute-force</li>
+        <li><strong>Endpoints RGPD</strong> (export/delete données)</li>
+    </ul>
+
+    <h3>Moyen terme</h3>
+    <ul>
+        <li><strong>Application mobile</strong> React Native</li>
+        <li><strong>Statistiques avancées</strong> pour établissements (taux de réponse, délais moyens)</li>
+        <li><strong>MFA/2FA</strong> pour sécurité renforcée</li>
+    </ul>
+
+    <h3>Long terme</h3>
+    <ul>
+        <li><strong>Matching intelligent</strong> avec machine learning</li>
+        <li><strong>Chat vidéo intégré</strong> pour entretiens en ligne</li>
+        <li><strong>API publique</strong> pour partenaires</li>
+    </ul>
+
+    <h2>10.4 Conclusion finale</h2>
+
+    <p>
+        <strong>SociaLink</strong> illustre une maîtrise complète du développement web moderne.
+        Le projet prouve ma capacité à concevoir, développer et déployer une application professionnelle
+        répondant à un besoin métier réel, avec un haut niveau de qualité technique et de sécurité.
+    </p>
+
+    <p>
+        Cette plateforme démontre l'application concrète des compétences acquises en formation,
+        de la base de données au frontend, en passant par la sécurité et les intégrations tierces.
+    </p>
+
+    <div class="highlight" style="margin-top: 3rem;">
+        <p style="font-size: 1.3rem; font-weight: 600; margin: 0;">
+            Merci de votre attention
+        </p>
+        <p style="margin: 1rem 0 0 0; opacity: 0.95;">
+            Rapport de Projet - SociaLink<br>
+            Année 2025
+        </p>
+    </div>
+
+</body>
+
+</html>

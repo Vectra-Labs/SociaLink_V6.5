@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapport Technique - SociaLink v6.5</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: 11pt;
+            line-height: 1.6;
+            color: #1f2937;
+            background: white;
+        }
+
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+
+        .page-break {
+            page-break-after: always;
+        }
+
+        .cover {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem;
+        }
+
+        .cover h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .cover h2 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 3rem;
+        }
+
+        .cover-info {
+            margin-top: 3rem;
+            font-size: 1rem;
+        }
+
+        h1 {
+            font-size: 24pt;
+            color: #1e3a8a;
+            margin: 1.5rem 0 1rem;
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 18pt;
+            color: #1e40af;
+            margin: 1.2rem 0 0.8rem;
+        }
+
+        h3 {
+            font-size: 14pt;
+            color: #1e40af;
+            margin: 1rem 0 0.6rem;
+        }
+
+        p {
+            margin: 0.5rem 0;
+            text-align: justify;
+        }
+
+        ul,
+        ol {
+            margin: 0.5rem 0 0.5rem 2rem;
+        }
+
+        li {
+            margin: 0.3rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 10pt;
+        }
+
+        th {
+            background: #3b82f6;
+            color: white;
+            padding: 0.6rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 0.5rem;
+            border: 1px solid #e5e7eb;
+        }
+
+        tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        .feature-box {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .success-box {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        code {
+            background: #f3f4f6;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 9pt;
+        }
+
+        pre {
+            background: #1f2937;
+            color: #e5e7eb;
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-size: 9pt;
+            line-height: 1.4;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin: 1rem 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .toc {
+            margin: 2rem 0;
+        }
+
+        .toc li {
+            margin: 0.8rem 0;
+            font-size: 11pt;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- PAGE DE GARDE -->
+    <div class="cover">
+        <h1>SOCIALINK v6.5</h1>
+        <h2>Plateforme de Mise en Relation<br>Travailleurs Sociaux × Établissements</h2>
+        <div class="cover-info">
+            <p><strong>Rapport Technique de Fin de Formation</strong></p>
+            <p>Développement Full-Stack JavaScript</p>
+            <p>React 19 • Node.js 20 • PostgreSQL 16</p>
+            <p style="margin-top: 2rem;">Février 2026</p>
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- TABLE DES MATIÈRES -->
+    <h1>Table des Matières</h1>
+    <ol class="toc">
+        <li>Introduction</li>
+        <li>Présentation de SociaLink</li>
+        <li>Architecture Technique</li>
+        <li>Backend - API REST</li>
+        <li>Base de Données PostgreSQL</li>
+        <li>Frontend - Interface React</li>
+        <li>Sécurité & Conformité</li>
+        <li>Déploiement</li>
+        <li>Compétences Acquises & Conclusion</li>
+    </ol>
+
+    <div class="page-break"></div>
+
+    <!-- 1. INTRODUCTION -->
+    <h1>1. Introduction</h1>
+
+    <h2>1.1 Contexte du Projet</h2>
+    <p>
+        <strong>SociaLink</strong> est une plateforme web permettant de connecter des <strong>travailleurs sociaux
+            indépendants</strong>
+        (éducateurs spécialisés, assistants sociaux, psychologues) avec des <strong>établissements</strong> (EHPAD,
+        crèches, centres d'accueil)
+        au Maroc. Le projet répond à un besoin réel : faciliter le recrutement flexible dans le secteur social.
+    </p>
+
+    <h2>1.2 Objectifs Pédagogiques</h2>
+    <p>Ce projet de fin de formation démontre ma capacité à :</p>
+    <ul>
+        <li>Concevoir et développer une application full-stack complète</li>
+        <li>Implémenter une architecture REST avec authentification sécurisée</li>
+        <li>Gérer des bases de données relationnelles complexes</li>
+        <li>Créer des interfaces utilisateur modernes et responsives</li>
+        <li>Intégrer des services tiers (paiements, emails, temps réel)</li>
+        <li>Appliquer les bonnes pratiques de sécurité web</li>
+    </ul>
+
+    <h2>1.3 Public Cible</h2>
+    <ul>
+        <li><strong>Workers:</strong> Professionnels cherchant missions freelance/CDI</li>
+        <li><strong>Establishments:</strong> Structures recrutant des profils sociaux</li>
+        <li><strong>Admins:</strong> Équipe validant profils et documents</li>
+    </ul>
+
+    <div class="page-break"></div>
+
+    <!-- 2. PRÉSENTATION SOCIALINK -->
+    <h1>2. Présentation de SociaLink</h1>
+
+    <h2>2.1 Concept</h2>
+    <p>
+        SociaLink fonctionne comme un <strong>LinkedIn spécialisé</strong> pour le secteur social marocain.
+        Les travailleurs créent leurs profils, les établissements publient des missions, et le matching se fait
+        via un système de candidatures.
+    </p>
+
+    <h2>2.2 Utilisateurs et Rôles</h2>
+
+    <table>
+        <tr>
+            <th>Rôle</th>
+            <th>Description</th>
+            <th>Principales Fonctionnalités</th>
+        </tr>
+        <tr>
+            <td><strong>WORKER</strong></td>
+            <td>Travailleur social indépendant</td>
+            <td>
+                • Créer profil professionnel<br>
+                • Candidater aux missions<br>
+                • Messagerie avec établissements<br>
+                • Gestion disponibilités
+            </td>
+        </tr>
+        <tr>
+            <td><strong>ESTABLISHMENT</strong></td>
+            <td>Structure employeuse</td>
+            <td>
+                • Publier missions<br>
+                • Consulter candidatures<br>
+                • Contacter workers<br>
+                • Gérer abonnements
+            </td>
+        </tr>
+        <tr>
+            <td><strong>ADMIN</strong></td>
+            <td>Modérateur plateforme</td>
+            <td>
+                • Valider profils workers<br>
+                • Vérifier documents (CIN, diplômes)<br>
+                • Modérer contenu<br>
+                • Gérer litiges
+            </td>
+        </tr>
+        <tr>
+            <td><strong>SUPER_ADMIN</strong></td>
+            <td>Administrateur système</td>
+            <td>
+                • Toutes permissions ADMIN +<br>
+                • Gérer équipe admins<br>
+                • Accès statistiques financières<br>
+                • Configuration plateforme
+            </td>
+        </tr>
+    </table>
+
+    <h2>2.3 Fonctionnalités Principales</h2>
+
+    <div class="feature-box">
+        <h3>✅ Mise en Relation Professionnelle</h3>
+        <ul>
+            <li>Création profils détaillés (spécialités, expérience, diplômes)</li>
+            <li>Publication missions avec critères (contrat, salaire, localisation)</li>
+            <li>Système candidatures avec suivi statuts</li>
+            <li>Recommandations missions basées sur profil worker</li>
+        </ul>
+    </div>
+
+    <div class="feature-box">
+        <h3>✅ Validation Multi-Niveaux</h3>
+        <ul>
+            <li><strong>Niveau 1:</strong> Email verification (OTP 6 chiffres)</li>
+            <li><strong>Niveau 2:</strong> Upload documents (CIN, diplômes)</li>
+            <li><strong>Niveau 3:</strong> Validation manuelle admin</li>
+        </ul>
+    </div>
+
+    <div class="feature-box">
+        <h3>✅ Abonnements & Paiements</h3>
+        <ul>
+            <li>Plan FREE (3 candidatures/mois)</li>
+            <li>Plan BASIC (149 DH/mois, 15 candidatures)</li>
+            <li>Plan PRO (299 DH/mois, illimité + badge premium)</li>
+            <li>Intégration Stripe pour paiements sécurisés</li>
+        </ul>
+    </div>
+
+    <div class="feature-box">
+        <h3>✅ Communication Temps Réel</h3>
+        <ul>
+            <li>Messagerie privée worker ↔ establishment</li>
+            <li>Notifications instantanées (Socket.io)</li>
+            <li>Système de révisions/notes (optionnel)</li>
+        </ul>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- 3. ARCHITECTURE TECHNIQUE -->
+    <h1>3. Architecture Technique</h1>
+
+    <h2>3.1 Vue d'Ensemble</h2>
+
+    <pre>
+┌─────────────────────────────────────────────────────────────┐
+│                    FRONTEND (React SPA)                     │
+│  - React 19 + React Router                                 │
+│  - TailwindCSS 4 pour styling                              │
+│  - Axios pour requêtes HTTP                                │
+│  - Socket.io-client pour WebSocket                         │
+└──────────────────────┬──────────────────────────────────────┘
+                       │ HTTPS (API REST)
+┌──────────────────────▼──────────────────────────────────────┐
+│                  BACKEND (Node.js API)                      │
+│  - Express 5 (routing, middleware)                         │
+│  - JWT pour authentification                               │
+│  - Bcrypt pour hashing passwords                           │
+│  - Socket.io pour temps réel                               │
+└──────────────────────┬──────────────────────────────────────┘
+                       │ Prisma ORM
+┌──────────────────────▼──────────────────────────────────────┐
+│              BASE DE DONNÉES PostgreSQL 16                  │
+│  - 25+ tables relationnelles                               │
+│  - Indexes optimisés                                       │
+│  - Contraintes d'intégrité strictes                        │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│                   SERVICES EXTERNES                         │
+│  - Stripe: Paiements récurrents                            │
+│  - NodeMailer: Envoi emails (OTP, notifications)           │
+│  - Express-fileupload: Upload CIN/diplômes                 │
+└─────────────────────────────────────────────────────────────┘
+    </pre>
+
+    <h2>3.2 Stack Technologique</h2>
+
+    <table>
+        <tr>
+            <th>Couche</th>
+            <th>Technologies</th>
+            <th>Version</th>
+        </tr>
+        <tr>
+            <td><strong>Frontend</strong></td>
+            <td>React, TailwindCSS, React Router, Axios</td>
+            <td>19.0, 4.0, 7.x, 1.6</td>
+        </tr>
+        <tr>
+            <td><strong>Backend</strong></td>
+            <td>Node.js, Express, Prisma, JWT, Bcrypt</td>
+            <td>20.x, 5.x, 6.x</td>
+        </tr>
+        <tr>
+            <td><strong>Base de données</strong></td>
+            <td>PostgreSQL</td>
+            <td>16.x</td>
+        </tr>
+        <tr>
+            <td><strong>Temps réel</strong></td>
+            <td>Socket.io</td>
+            <td>4.8</td>
+        </tr>
+        <tr>
+            <td><strong>Paiements</strong></td>
+            <td>Stripe API</td>
+            <td>v16</td>
+        </tr>
+    </table>
+
+    <div class="success-box">
+        <h3>Pourquoi cette stack ?</h3>
+        <ul>
+            <li><strong>React:</strong> Ecosystem riche, employabilité élevée (12K+ jobs France)</li>
+            <li><strong>PostgreSQL:</strong> Relations complexes, ACID compliant, types avancés (JSONB, Arrays)</li>
+            <li><strong>Prisma:</strong> Type-safety TypeScript, migrations automatiques, excellent DX</li>
+            <li><strong>Stripe:</strong> Standard industrie paiements, webhooks sécurisés</li>
+        </ul>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- 4. BACKEND -->
+    <h1>4. Backend - API REST</h1>
+
+    <h2>4.1 Organisation du Code</h2>
+
+    <pre>
+backend/
+├── src/
+│   ├── controllers/      # Logique métier (19 fichiers)
+│   │   ├── authController.js
+│   │   ├── workerController.js
+│   │   ├── missionController.js
+│   │   ├── stripeController.js
+│   │   └── ...
+│   ├── routes/           # Définition routes API (15 fichiers)
+│   ├── middleware/       # Auth, RBAC, validation (8 fichiers)
+│   ├── services/         # Email, upload, websocket
+│   └── server.js         # Point d'entrée
+├── prisma/
+│   └── schema.prisma     # Schéma BDD (862 lignes)
+└── uploads/              # Stockage documents
+    </pre>
+
+    <h2>4.2 Authentification JWT</h2>
+
+    <p><strong>Flux d'authentification:</strong></p>
+    <ol>
+        <li>User envoie email + password → <code>POST /api/auth/login</code></li>
+        <li>Backend vérifie credentials (bcrypt compare)</li>
+        <li>Si valide → génère JWT token (expiration 7 jours)</li>
+        <li>Token envoyé en réponse + stocké cookie httpOnly</li>
+        <li>Frontend utilise token dans header <code>Authorization: Bearer {token}</code></li>
+        <li>Middleware <code>protect</code> vérifie token sur routes protégées</li>
+    </ol>
+
+    <pre>
+// Exemple middleware protection routes
+export const protect = async (req, res, next) => {
+  let token = req.headers.authorization?.split(" ")[1] || req.cookies?.jwt;
+  
+  if (!token) return res.status(401).json({ message: "Non authentifié" });
+
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  const user = await prisma.user.findUnique({ where: { user_id: decoded.id } });
+  
+  req.user = user;  // User disponible dans contrôleurs
+  next();
+};
+    </pre>
+
+    <h2>4.3 Contrôle d'Accès par Rôle (RBAC)</h2>
+
+    <p>Middleware <code>requireRole</code> restreint accès selon rôle utilisateur:</p>
+
+    <pre>
+// Exemple protection route admin
+router.get('/admin/users', 
+  protect,                           // 1) Vérifier authentification
+  requireRole(['ADMIN', 'SUPER_ADMIN']), // 2) Vérifier rôle
+  getAllUsers                        // 3) Exécuter logique
+);
+    </pre>
+
+    <table>
+        <tr>
+            <th>Route</th>
+            <th>Méthode</th>
+            <th>Rôles Autorisés</th>
+        </tr>
+        <tr>
+            <td>/api/missions</td>
+            <td>GET</td>
+            <td>Tous (public)</td>
+        </tr>
+        <tr>
+            <td>/api/missions/create</td>
+            <td>POST</td>
+            <td>ESTABLISHMENT</td>
+        </tr>
+        <tr>
+            <td>/api/applications/create</td>
+            <td>POST</td>
+            <td>WORKER</td>
+        </tr>
+        <tr>
+            <td>/api/admin/validate-profile</td>
+            <td>PUT</td>
+            <td>ADMIN, SUPER_ADMIN</td>
+        </tr>
+        <tr>
+            <td>/api/super-admin/create-admin</td>
+            <td>POST</td>
+            <td>SUPER_ADMIN uniquement</td>
+        </tr>
+    </table>
+
+    <h2>4.4 Paiements Stripe</h2>
+
+    <p><strong>Processus abonnement:</strong></p>
+    <ol>
+        <li>Worker choisit plan (BASIC ou PRO) sur frontend</li>
+        <li>Frontend appelle <code>POST /api/stripe/create-checkout-session</code></li>
+        <li>Backend crée session Stripe → URL paiement retournée</li>
+        <li>Worker redirigé vers Stripe Checkout (paiement sécurisé)</li>
+        <li>Stripe envoie webhook <code>checkout.session.completed</code> à notre backend</li>
+        <li>Backend active abonnement en DB + met statut user à VALIDATED</li>
+    </ol>
+
+    <div class="warning-box">
+        <h3>Sécurité Webhooks Stripe</h3>
+        <p>
+            <strong>Critical:</strong> Les webhooks Stripe sont signés via HMAC SHA-256. Notre code vérifie
+            systématiquement la signature avant traiter événement, empêchant attaquants d'envoyer faux
+            événements (ex: activer PRO gratuitement).
+        </p>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- 5. BASE DE DONNÉES -->
+    <h1>5. Base de Données PostgreSQL</h1>
+
+    <h2>5.1 Modèle de Données</h2>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-number">25+</div>
+            <div class="stat-label">Tables</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">862</div>
+            <div class="stat-label">Lignes Schema</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">40+</div>
+            <div class="stat-label">Relations</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">18</div>
+            <div class="stat-label">Indexes</div>
+        </div>
+    </div>
+
+    <h2>5.2 Tables Principales</h2>
+
+    <table>
+        <tr>
+            <th>Table</th>
+            <th>Description</th>
+            <th>Champs Clés</th>
+        </tr>
+        <tr>
+            <td><strong>User</strong></td>
+            <td>Authentification commune</td>
+            <td>email, password (hashed), role, status</td>
+        </tr>
+        <tr>
+            <td><strong>WorkerProfile</strong></td>
+            <td>Détails travailleur social</td>
+            <td>first_name, specialities, experience, diplomas</td>
+        </tr>
+        <tr>
+            <td><strong>EstablishmentProfile</strong></td>
+            <td>Détails établissement</td>
+            <td>name, type, siret, address</td>
+        </tr>
+        <tr>
+            <td><strong>Mission</strong></td>
+            <td>Offres d'emploi</td>
+            <td>title, description, salary, deadline, status</td>
+        </tr>
+        <tr>
+            <td><strong>Application</strong></td>
+            <td>Candidatures workers</td>
+            <td>worker_id, mission_id, status, cover_letter</td>
+        </tr>
+        <tr>
+            <td><strong>Subscription</strong></td>
+            <td>Abonnements Stripe</td>
+            <td>user_id, plan_id, stripe_subscription_id, status</td>
+        </tr>
+        <tr>
+            <td><strong>Message</strong></td>
+            <td>Messagerie privée</td>
+            <td>sender_id, receiver_id, content, read_at</td>
+        </tr>
+    </table>
+
+    <h2>5.3 Prisma ORM</h2>
+
+    <p>
+        <strong>Prisma</strong> génère un client TypeScript type-safe depuis le schéma. Avantages:
+    </p>
+    <ul>
+        <li>Autocomplete intelligent (VS Code)</li>
+        <li>Protection injections SQL (requêtes paramétrées)</li>
+        <li>Migrations versionnées automatiques</li>
+        <li>Relations gérées élégamment</li>
+    </ul>
+
+    <pre>
+// Exemple requête Prisma
+const user = await prisma.user.findUnique({
+  where: { email },
+  include: {
+    workerProfile: true,  // Eager loading relation
+    subscription: true
+  }
+});
+    </pre>
+
+    <div class="page-break"></div>
+
+    <!-- 6. FRONTEND REACT -->
+    <h1>6. Frontend - Interface React</h1>
+
+    <h2>6.1 Architecture Composants</h2>
+
+    <pre>
+frontend/src/
+├── pages/              # 42+ pages
+│   ├── worker/         # Dashboard, Profile, Applications
+│   ├── establishment/  # Dashboard, CreateMission, Candidates
+│   └── admin/          # ValidationPanel, Statistics
+├── components/         # 45+ composants réutilisables
+├── services/           # API calls (workerService, authService...)
+├── hooks/              # Custom hooks (useAuth, useSocket)
+└── context/            # Context API (Auth, Subscription)
+    </pre>
+
+    <h2>6.2 Interfaces Utilisateur</h2>
+
+    <h3>Dashboard Worker</h3>
+    <img src="file:///C:/Users/hafid/.gemini/antigravity/brain/82c66c3a-5405-4220-9fc1-7e6b5064a3b9/worker_dashboard_screenshot_1769952292875.png"
+        alt="Dashboard Worker" />
+
+    <p><strong>Fonctionnalités:</strong></p>
+    <ul>
+        <li>KPIs en temps réel (missions actives, candidatures, messages)</li>
+        <li>Missions recommandées personnalisées</li>
+        <li>Calendrier disponibilités</li>
+        <li>Graphique activité hebdomadaire</li>
+    </ul>
+
+    <h3>Panel Validation Admin</h3>
+    <img src="file:///C:/Users/hafid/.gemini/antigravity/brain/82c66c3a-5405-4220-9fc1-7e6b5064a3b9/admin_validation_panel_1769952313408.png"
+        alt="Panel Admin" />
+
+    <p><strong>Fonctionnalités:</strong></p>
+    <ul>
+        <li>Liste profils en attente validation</li>
+        <li>Prévisualisation documents (CIN, diplômes PDF)</li>
+        <li>Actions rapides: Valider / Rejeter avec commentaire</li>
+        <li>Filtres par statut (EN_ATTENTE, VALIDÉ, REJETÉ)</li>
+    </ul>
+
+    <h2>6.3 Technologies Frontend</h2>
+
+    <table>
+        <tr>
+            <th>Bibliothèque</th>
+            <th>Utilisation</th>
+        </tr>
+        <tr>
+            <td><strong>React Router</strong></td>
+            <td>Navigation SPA, routes protégées par rôle</td>
+        </tr>
+        <tr>
+            <td><strong>TailwindCSS</strong></td>
+            <td>Styling utility-first, responsive design</td>
+        </tr>
+        <tr>
+            <td><strong>Axios</strong></td>
+            <td>Requêtes HTTP avec interceptors (JWT automatique)</td>
+        </tr>
+        <tr>
+            <td><strong>Socket.io Client</strong></td>
+            <td>Notifications temps réel, messagerie</td>
+        </tr>
+        <tr>
+            <td><strong>React Hook Form</strong></td>
+            <td>Gestion formulaires performante</td>
+        </tr>
+        <tr>
+            <td><strong>Recharts</strong></td>
+            <td>Graphiques statistiques (line, bar, pie)</td>
+        </tr>
+    </table>
+
+    <h2>6.4 Gestion État</h2>
+
+    <p><strong>Context API</strong> pour état global:</p>
+    <ul>
+        <li><strong>AuthContext:</strong> User connecté, fonctions login/logout</li>
+        <li><strong>SubscriptionContext:</strong> Plan actuel, fonctions upgrade</li>
+        <li><strong>SocketContext:</strong> Connexion WebSocket, notifications</li>
+    </ul>
+
+    <pre>
+// Utilisation AuthContext
+const { user, login, logout } = useAuth();
+
+if (user.role === 'WORKER') {
+  // Afficher dashboard worker
+}
+    </pre>
+
+    <div class="page-break"></div>
+
+    <!-- 7. SÉCURITÉ -->
+    <h1>7. Sécurité & Conformité</h1>
+
+    <h2>7.1 Mesures de Sécurité Implémentées</h2>
+
+    <table>
+        <tr>
+            <th>Mesure</th>
+            <th>Implémentation</th>
+            <th>Protection</th>
+        </tr>
+        <tr>
+            <td><strong>Hashing Passwords</strong></td>
+            <td>Bcrypt (cost factor 10)</td>
+            <td>Passwords jamais stockés en clair</td>
+        </tr>
+        <tr>
+            <td><strong>JWT Tokens</strong></td>
+            <td>Signature HMAC SHA-256</td>
+            <td>Tokens non falsifiables</td>
+        </tr>
+        <tr>
+            <td><strong>HTTPS</strong></td>
+            <td>Production only</td>
+            <td>Chiffrement transport</td>
+        </tr>
+        <tr>
+            <td><strong>CORS</strong></td>
+            <td>Origin whitelist</td>
+            <td>Requêtes cross-origin contrôlées</td>
+        </tr>
+        <tr>
+            <td><strong>Helmet.js</strong></td>
+            <td>Security headers</td>
+            <td>XSS, clickjacking, MIME sniffing</td>
+        </tr>
+        <tr>
+            <td><strong>SQL Injection</strong></td>
+            <td>Prisma ORM (queries paramétrées)</td>
+            <td>Aucune query raw SQL</td>
+        </tr>
+        <tr>
+            <td><strong>Email Verification</strong></td>
+            <td>OTP 6 chiffres (15min expiration)</td>
+            <td>Propriété email prouvée</td>
+        </tr>
+        <tr>
+            <td><strong>RBAC</strong></td>
+            <td>Middleware requireRole</td>
+            <td>Accès routes restreint par rôle</td>
+        </tr>
+    </table>
+
+    <h2>7.2 Points d'Amélioration Identifiés</h2>
+
+    <div class="warning-box">
+        <h3>Recommandations Sécurité</h3>
+        <ul>
+            <li><strong>Rate Limiting:</strong> Ajouter express-rate-limit (100 req/15min/IP)</li>
+            <li><strong>MFA/2FA:</strong> Authentification à deux facteurs (TOTP)</li>
+            <li><strong>Account Lockout:</strong> Bloquer compte après 5 tentatives login échouées</li>
+            <li><strong>Logging Centralisé:</strong> Winston + CloudWatch pour audit trail</li>
+        </ul>
+    </div>
+
+    <h2>7.3 RGPD - Données Personnelles</h2>
+
+    <p><strong>Données collectées:</strong></p>
+    <ul>
+        <li>Email (authentification)</li>
+        <li>CIN (vérification identité)</li>
+        <li>Diplômes (validation professionnelle)</li>
+        <li>Coordonnées (contact professionnel)</li>
+    </ul>
+
+    <p><strong>Conformité:</strong></p>
+    <ul>
+        <li>✅ Consentement explicite lors inscription</li>
+        <li>✅ Données chiffrées en transit (HTTPS)</li>
+        <li>✅ Accès restreint (RBAC)</li>
+        <li>⚠️ À implémenter: Droit à l'effacement (endpoint DELETE account)</li>
+        <li>⚠️ À implémenter: Export données (endpoint GET /data-export)</li>
+    </ul>
+
+    <div class="page-break"></div>
+
+    <!-- 8. DÉPLOIEMENT -->
+    <h1>8. Déploiement</h1>
+
+    <h2>8.1 Environnements</h2>
+
+    <table>
+        <tr>
+            <th>Env</th>
+            <th>Usage</th>
+            <th>Configuration</th>
+        </tr>
+        <tr>
+            <td><strong>Development</strong></td>
+            <td>Développement local</td>
+            <td>
+                • Frontend: localhost:3000<br>
+                • Backend: localhost:5000<br>
+                • DB: PostgreSQL local
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Production</strong></td>
+            <td>Déploiement final</td>
+            <td>
+                • Frontend: Vercel/Netlify (CDN)<br>
+                • Backend: VPS/Cloud (PM2)<br>
+                • DB: PostgreSQL managed (Supabase/Render)
+            </td>
+        </tr>
+    </table>
+
+    <h2>8.2 Variables d'Environnement</h2>
+
+    <pre>
+# Backend .env
+DATABASE_URL="postgresql://user:pass@localhost:5432/socialink"
+JWT_SECRET="random_256_bit_secret"
+STRIPE_SECRET_KEY="sk_live_xxxxx"
+STRIPE_WEBHOOK_SECRET="whsec_xxxxx"
+EMAIL_USER="noreply@socialink.ma"
+EMAIL_PASSWORD="app_specific_password"
+FRONTEND_URL="https://socialink.ma"
+    </pre>
+
+    <h2>8.3 Scripts NPM</h2>
+
+    <pre>
+# Développement
+npm run dev          # Frontend: Vite dev server
+npm run dev          # Backend: Nodemon (auto-reload)
+
+# Production
+npm run build        # Frontend: Build optimisé
+npm start            # Backend: Node server.js
+
+# Database
+npx prisma migrate dev   # Créer migration
+npx prisma studio        # GUI admin BDD
+    </pre>
+
+    <div class="page-break"></div>
+
+    <!-- 9. CONCLUSION -->
+    <h1>9. Compétences Acquises & Conclusion</h1>
+
+    <h2>9.1 Statistiques Projet</h2>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-number">37K</div>
+            <div class="stat-label">Lignes Code</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">230+</div>
+            <div class="stat-label">Fichiers</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">60+</div>
+            <div class="stat-label">Routes API</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">42+</div>
+            <div class="stat-label">Pages React</div>
+        </div>
+    </div>
+
+    <h2>9.2 Compétences Techniques Validées</h2>
+
+    <table>
+        <tr>
+            <th>Domaine</th>
+            <th>Compétences</th>
+        </tr>
+        <tr>
+            <td><strong>Backend</strong></td>
+            <td>
+                • API REST (Express, routing, middleware)<br>
+                • Authentification JWT + Bcrypt<br>
+                • ORM Prisma (relations complexes)<br>
+                • WebSocket (Socket.io temps réel)<br>
+                • Intégration Stripe (webhooks sécurisés)
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Frontend</strong></td>
+            <td>
+                • React 19 (hooks, Context API)<br>
+                • SPA routing (React Router)<br>
+                • TailwindCSS responsive design<br>
+                • Gestion état global<br>
+                • Optimisation performance
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Base de Données</strong></td>
+            <td>
+                • Modélisation relationnelle (25+ tables)<br>
+                • PostgreSQL (indexes, contraintes)<br>
+                • Migrations versionnées<br>
+                • Optimisation requêtes
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Sécurité</strong></td>
+            <td>
+                • RBAC (contrôle accès par rôle)<br>
+                • Validation documents multi-niveaux<br>
+                • Protection OWASP (XSS, injection, CSRF)<br>
+                • Conformité RGPD bases
+            </td>
+        </tr>
+        <tr>
+            <td><strong>DevOps</strong></td>
+            <td>
+                • Git version control<br>
+                • Variables environnement<br>
+                • Déploiement production<br>
+                • Debugging méthodique
+            </td>
+        </tr>
+    </table>
+
+    <h2>9.3 Difficultés Rencontrées</h2>
+
+    <div class="feature-box">
+        <h3>Challenge: Relations Prisma Complexes</h3>
+        <p>
+            <strong>Problème:</strong> Tables polymorphiques (User → WorkerProfile/EstablishmentProfile optionnels)<br>
+            <strong>Solution:</strong> Étude documentation Prisma, tests requêtes include/select, itérations schema
+        </p>
+    </div>
+
+    <div class="feature-box">
+        <h3>Challenge: Webhook Stripe Testing Local</h3>
+        <p>
+            <strong>Problème:</strong> Webhooks nécessitent HTTPS, impossible localhost<br>
+            <strong>Solution:</strong> Stripe CLI avec <code>stripe listen --forward-to localhost:5000/webhook</code>
+        </p>
+    </div>
+
+    <div class="feature-box">
+        <h3>Challenge: Gestion Upload Fichiers</h3>
+        <p>
+            <strong>Problème:</strong> Multiple uploads (CIN, diplômes, CV, photos)<br>
+            <strong>Solution:</strong> Multer avec validation MIME types, taille max, stockage organisé par type
+        </p>
+    </div>
+
+    <h2>9.4 Évolutions Futures</h2>
+
+    <ul>
+        <li><strong>Court terme:</strong> Rate limiting, MFA, RGPD endpoints</li>
+        <li><strong>Moyen terme:</strong> Application mobile React Native</li>
+        <li><strong>Long terme:</strong> Recommandations IA (machine learning), chat vidéo intégré</li>
+    </ul>
+
+    <h2>9.5 Conclusion</h2>
+
+    <p>
+        Ce projet démontre ma capacité à concevoir et développer une <strong>application full-stack complète</strong>,
+        de la modélisation base de données à l'interface utilisateur, en passant par la sécurité et les intégrations
+        tierces.
+    </p>
+
+    <p>
+        J'ai appliqué les <strong>bonnes pratiques professionnelles</strong> (architecture REST, RBAC, ORM, composants
+        réutilisables)
+        et livré un produit fonctionnel, sécurisé et évolutif.
+    </p>
+
+    <p>
+        <strong>SociaLink v6.5</strong> prouve ma maîtrise du développement web moderne JavaScript et ma capacité à
+        mener un projet technique ambitieux de A à Z.
+    </p>
+
+    <div
+        style="margin-top: 3rem; padding: 2rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 12px; text-align: center;">
+        <h2 style="color: white; margin: 0 0 1rem 0;">Merci de votre attention</h2>
+        <p style="margin: 0; font-size: 1.1rem;">Rapport Technique - SociaLink v6.5</p>
+        <p style="margin: 0.5rem 0 0 0; opacity: 0.9;">Février 2026</p>
+    </div>
+
+</body>
+
+</html>

@@ -38,6 +38,7 @@ router.put("/calendar/:id", updateCalendarEvent);
 router.delete("/calendar/:id", deleteCalendarEvent);
 router.get("/calendar/holidays/:year", getHolidays);
 router.post("/calendar/toggle-availability", toggleAvailability);
+router.get("/availability", getCalendarEvents); // Alias for dashboard
 
 // Documents (avec upload fichier)
 router.get("/documents", getDocuments);

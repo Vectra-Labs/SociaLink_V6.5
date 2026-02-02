@@ -383,6 +383,7 @@ export const submitWorkerProfile = async (req, res) => {
       userId: admin.user_id,
       type: "INFO",
       message: "Un nouveau travailleur a soumis son profil pour validation",
+      link: `/admin/verification/workers/${userId}`
     });
 
     res.status(200).json({
@@ -721,7 +722,7 @@ export const getRecommendedMissions = async (req, res) => {
 
     // Get missions worker has already applied to
     const appliedMissions = await prisma.application.findMany({
-      where: { user_id: userId },
+      where: { worker_profile_id: userId },
       select: { mission_id: true }
     });
     const appliedMissionIds = appliedMissions.map(a => a.mission_id);

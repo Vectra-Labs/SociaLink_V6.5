@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 
 export default function WorkerSettings() {
-    const { user } = useAuth();
+    const { user, logout } = useAuth();
     const [saving, setSaving] = useState(false);
     const [message, setMessage] = useState({ type: '', text: '' });
 
@@ -130,6 +130,19 @@ export default function WorkerSettings() {
             setMessage({ type: 'error', text: error.response?.data?.message || 'Erreur lors du changement de mot de passe.' });
         } finally {
             setPasswordLoading(false);
+        }
+    };
+    const handleDeleteAccount = async () => {
+        if (!window.confirm("Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible et effacera toutes vos données.")) {
+            return;
+        }
+
+        try {
+            await api.delete('/auth/delete');
+            await logout();
+        } catch (error) {
+            console.error(error);
+            setMessage({ type: 'error', text: 'Erreur lors de la suppression du compte.' });
         }
     };
 
@@ -506,7 +519,10 @@ export default function WorkerSettings() {
                     <button className="px-4 py-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-100 transition-colors text-sm font-medium">
                         Désactiver mon compte
                     </button>
-                    <button className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-medium">
+                    <button 
+                        onClick={handleDeleteAccount}
+                        className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-medium"
+                    >
                         Supprimer mon compte
                     </button>
                 </div>

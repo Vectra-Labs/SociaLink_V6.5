@@ -120,6 +120,12 @@ const RegisterWorker = () => {
                 first_name: formData.firstName,
                 last_name: formData.lastName,
                 phone: `+212${formData.phone.replace(/\s/g, '')}`,
+                address: formData.address,
+                city: formData.city,
+                region: formData.region,
+                cnie: formData.cnie,
+                birth_place: formData.birthPlace,
+                linkedin_url: formData.linkedin,
             });
 
             if (response.data.requiresVerification) {
@@ -359,6 +365,7 @@ const RegisterWorker = () => {
                                             value={formData.email}
                                             onChange={(e) => updateFormData('email', e.target.value)}
                                             placeholder="vous@exemple.com"
+                                            autoComplete="off"
                                             className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all"
                                         />
                                     </div>
@@ -388,6 +395,7 @@ const RegisterWorker = () => {
                                                 value={formData.password}
                                                 onChange={(e) => updateFormData('password', e.target.value)}
                                                 placeholder="Min. 6 caractères"
+                                                autoComplete="new-password"
                                                 className="w-full px-4 py-3 pr-12 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all"
                                             />
                                             <button
@@ -409,6 +417,7 @@ const RegisterWorker = () => {
                                                 value={formData.confirmPassword}
                                                 onChange={(e) => updateFormData('confirmPassword', e.target.value)}
                                                 placeholder="Retapez le mot de passe"
+                                                autoComplete="new-password"
                                                 className="w-full px-4 py-3 pr-12 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all"
                                             />
                                             <button

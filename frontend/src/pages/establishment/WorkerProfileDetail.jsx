@@ -125,7 +125,7 @@ const WorkerProfileDetail = () => {
                     <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
                 </div>
                 <div className="px-8 pb-8">
-                    <div className="flex flex-col md:flex-row gap-6 items-start -mt-12">
+                    <div className="flex flex-col md:flex-row gap-6 items-start -mt-12 relative z-10">
                         {/* Avatar */}
                         <div className="w-32 h-32 rounded-2xl bg-white p-1.5 shadow-lg shrink-0">
                             <div className="w-full h-full rounded-xl bg-slate-100 flex items-center justify-center overflow-hidden border border-slate-100">

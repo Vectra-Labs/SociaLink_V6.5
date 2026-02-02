@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapport Technique Exhaustif - SociaLink v6.5</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #fff;
+            max-width: 21cm;
+            margin: 0 auto;
+            padding: 1.5cm;
+            font-size: 10.5pt;
+        }
+
+        /* Page de couverture */
+        .cover-page {
+            text-align: center;
+            padding: 6cm 0 4cm;
+            page-break-after: always;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px;
+            margin: -1.5cm;
+            padding: 6cm 2cm 4cm;
+        }
+
+        .cover-page h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .cover-page .subtitle {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+        }
+
+        .cover-page .project-info {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 3rem auto;
+            max-width: 500px;
+        }
+
+        .cover-page .info-item {
+            font-size: 1.1rem;
+            margin: 0.7rem 0;
+        }
+
+        /* Typography */
+        h1 {
+            color: #1e3a8a;
+            font-size: 1.8rem;
+            margin: 2.5rem 0 1.2rem;
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 0.6rem;
+            page-break-after: avoid;
+        }
+
+        h2 {
+            color: #2563eb;
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+            page-break-after: avoid;
+        }
+
+        h3 {
+            color: #3b82f6;
+            font-size: 1.15rem;
+            margin: 1.5rem 0 0.8rem;
+            page-break-after: avoid;
+        }
+
+        h4 {
+            color: #60a5fa;
+            font-size: 1.05rem;
+            margin: 1rem 0 0.5rem;
+        }
+
+        p {
+            margin-bottom: 0.8rem;
+            text-align: justify;
+            line-height: 1.7;
+        }
+
+        /* Code blocks */
+        pre {
+            background: #f8fafc;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 9pt;
+            line-height: 1.5;
+            page-break-inside: avoid;
+        }
+
+        code {
+            background: #e0e7ff;
+            padding: 0.15rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 9.5pt;
+            color: #1e40af;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 9.5pt;
+            page-break-inside: avoid;
+        }
+
+        th,
+        td {
+            padding: 0.6rem;
+            text-align: left;
+            border: 1px solid #cbd5e1;
+        }
+
+        th {
+            background: #3b82f6;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background: #f1f5f9;
+        }
+
+        /* Lists */
+        ul,
+        ol {
+            margin: 0.8rem 0 0.8rem 1.5rem;
+        }
+
+        li {
+            margin: 0.4rem 0;
+            line-height: 1.6;
+        }
+
+        /* Boxes */
+        .info-box {
+            background: #dbeafe;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+            page-break-inside: avoid;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .success-box {
+            background: #dcfce7;
+            border-left: 4px solid #10b981;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 8.5pt;
+            font-weight: 600;
+            margin: 0.2rem;
+        }
+
+        .badge-blue {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-green {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-purple {
+            background: #f3e8ff;
+            color: #6b21a8;
+        }
+
+        .badge-orange {
+            background: #fed7aa;
+            color: #92400e;
+        }
+
+        /* Diagrams */
+        .diagram {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 6px;
+            margin: 1.5rem 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 9pt;
+            overflow-x: auto;
+            border: 1px solid #e2e8f0;
+            page-break-inside: avoid;
+        }
+
+        /* Page breaks */
+        .page-break {
+            page-break-after: always;
+        }
+
+        /* Table of contents */
+        .toc {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .toc ol {
+            counter-reset: item;
+            list-style-type: none;
+        }
+
+        .toc li {
+            counter-increment: item;
+            margin: 0.5rem 0;
+        }
+
+        .toc li:before {
+            content: counter(item) ". ";
+            font-weight: 600;
+            color: #3b82f6;
+        }
+
+        .toc li ol {
+            margin-left: 1.5rem;
+            margin-top: 0.3rem;
+        }
+
+        /* Stats grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Feature list */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .feature-item {
+            padding: 0.5rem;
+            background: #f1f5f9;
+            border-radius: 4px;
+            font-size: 9.5pt;
+        }
+
+        .feature-item:before {
+            content: "✓ ";
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        @media print {
+            body {
+                padding: 0;
+            }
+
+            .page-break {
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ==================== PAGE DE COUVERTURE ==================== -->
+    <div class="cover-page">
+        <h1>RAPPORT TECHNIQUE EXHAUSTIF</h1>
+        <div class="subtitle">Plateforme SociaLink v6.5</div>
+        <div class="subtitle" style="font-size: 1.3rem; opacity: 0.95;">
+            Réseau de Travailleurs Sociaux Indépendants<br>
+            Développement Full-Stack - Projet 2025
+        </div>
+
+        <div class="project-info">
+            <div class="info-item"><strong>Formation:</strong> Développement Full-Stack</div>
+            <div class="info-item"><strong>Année:</strong> 2025-2026</div>
+            <div class="info-item"><strong>Version:</strong> 6.5</div>
+            <div class="info-item"><strong>Date:</strong> Février 2026</div>
+            <div class="info-item" style="margin-top: 1.5rem; font-size: 0.95rem;">
+                <strong>Technologies:</strong><br>
+                React · Node.js · PostgreSQL · Prisma ORM · Tailwind CSS
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== TABLE DES MATIÈRES ==================== -->
+    <div class="page-break">
+        <h1>📋 Table des Matières</h1>
+
+        <div class="toc">
+            <ol>
+                <li>Introduction et Contexte du Projet
+                    <ol>
+                        <li>Cahier des charges et objectifs pédagogiques</li>
+                        <li>Valeur ajoutée et innovations</li>
+                        <li>Glossaire des termes techniques</li>
+                    </ol>
+                </li>
+                <li>Architecture Technique Globale
+                    <ol>
+                        <li>Vue d'ensemble de l'architecture</li>
+                        <li>Stack technologique détaillée</li>
+                        <li>Structure des dossiers et organisation</li>
+                        <li>Patterns et principes appliqués</li>
+                    </ol>
+                </li>
+                <li>Backend - Analyse Technique Approfondie
+                    <ol>
+                        <li>Contrôleurs et logique métier</li>
+                        <li>Système de routes et middleware</li>
+                        <li>Modélisation base de données Prisma</li>
+                        <li>Services et utilitaires</li>
+                    </ol>
+                </li>
+                <li>Frontend - Documentation UI et Composants
+                    <ol>
+                        <li>Architecture React et routing</li>
+                        <li>Composants réutilisables et layouts</li>
+                        <li>Gestion d'état et hooks personnalisés</li>
+                        <li>Interfaces utilisateur par rôle</li>
+                    </ol>
+                </li>
+                <li>Fonctionnalités Métier Détaillées
+                    <ol>
+                        <li>Système d'authentification complet</li>
+                        <li>Gestion des profils et documents</li>
+                        <li>Workflow de candidatures</li>
+                        <li>Abonnements et paiements</li>
+                    </ol>
+                </li>
+                <li>Sécurité, RGPD et Conformité
+                    <ol>
+                        <li>Authentification JWT et protection</li>
+                        <li>Gestion des données sensibles</li>
+                        <li>Protection contre les attaques</li>
+                        <li>Audit et traçabilité</li>
+                    </ol>
+                </li>
+                <li>Choix Techniques Justifiés
+                    <ol>
+                        <li>Architecture et rôle Super Admin</li>
+                        <li>Choix des technologies</li>
+                        <li>Optimisations et performances</li>
+                    </ol>
+                </li>
+                <li>Tests, Qualité et Déploiement
+                    <ol>
+                        <li>Stratégie de tests</li>
+                        <li>Qualité du code et linting</li>
+                        <li>CI/CD et déploiement</li>
+                    </ol>
+                </li>
+                <li>Conclusion et Perspectives
+                    <ol>
+                        <li>Bilan des compétences validées</li>
+                        <li>Statistiques du projet</li>
+                        <li>Roadmap et évolutions futures</li>
+                    </ol>
+                </li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- ==================== SECTION 1: INTRODUCTION ==================== -->
+    <div class="page-break">
+        <h1>1. Introduction et Contexte du Projet</h1>
+
+        <h2>1.1 Cahier des Charges</h2>
+
+        <h3>Mission de la Plateforme</h3>
+        <p>
+            <strong>SociaLink v6.5</strong> est une plateforme web full-stack innovante développée pour créer un réseau
+            sélectif
+            de travailleurs sociaux indépendants au Maroc. L'objectif principal est de connecter des
+            <strong>établissements</strong>
+            (crèches, EHPAD, centres sociaux, établissements médico-sociaux) avec des <strong>professionnels hautement
+                qualifiés</strong>
+            (techniciens spécialisés, ingénieurs sociaux, éducateurs, chefs de projet).
+        </p>
+
+        <div class="info-box">
+            <h4>🎯 Différenciation Concurrentielle</h4>
+            <p>
+                Contrairement aux plateformes de recrutement traditionnelles, SociaLink garantit une <strong>qualité de
+                    service
+                    supérieure</strong> grâce à un système de <strong>labellisation rigoureux</strong> à trois niveaux:
+            </p>
+            <ol>
+                <li><strong>Validation Email:</strong> Vérification automatique par OTP à 6 chiffres</li>
+                <li><strong>Validation Documents:</strong> Examen manuel par administrateurs (diplômes, CIN, casier
+                    judiciaire)</li>
+                <li><strong>Validation Profil:</strong> Approbation complète du profil professionnel avant mise en ligne
+                </li>
+            </ol>
+        </div>
+
+        <h3>Objectifs Pédagogiques</h3>
+        <p>Ce projet permet de valider les compétences techniques suivantes:</p>
+
+        <table>
+            <tr>
+                <th>Domaine</th>
+                <th>Compétences Validées</th>
+                <th>Technologies</th>
+            </tr>
+            <tr>
+                <td><strong>Frontend</strong></td>
+                <td>SPA moderne, gestion formulaires, état global, routing</td>
+                <td>React 19, React Router v7, React Hook Form</td>
+            </tr>
+            <tr>
+                <td><strong>Backend</strong></td>
+                <td>API REST, authentification JWT, RBAC, upload fichiers</td>
+                <td>Node.js, Express 5, JWT, Multer</td>
+            </tr>
+            <tr>
+                <td><strong>Base de Données</strong></td>
+                <td>Modélisation relationnelle, requêtes complexes, migrations</td>
+                <td>PostgreSQL 16, Prisma ORM 6</td>
+            </tr>
+            <tr>
+                <td><strong>Sécurité</strong></td>
+                <td>Hashage mots de passe, protection CSRF/XSS, RGPD</td>
+                <td>Bcrypt, Helmet, Validators</td>
+            </tr>
+            <tr>
+                <td><strong>Paiements</strong></td>
+                <td>Intégration gateway, webhooks, abonnements</td>
+                <td>Stripe API, Webhooks</td>
+            </tr>
+            <tr>
+                <td><strong>Temps Réel</strong></td>
+                <td>Messagerie instantanée, notifications push</td>
+                <td>Socket.io, WebSockets</td>
+            </tr>
+        </table>
+
+        <h2>1.2 Valeur Ajoutée et Innovations</h2>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">25+</div>
+                <div class="stat-label">Modèles de Données</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">862</div>
+                <div class="stat-label">Lignes Schéma Prisma</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">60+</div>
+                <div class="stat-label">Routes Protégées</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">42+</div>
+                <div class="stat-label">Pages React</div>
+            </div>
+        </div>
+
+        <h3>Innovations Techniques</h3>
+
+        <div class="feature-grid">
+            <div class="feature-item">Calendrier intégré avec jours fériés marocains</div>
+            <div class="feature-item">Géolocalisation avec rayon de disponibilité</div>
+            <div class="feature-item">OCR documents avec Tesseract.js</div>
+            <div class="feature-item">Messagerie temps réel Socket.io</div>
+            <div class="feature-item">Système multi-abonnements flexible</div>
+            <div class="feature-item">Dashboard SuperAdmin exhaustif (60KB de code)</div>
+            <div class="feature-item">Validation documents multi-niveaux</div>
+            <div class="feature-item">Analytics temps réel avec graphiques</div>
+        </div>
+
+        <h2>1.3 Glossaire des Termes Techniques</h2>
+
+        <table>
+            <tr>
+                <th>Terme</th>
+                <th>Définition</th>
+            </tr>
+            <tr>
+                <td><strong>SPA</strong></td>
+                <td>Single Page Application - Application web qui charge une seule page HTML et met à jour dynamiquement
+                    le contenu</td>
+            </tr>
+            <tr>
+                <td><strong>JWT</strong></td>
+                <td>JSON Web Token - Standard pour créer des tokens d'accès basés sur JSON</td>
+            </tr>
+            <tr>
+                <td><strong>RBAC</strong></td>
+                <td>Role-Based Access Control - Système de contrôle d'accès basé sur les rôles</td>
+            </tr>
+            <tr>
+                <td><strong>ORM</strong></td>
+                <td>Object-Relational Mapping - Technique de programmation pour convertir des données entre systèmes
+                    incompatibles</td>
+            </tr>
+            <tr>
+                <td><strong>Middleware</strong></td>
+                <td>Logiciel intermédiaire qui traite les requêtes entre le client et le serveur</td>
+            </tr>
+            <tr>
+                <td><strong>WebSocket</strong></td>
+                <td>Protocole de communication bidirectionnelle en temps réel sur une seule connexion TCP</td>
+            </tr>
+            <tr>
+                <td><strong>Hashing</strong></td>
+                <td>Transformation d'une donnée en une empreinte de longueur fixe (irréversible)</td>
+            </tr>
+            <tr>
+                <td><strong>RGPD</strong></td>
+                <td>Règlement Général sur la Protection des Données - Loi européenne sur la confidentialité des données
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- ==================== SECTION 2: ARCHITECTURE ==================== -->
+    <div class="page-break">
+        <h1>2. Architecture Technique Globale</h1>
+
+        <h2>2.1 Vue d'Ensemble de l'Architecture</h2>
+
+        <p>
+            L'application suit une architecture <strong>client-serveur moderne</strong> avec séparation stricte entre le
+            frontend (React) et le backend (Node.js/Express). Cette architecture permet une scalabilité horizontale,
+            une maintenance facilitée, et la possibilité d'ajouter une application mobile consommant la même API.
+        </p>
+
+        <div class="diagram">
+            <pre>
+┌─────────────────────────────────────────────────────────────────┐
+│                    FRONTEND (React SPA)                          │
+│                    Port: 5173 (Dev) / 80 (Prod)                  │
+│                                                                   │
+│  ┌────────────────┐  ┌────────────────┐  ┌──────────────────┐  │
+│  │ Worker         │  │ Establishment  │  │ Admin            │  │
+│  │ Dashboard      │  │ Dashboard      │  │ Dashboard        │  │
+│  │ - Profil       │  │ - Missions     │  │ - Validation     │  │
+│  │ - Missions     │  │ - Candidats    │  │ - Documents      │  │
+│  │ - Calendrier   │  │ - Messages     │  │ - Litiges        │  │
+│  └────────────────┘  └────────────────┘  └──────────────────┘  │
+│  ┌────────────────┐  ┌────────────────┐                         │
+│  │ Super Admin    │  │ Public Pages   │                         │
+│  │ Dashboard      │  │ - Home         │                         │
+│  │ - Users        │  │ - Missions     │                         │
+│  │ - Finance      │  │ - Pricing      │                         │
+│  │ - Analytics    │  │ - Legal        │                         │
+│  └────────────────┘  └────────────────┘                         │
+└─────────────────────────┬───────────────────────────────────────┘
+                          │
+                          │  HTTP/HTTPS (Axios)
+                          │  Authorization: Bearer {JWT}
+                          │  Content-Type: application/json
+                          │
+                          ▼
+┌─────────────────────────────────────────────────────────────────┐
+│              BACKEND (Node.js + Express)                         │
+│                    Port: 5000 (Dev) / 3000 (Prod)                │
+│                                                                   │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │  MIDDLEWARE LAYER                                         │  │
+│  │  ┌────────────┐ ┌──────────────┐ ┌──────────────────┐   │  │
+│  │  │    CORS    │ │     Auth     │ │  Role-Based      │   │  │
+│  │  │            │ │ (JWT Verify) │ │ Access Control   │   │  │
+│  │  └────────────┘ └──────────────┘ └──────────────────┘   │  │
+│  │  ┌────────────┐ ┌──────────────┐ ┌──────────────────┐   │  │
+│  │  │   Upload   │ │  Validation  │ │   Error          │   │  │
+│  │  │  (Multer)  │ │     (Zod)    │ │   Handler        │   │  │
+│  │  └────────────┘ └──────────────┘ └──────────────────┘   │  │
+│  └──────────────────────────────────────────────────────────┘  │
+│                          ▼                                       │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │  ROUTES                                                   │  │
+│  │  /api/auth        /api/worker         /api/establishment │  │
+│  │  /api/admin       /api/super-admin    /api/missions      │  │
+│  │  /api/general     /api/messages       /api/payments      │  │
+│  └──────────────────────────────────────────────────────────┘  │
+│                          ▼                                       │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │  CONTROLLERS (19 fichiers)                               │  │
+│  │  - authController (494 lignes)                           │  │
+│  │  - superAdminController (1699 lignes, 41 fonctions!)     │  │
+│  │  - workerController, establishmentController, etc.       │  │
+│  └──────────────────────────────────────────────────────────┘  │
+│                          ▼                                       │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │  PRISMA ORM (Query Builder)                              │  │
+│  │  - Type-safe queries                                     │  │
+│  │  - Relations automatiques                                │  │
+│  │  - Migrations versionnées                                │  │
+│  └──────────────────────────────────────────────────────────┘  │
+└─────────────────────────┬───────────────────────────────────────┘
+                          │
+                          │  Prisma Client
+                          │  TCP Connection Pool
+                          │
+                          ▼
+┌─────────────────────────────────────────────────────────────────┐
+│              DATABASE (PostgreSQL 16)                            │
+│                                                                   │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐          │
+│  │    Users     │  │   Workers    │  │Establishments│          │
+│  │  (4 rôles)   │  │   Profile    │  │   Profile    │          │
+│  └──────────────┘  └──────────────┘  └──────────────┘          │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐          │
+│  │   Missions   │  │ Applications │  │ Subscriptions│          │
+│  └──────────────┘  └──────────────┘  └──────────────┘          │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐          │
+│  │   Documents  │  │   Messages   │  │   Payments   │          │
+│  └──────────────┘  └──────────────┘  └──────────────┘          │
+│                                                                   │
+│  Total: 25+ Tables | 862 lignes de schéma Prisma                │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│           SERVICES EXTERNES                                      │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐          │
+│  │    Stripe    │  │  Nodemailer  │  │  Socket.io   │          │
+│  │  (Paiements) │  │   (Emails)   │  │ (Temps Réel) │          │
+│  └──────────────┘  └──────────────┘  └──────────────┘          │
+└─────────────────────────────────────────────────────────────────┘
+</pre>
+        </div>
+
+        <h2>2.2 Stack Technologique Détaillée</h2>
+
+        <h3>Frontend - Technologies et Versions</h3>
+        <table>
+            <tr>
+                <th>Technologie</th>
+                <th>Version</th>
+                <th>Rôle</th>
+                <th>Justification</th>
+            </tr>
+            <tr>
+                <td><strong>React</strong></td>
+                <td>19.2.0</td>
+                <td>Framework UI</td>
+                <td>Performance, écosystème mature, Virtual DOM</td>
+            </tr>
+            <tr>
+                <td><strong>Vite</strong></td>
+                <td>7.2.4</td>
+                <td>Build tool</td>
+                <td>Hot Module Replacement ultra-rapide (\u003c 100ms)</td>
+            </tr>
+            <tr>
+                <td><strong>Tailwind CSS</strong></td>
+                <td>4.1.18</td>
+                <td>Framework CSS</td>
+                <td>Développement rapide, PurgeCSS intégré</td>
+            </tr>
+            <tr>
+                <td><strong>React Router</strong></td>
+                <td>7.12.0</td>
+                <td>Navigation</td>
+                <td>Routing déclaratif, protection de routes native</td>
+            </tr>
+            <tr>
+                <td><strong>Axios</strong></td>
+                <td>1.13.2</td>
+                <td>HTTP Client</td>
+                <td>Intercepteurs, annulation requêtes, retry</td>
+            </tr>
+            <tr>
+                <td><strong>TanStack Query</strong></td>
+                <td>5.90.20</td>
+                <td>Gestion état serveur</td>
+                <td>Cache automatique, revalidation, pagination</td>
+            </tr>
+            <tr>
+                <td><strong>React Hook Form</strong></td>
+                <td>7.71.1</td>
+                <td>Gestion formulaires</td>
+                <td>Performance, validation intégrée Zod</td>
+            </tr>
+            <tr>
+                <td><strong>Zod</strong></td>
+                <td>4.3.6</td>
+                <td>Validation schémas</td>
+                <td>Type-safe, messages erreurs personnalisés</td>
+            </tr>
+            <tr>
+                <td><strong>Recharts</strong></td>
+                <td>3.6.0</td>
+                <td>Graphiques</td>
+                <td>Composants React natifs, responsive</td>
+            </tr>
+            <tr>
+                <td><strong>Lucide React</strong></td>
+                <td>0.562.0</td>
+                <td>Icônes</td>
+                <td>Tree-shakeable, 1000+ icônes cohérentes</td>
+            </tr>
+            <tr>
+                <td><strong>React Leaflet</strong></td>
+                <td>5.0.0</td>
+                <td>Cartographie</td>
+                <td>OpenStreetMap gratuit, customisable</td>
+            </tr>
+            <tr>
+                <td><strong>Socket.io Client</strong></td>
+                <td>4.8.3</td>
+                <td>WebSockets</td>
+                <td>Temps réel, fallback automatique HTTP</td>
+            </tr>
+        </table>
+
+        <h3>Backend - Technologies et Versions</h3>
+        <table>
+            <tr>
+                <th>Technologie</th>
+                <th>Version</th>
+                <th>Rôle</th>
+                <th>Justification</th>
+            </tr>
+            <tr>
+                <td><strong>Node.js</strong></td>
+                <td>20.x LTS</td>
+                <td>Runtime JavaScript</td>
+                <td>Event-driven, non-blocking I/O, performance</td>
+            </tr>
+            <tr>
+                <td><strong>Express</strong></td>
+                <td>5.2.1</td>
+                <td>Framework web</td>
+                <td>Minimaliste, middleware ecosystem, maturité</td>
+            </tr>
+            <tr>
+                <td><strong>Prisma</strong></td>
+                <td>6.19.1</td>
+                <td>ORM</td>
+                <td>Type-safety, migrations auto, excellent DX</td>
+            </tr>
+            <tr>
+                <td><strong>PostgreSQL</strong></td>
+                <td>16</td>
+                <td>Base de données</td>
+                <td>Relations complexes, ACID, JSON support</td>
+            </tr>
+            <tr>
+                <td><strong>JWT</strong></td>
+                <td>9.0.3</td>
+                <td>Tokens</td>
+                <td>Stateless auth, scalable, standard industrie</td>
+            </tr>
+            <tr>
+                <td><strong>Bcrypt</strong></td>
+                <td>3.0.3</td>
+                <td>Hashing</td>
+                <td>Adaptive cost, salt automatique, éprouvé</td>
+            </tr>
+            <tr>
+                <td><strong>Multer</strong></td>
+                <td>2.0.2</td>
+                <td>Upload fichiers</td>
+                <td>Multipart/form-data, validation MIME</td>
+            </tr>
+            <tr>
+                <td><strong>Stripe</strong></td>
+                <td>20.1.2</td>
+                <td>Paiements</td>
+                <td>PCI compliant, webhooks, abonnements</td>
+            </tr>
+            <tr>
+                <td><strong>Socket.io</strong></td>
+                <td>4.8.3</td>
+                <td>WebSockets serveur</td>
+                <td>Rooms, namespaces, reconnexion auto</td>
+            </tr>
+            <tr>
+                <td><strong>Nodemailer</strong></td>
+                <td>7.0.12</td>
+                <td>Envoi emails</td>
+                <td>SMTP, templates, pièces jointes</td>
+            </tr>
+            <tr>
+                <td><strong>Tesseract.js</strong></td>
+                <td>7.0.0</td>
+                <td>OCR</td>
+                <td>Extraction texte documents, multilingue</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- ==================== SECTION 3: BACKEND DÉTAILLÉ ==================== -->
+    <div class="page-break">
+        <h1>3. Backend - Analyse Technique Approfondie</h1>
+
+        <h2>3.1 Structure des Contrôleurs</h2>
+
+        <p>
+            Le backend est organisé selon une architecture <strong>MVC</strong> (Model-View-Controller) adaptée aux API
+            REST.
+            Les contrôleurs contiennent toute la logique métier, tandis que les modèles sont gérés par Prisma et les
+            "vues"
+            sont les réponses JSON envoyées au client.
+        </p>
+
+        <table>
+            <tr>
+                <th>Contrôleur</th>
+                <th>Taille</th>
+                <th>Fonctions</th>
+                <th>Responsabilités Principales</th>
+            </tr>
+            <tr>
+                <td><strong>authController</strong></td>
+                <td>494 lignes</td>
+                <td>9</td>
+                <td>Register, login, OTP, reset password, change password</td>
+            </tr>
+            <tr>
+                <td><strong>superAdminController</strong></td>
+                <td>1699 lignes</td>
+                <td>41</td>
+                <td>Gestion admins, users, stats, finance, marketing, qualité</td>
+            </tr>
+            <tr>
+                <td><strong>workerController</strong></td>
+                <td>23KB</td>
+                <td>15+</td>
+                <td>Profil worker, expériences, documents, calendrier</td>
+            </tr>
+            <tr>
+                <td><strong>establishmentController</strong></td>
+                <td>22KB</td>
+                <td>12+</td>
+                <td>Profil établissement, missions, candidatures</td>
+            </tr>
+            <tr>
+                <td><strong>missionController</strong></td>
+                <td>18KB</td>
+                <td>10+</td>
+                <td>CRUD missions, filtres, search, stats</td>
+            </tr>
+            <tr>
+                <td><strong>applicationController</strong></td>
+                <td>18KB</td>
+                <td>8+</td>
+                <td>Postuler, accepter, rejeter, historique</td>
+            </tr>
+            <tr>
+                <td><strong>adminController</strong></td>
+                <td>5KB</td>
+                <td>5</td>
+                <td>Validation profils, modération</td>
+            </tr>
+            <tr>
+                <td><strong>documentController</strong></td>
+                <td>13KB</td>
+                <td>6</td>
+                <td>Upload, validation, OCR documents</td>
+            </tr>
+            <tr>
+                <td><strong>messageController</strong></td>
+                <td>10KB</td>
+                <td>7</td>
+                <td>Messagerie temps réel, conversations</td>
+            </tr>
+        </table>
+
+        <h3>Focus: authController.js (494 lignes)</h3>
+
+        <p>
+            Le contrôleur d'authentification gère tout le cycle de vie d'un utilisateur, de l'inscription à la connexion
+            en passant par la vérification email et la réinitialisation du mot de passe.
+        </p>
+
+        <h4>registerWorker - Inscription Travailleur</h4>
+        <pre>
+export const registerWorker = async (req, res) =&gt; {
+  try {
+    const { email, password, first_name, last_name, phone } = req.body;
+
+    // Vérification utilisateur existant
+    const existingUser = await prisma.user.findUnique({ where: { email } });
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    // Hashage du mot de passe (bcrypt, 10 rounds)
+    const hashedPassword = await bcrypt.hash(password, 10);
+    
+    // Génération OTP 6 chiffres
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+    const verificationCodeExpiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 min
+
+    // Transaction atomique Prisma
+    await prisma.$transaction(async (tx) =&gt; {
+      const newUser = await tx.user.create({
+        data: {
+          email,
+          password: hashedPassword,
+          role: "WORKER",
+          verificationCode,
+          verificationCodeExpiresAt,
+          isEmailVerified: false,
+        },
+      });
+
+      await tx.workerProfile.create({
+        data: {
+          user_id: newUser.user_id,
+          first_name,
+          last_name,
+          phone,
+          verification_status: "PENDING",
+        },
+      });
+    });
+
+    // Envoi email de vérification
+    await sendVerificationEmail(email, verificationCode);
+
+    res.status(201).json({
+      message: "Inscription réussie. Vérifiez votre email.",
+      requiresVerification: true,
+      email
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Registration failed" });
+  }
+};</pre>
+
+        <div class="info-box">
+            <h4>🔍 Points Techniques Clés</h4>
+            <ul>
+                <li><strong>Transaction Prisma:</strong> Garantit l'atomicité (si echec création profil, rollback
+                    utilisateur)</li>
+                <li><strong>Bcrypt 10 rounds:</strong> Équilibre sécurité/performance (≈100ms par hash)</li>
+                <li><strong>OTP 6 chiffres:</strong> 1 million de combinaisons, expiration 15 min</li>
+                <li><strong>Pas de token immédiat:</strong> Force la vérification email avant connexion</li>
+            </ul>
+        </div>
+
+        <h4>login - Connexion Sécurisée</h4>
+        <pre>
+export const login = async (req, res) =&gt; {
+  try {
+    const { email, password } = req.body;
+
+    // Récupération utilisateur avec profils associés
+    const user = await prisma.user.findUnique({
+      where: { email },
+      include: {
+        workerProfile: {
+          select: {
+            first_name: true,
+            last_name: true,
+            profile_pic_url: true,
+            verification_status: true
+          }
+        },
+        establishmentProfile: {
+          select: {
+            name: true,
+            logo_url: true,
+            verification_status: true
+          }
+        }
+      }
+    });
+
+    // Vérification credentials
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    // Vérification email
+    if (!user.isEmailVerified) {
+      return res.status(403).json({
+        message: "Email non vérifié",
+        requiresVerification: true,
+        email: user.email
+      });
+    }
+
+    // Génération JWT
+    const token = generateToken(user, res);
+
+    // Construction réponse avec données profil
+    const userData = {
+      user_id: user.user_id,
+      email: user.email,
+      role: user.role,
+      status: user.status,
+    };
+
+    if (user.role === 'WORKER' && user.workerProfile) {
+      userData.first_name = user.workerProfile.first_name;
+      userData.last_name = user.workerProfile.last_name;
+      userData.profile_image = user.workerProfile.profile_pic_url;
+      userData.verification_status = user.workerProfile.verification_status;
+    }
+
+    res.status(200).json({ data: userData, token });
+  } catch (error) {
+    res.status(500).json({ message: "Login failed" });
+  }
+};</pre>
+
+        <div class="success-box">
+            <h4>✅ Bonnes Pratiques Implémentées</h4>
+            <ul>
+                <li><strong>Timing attack prevention:</strong> bcrypt.compare prend temps constant</li>
+                <li><strong>Message d'erreur générique:</strong> Ne révèle pas si email existe ou non</li>
+                <li><strong>Include Prisma optimisé:</strong> Récupère profil en une seule requête</li>
+                <li><strong>Réponse enrichie:</strong> Inclut données nécessaires pour UI sans requête supplémentaire
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Continué dans les pages suivantes... -->

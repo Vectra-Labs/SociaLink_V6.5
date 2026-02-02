@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllAdmins, createAdmin, updateAdmin, getAuditLogs, getDashboardStats, getPlans, createPlan, updatePlan, getBanners, upsertBanner, deleteBanner, sendGlobalNotification, getAllUsers, updateUserStatus, getUserDetails, getFinancialStats, getTransactions, getQualityStats, getPendingVerifications, reviewProfile, getWorkerFullDetails, getEstablishmentFullDetails, getSystemSettings, updateSystemSettings, getDisputes, resolveDispute, getAdminMessages, sendAdminMessage, markMessageRead, markConversationRead, getAdminMissions, reviewMission } from '../controllers/superAdminController.js';
+import { getAllAdmins, createAdmin, updateAdmin, getAuditLogs, getDashboardStats, getPlans, createPlan, updatePlan, getBanners, upsertBanner, deleteBanner, sendGlobalNotification, getAllUsers, updateUserStatus, getUserDetails, getFinancialStats, getTransactions, getQualityStats, getPendingVerifications, reviewProfile, getWorkerFullDetails, getEstablishmentFullDetails, updateDocumentStatus, getSystemSettings, updateSystemSettings, getDisputes, resolveDispute, getAdminMessages, sendAdminMessage, markMessageRead, markConversationRead, getAdminMissions, reviewMission } from '../controllers/superAdminController.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { roleMiddleware } from '../middleware/roleMiddleware.js';
 
@@ -24,6 +24,7 @@ router.get('/quality/pending', roleMiddleware('ADMIN', 'SUPER_ADMIN'), getPendin
 router.put('/quality/profiles/:type/:id/review', roleMiddleware('ADMIN', 'SUPER_ADMIN'), reviewProfile);
 router.get('/quality/worker/:id/details', roleMiddleware('ADMIN', 'SUPER_ADMIN'), getWorkerFullDetails);
 router.get('/quality/establishment/:id/details', roleMiddleware('ADMIN', 'SUPER_ADMIN'), getEstablishmentFullDetails);
+router.put('/quality/document/:id/status', roleMiddleware('ADMIN', 'SUPER_ADMIN'), updateDocumentStatus);
 
 // Mission Validation
 router.get('/missions', roleMiddleware('ADMIN', 'SUPER_ADMIN'), getAdminMissions);

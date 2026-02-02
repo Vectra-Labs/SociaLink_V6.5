@@ -137,11 +137,18 @@ const SuperAdminAdmins = () => {
 
     const handleEdit = (admin) => {
         setEditingAdmin(admin);
+        // Parse permissions - handle both array and JSON string formats
+        let permissions = admin.admin_permissions;
+        if (typeof permissions === 'string') {
+            try { permissions = JSON.parse(permissions); } catch { permissions = []; }
+        }
+        if (!Array.isArray(permissions)) permissions = [];
+        
         setFormData({
             email: admin.email,
             password: '',
             role: admin.role,
-            permissions: admin.admin_permissions || [],
+            permissions: permissions,
             status: admin.status,
             first_name: admin.adminProfile?.first_name || '',
             last_name: admin.adminProfile?.last_name || '',
@@ -351,16 +358,29 @@ const SuperAdminAdmins = () => {
                                         {/* Permissions & Actions */}
                                         <div className="flex items-center gap-6">
                                             <div className="flex flex-wrap gap-1 max-w-xs">
-                                                {admin.admin_permissions?.slice(0, 3).map(p => (
-                                                    <span key={p} className="px-2 py-0.5 bg-slate-100 text-slate-600 rounded text-xs">
-                                                        {AVAILABLE_PERMISSIONS.find(ap => ap.id === p)?.label.split(' ')[0] || p}
-                                                    </span>
-                                                ))}
-                                                {(admin.admin_permissions?.length || 0) > 3 && (
-                                                    <span className="px-2 py-0.5 bg-slate-200 text-slate-600 rounded text-xs">
-                                                        +{admin.admin_permissions.length - 3}
-                                                    </span>
-                                                )}
+                                                {(() => {
+                                                    // Handle both array and JSON string formats
+                                                    let perms = admin.admin_permissions;
+                                                    if (typeof perms === 'string') {
+                                                        try { perms = JSON.parse(perms); } catch { perms = []; }
+                                                    }
+                                                    if (!Array.isArray(perms)) perms = [];
+                                                    
+                                                    return (
+                                                        <>
+                                                            {perms.slice(0, 3).map(p => (
+                                                                <span key={p} className="px-2 py-0.5 bg-slate-100 text-slate-600 rounded text-xs">
+                                                                    {AVAILABLE_PERMISSIONS.find(ap => ap.id === p)?.label.split(' ')[0] || p}
+                                                                </span>
+                                                            ))}
+                                                            {perms.length > 3 && (
+                                                                <span className="px-2 py-0.5 bg-slate-200 text-slate-600 rounded text-xs">
+                                                                    +{perms.length - 3}
+                                                                </span>
+                                                            )}
+                                                        </>
+                                                    );
+                                                })()}
                                             </div>
 
                                             <div className="flex items-center gap-2">

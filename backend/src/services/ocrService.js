@@ -57,7 +57,22 @@ const PATTERNS = {
     moroccanUniversities: [
         'Mohammed V', 'Hassan II', 'Cadi Ayyad', 'Sidi Mohamed Ben Abdellah',
         'Abdelmalek Essaâdi', 'Ibn Zohr', 'Mohammed Premier', 'Al Akhawayn',
-        'ENSA', 'ENCG', 'FSJES', 'FST'
+        'ENSA', 'ENCG', 'FSJES', 'FST', 'OFPPT', 'ISTA'
+    ],
+
+    // Specialties
+    specialty: [
+        /(?:filière|spécialité|option|branche)\s*:?\s*(.+?)(?:\n|$)/i,
+        /technicien\s+(?:spécialisé\s+)?en\s+(.+?)(?:\n|$)/i,
+        /licence\s+(?:fondamentale|professionnelle)?\s*(?:en|études)?\s+(.+?)(?:\n|$)/i,
+        /master\s+(?:spécialisé)?\s*(?:en)?\s+(.+?)(?:\n|$)/i,
+        /ingénierie\s+(?:en\s+)?(.+?)(?:\n|$)/i
+    ],
+
+    // Grades (Mentions)
+    grade: [
+        /mention\s*:?\s*(passable|assez\s+bien|très\s+bien|bien|excellent)/i,
+        /(passable|assez\s+bien|très\s+bien|bien|excellent)/i
     ]
 };
 
@@ -145,6 +160,26 @@ export function parseDocumentText(text) {
         const match = text.match(pattern);
         if (match) {
             result.documentNumber = match[1] ? match[1].trim() : match[0].trim();
+            fieldsFound++;
+            break;
+        }
+    }
+
+    // Extract specialty
+    for (const pattern of PATTERNS.specialty) {
+        const match = text.match(pattern);
+        if (match) {
+            result.specialty = match[1] ? match[1].trim() : match[0].trim();
+            fieldsFound++;
+            break;
+        }
+    }
+
+    // Extract grade
+    for (const pattern of PATTERNS.grade) {
+        const match = text.match(pattern);
+        if (match) {
+            result.grade = match[1] ? match[1].trim() : match[0].trim();
             fieldsFound++;
             break;
         }

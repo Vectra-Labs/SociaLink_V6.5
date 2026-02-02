@@ -1,4 +1,5 @@
 import { prisma } from '../config/db.js';
+import { createNotification } from "../services/notificationService.js";
 import path from 'path';
 import fs from 'fs';
 
@@ -51,6 +52,32 @@ export const uploadDocument = async (req, res) => {
         });
 
         res.status(201).json(document);
+
+        // Notify Admins
+        try {
+            const admins = await prisma.user.findMany({
+                where: { role: { in: ['ADMIN', 'SUPER_ADMIN'] } },
+                select: { user_id: true }
+            });
+
+            // Get establishment name
+            const establishment = await prisma.establishmentProfile.findUnique({
+                where: { user_id: userId },
+                select: { name: true }
+            });
+            const establishmentName = establishment?.name || 'Un établissement';
+
+            if (admins.length > 0) {
+                await Promise.all(admins.map(admin => createNotification({
+                    userId: admin.user_id,
+                    type: 'INFO',
+                    message: `${establishmentName} a uploadé un nouveau document (${type}) à vérifier.`,
+                    link: `/admin/verification/establishments/${userId}`
+                })));
+            }
+        } catch (notifError) {
+            console.error('NOTIFICATION ERROR:', notifError);
+        }
     } catch (error) {
         console.error('Error uploading document:', error);
         res.status(500).json({ message: 'Erreur serveur' });
