@@ -5,7 +5,13 @@ export const registerWorkerSchema = z.object({
     password: z.string().min(8, "Le mot de passe doit contenir au moins 8 caractères").regex(/[A-Z]/, "Le mot de passe doit contenir au moins une majuscule").regex(/[0-9]/, "Le mot de passe doit contenir au moins un chiffre"),
     first_name: z.string().min(2, "Le prénom est trop court"),
     last_name: z.string().min(2, "Le nom est trop court"),
-    phone: z.string().min(10, "Numéro de téléphone invalide").optional()
+    phone: z.string().min(10, "Numéro de téléphone invalide").optional(),
+    city_id: z.any().optional(), // Accept string or number, parsed in controller
+    address: z.string().optional(),
+    cnie: z.string().optional(),
+    birth_place: z.string().optional(),
+    region: z.string().optional(),
+    linkedin_url: z.string().optional().or(z.literal(''))
 });
 
 export const registerEstablishmentSchema = z.object({

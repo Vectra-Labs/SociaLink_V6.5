@@ -131,87 +131,183 @@ const EstablishmentVerificationDetail = () => {
 
     return (
         <div className="space-y-6">
-            {/* Header */}
+            {/* Header Title & Back */}
             <div className="flex items-center gap-4">
                 <button
                     onClick={() => navigate('/admin/verification/establishments')}
-                    className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+                    className="p-2 hover:bg-slate-100 rounded-lg transition-colors text-slate-600"
                 >
-                    <ArrowLeft className="w-5 h-5 text-slate-600" />
+                    <ArrowLeft className="w-5 h-5" />
                 </button>
-                <div className="flex-1">
                     <h1 className="text-2xl font-bold text-slate-900">
                         Fiche Établissement
                     </h1>
-                    <p className="text-slate-500">Vérification légale et documentaire</p>
+            </div>
+
+            {/* Combined Profile Header */}
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-6">
+                {/* Banner */}
+                <div className="h-32 sm:h-40 bg-gradient-to-r from-slate-700 to-slate-900 relative">
+                    {establishment.banner_url ? (
+                        <img 
+                            src={establishment.banner_url} 
+                            alt="Banner" 
+                            className="w-full h-full object-cover"
+                        />
+                    ) : (
+                        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+                    )}
                 </div>
-                {getStatusBadge(establishment.verification_status || establishment.status)}
+
+                <div className="px-8 pb-6 relative">
+                    <div className="flex flex-col md:flex-row items-start md:items-end -mt-12 mb-4 gap-6">
+                        {/* Logo */}
+                        <div className="relative group">
+                            <div className="w-32 h-32 rounded-2xl border-4 border-white bg-white overflow-hidden shadow-lg relative flex items-center justify-center">
+                                {establishment.logo_url ? (
+                                    <img 
+                                        src={establishment.logo_url} 
+                                        alt={establishment.name} 
+                                        className="w-full h-full object-contain p-1"
+                                    />
+                                ) : (
+                                    <div className="w-full h-full flex items-center justify-center text-3xl font-bold text-slate-400 bg-slate-100">
+                                        {establishment.name?.charAt(0) || 'E'}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Info Block */}
+                        <div className="flex-1 pt-12 md:pt-0 w-full">
+                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div>
+                                    <div className="flex flex-wrap items-center gap-3 mb-1">
+                                        <h1 className="text-2xl font-bold text-slate-900">{establishment.name}</h1>
+                                        {getStatusBadge(establishment.verification_status || establishment.status)}
+                                    </div>
+                                    
+                                    <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600">
+                                        <span className="font-medium text-blue-600">
+                                            {establishment.structure?.label || 'Structure inconnue'}
+                                        </span>
+                                        <div className="flex items-center gap-1">
+                                            <MapPin className="w-3.5 h-3.5 text-slate-400" />
+                                            {establishment.city?.name || 'Ville non renseignée'}
+                                        </div>
+                                        <div className="flex items-center gap-1">
+                                            <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                                            Inscrit le {new Date(establishment.createdAt).toLocaleDateString('fr-FR')}
+                                        </div>
+                                        {establishment.website && (
+                                            <a href={establishment.website} target="_blank" rel="noopener" className="flex items-center gap-1 hover:text-blue-600 hover:underline">
+                                                <Globe className="w-3.5 h-3.5 text-slate-400" />
+                                                Site web
+                                            </a>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Actions - Moved from bottom */}
+                                {establishment.verification_status !== 'VALIDATED' && establishment.verification_status !== 'REJECTED' && (
+                                    <div className="flex gap-2 w-full md:w-auto mt-4 md:mt-0">
+                                        {establishment.verification_status === 'PENDING' && (
+                                            <button
+                                                onClick={handleTakeCharge}
+                                                disabled={processing}
+                                                className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 text-sm"
+                                            >
+                                                {processing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Eye className="w-4 h-4" />}
+                                                Prendre en charge
+                                            </button>
+                                        )}
+
+                                        {(establishment.verification_status === 'IN_REVIEW' || establishment.verification_status === 'PENDING') && (
+                                            <>
+                                                <button
+                                                    onClick={() => setShowRejectModal(true)}
+                                                    disabled={processing}
+                                                    className="flex items-center gap-2 px-4 py-2 bg-white border border-red-200 text-red-600 rounded-lg font-medium hover:bg-red-50 transition-colors text-sm"
+                                                >
+                                                    <XCircle className="w-4 h-4" />
+                                                    Rejeter
+                                                </button>
+                                                
+                                                <button
+                                                    onClick={() => handleValidate()}
+                                                    disabled={processing || documents.length === 0}
+                                                    className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors disabled:opacity-50 disabled:bg-slate-300 text-sm"
+                                                    title={documents.length === 0 ? "Documents requis pour valider" : ""}
+                                                >
+                                                    {processing ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle className="w-4 h-4" />}
+                                                    Valider
+                                                </button>
+                                            </>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             {/* Main Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-                {/* Left Column - Profile Info */}
+                {/* Left Column - Details */}
                 <div className="lg:col-span-1 space-y-6">
-                    {/* Profile Card */}
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                        <div className="bg-gradient-to-r from-slate-700 to-slate-900 p-6 text-white">
-                            <div className="flex items-center gap-4">
-                                {establishment.logo_url ? (
-                                    <img
-                                        src={establishment.logo_url}
-                                        alt={establishment.name}
-                                        className="w-20 h-20 rounded-lg object-cover border-4 border-white/30"
-                                    />
-                                ) : (
-                                    <div className="w-20 h-20 bg-white/20 rounded-lg flex items-center justify-center text-3xl font-bold">
-                                        {establishment.name?.charAt(0) || 'E'}
-                                    </div>
-                                )}
-                                <div>
-                                    <h2 className="text-xl font-bold">
-                                        {establishment.name || 'Nom Établissement'}
-                                    </h2>
-                                    <p className="text-slate-300 text-sm">
-                                        {establishment.structure?.label || 'Structure inconnue'}
-                                    </p>
+                    
+                    {/* Contact Info (Unified) */}
+                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+                        <h3 className="font-bold text-slate-800 mb-4">Coordonnées</h3>
+                        <div className="space-y-4">
+                            <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
+                                    <Mail className="w-4 h-4" />
+                                </div>
+                                <div className="flex-1">
+                                    <p className="text-xs text-slate-500">Email</p>
+                                    <p className="text-sm font-medium text-slate-900 break-all">{establishment.email}</p>
                                 </div>
                             </div>
-                        </div>
-
-                        <div className="p-4 space-y-3">
-                            <div className="flex items-center gap-3 text-sm">
-                                <Mail className="w-4 h-4 text-slate-400" />
-                                <span className="text-slate-700">{establishment.email}</span>
+                            <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
+                                    <Phone className="w-4 h-4" />
+                                </div>
+                                <div className="flex-1">
+                                    <p className="text-xs text-slate-500">Téléphone</p>
+                                    <p className="text-sm font-medium text-slate-900">{establishment.phone || 'Non renseigné'}</p>
+                                </div>
                             </div>
-                            <div className="flex items-center gap-3 text-sm">
-                                <Phone className="w-4 h-4 text-slate-400" />
-                                <span className="text-slate-700">{establishment.phone || 'Non renseigné'}</span>
-                            </div>
-                            <div className="flex items-center gap-3 text-sm">
-                                <MapPin className="w-4 h-4 text-slate-400" />
-                                <span className="text-slate-700">{establishment.city?.name || 'Ville non renseignée'}</span>
+                            <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
+                                    <MapPin className="w-4 h-4" />
+                                </div>
+                                <div className="flex-1">
+                                    <p className="text-xs text-slate-500">Adresse</p>
+                                    <p className="text-sm font-medium text-slate-900">{establishment.city?.name || 'Ville non renseignée'}</p>
+                                </div>
                             </div>
                             {establishment.website && (
-                                <div className="flex items-center gap-3 text-sm">
-                                    <Globe className="w-4 h-4 text-slate-400" />
-                                    <a href={establishment.website} target="_blank" rel="noopener" className="text-blue-600 hover:underline truncate">
-                                        {establishment.website}
-                                    </a>
+                                <div className="flex items-center gap-3">
+                                    <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
+                                        <Globe className="w-4 h-4" />
+                                    </div>
+                                    <div className="flex-1">
+                                        <p className="text-xs text-slate-500">Site Web</p>
+                                        <a href={establishment.website} target="_blank" rel="noopener" className="text-sm font-medium text-blue-600 hover:underline truncate block">
+                                            {establishment.website}
+                                        </a>
+                                    </div>
                                 </div>
                             )}
-                            <div className="flex items-center gap-3 text-sm">
-                                <Calendar className="w-4 h-4 text-slate-400" />
-                                <span className="text-slate-700">
-                                    Inscrit le {new Date(establishment.createdAt).toLocaleDateString('fr-FR')}
-                                </span>
-                            </div>
                         </div>
                     </div>
 
                     {/* Legal Info */}
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4">
-                        <h3 className="font-semibold text-slate-800 mb-3">Informations Légales</h3>
+                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+                        <h3 className="font-bold text-slate-800 mb-4">Informations Légales</h3>
                         <div className="space-y-3">
                             <div>
                                 <span className="text-xs text-slate-500 uppercase font-semibold">Numéro ICE</span>
@@ -243,8 +339,8 @@ const EstablishmentVerificationDetail = () => {
                     </div>
 
                     {/* Contact Person */}
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4">
-                        <h3 className="font-semibold text-slate-800 mb-3">Contact Principal</h3>
+                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+                        <h3 className="font-bold text-slate-800 mb-4">Contact Principal</h3>
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-700 font-bold">
                                 {establishment.contact_first_name?.charAt(0) || 'C'}
@@ -375,8 +471,8 @@ const EstablishmentVerificationDetail = () => {
                     </div>
 
                     {/* Admin Notes */}
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4">
-                        <h3 className="font-semibold text-slate-800 mb-3">Notes Admin (internes)</h3>
+                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                        <h3 className="font-bold text-slate-800 mb-4">Notes Admin (internes)</h3>
                         <textarea
                             value={adminNotes}
                             onChange={(e) => setAdminNotes(e.target.value)}
@@ -385,47 +481,6 @@ const EstablishmentVerificationDetail = () => {
                             rows="3"
                         />
                     </div>
-
-                    {/* Action Buttons */}
-                    {establishment.verification_status !== 'VALIDATED' && establishment.verification_status !== 'REJECTED' && (
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4">
-                            <div className="flex flex-wrap gap-3">
-                                {establishment.verification_status === 'PENDING' && (
-                                    <button
-                                        onClick={handleTakeCharge}
-                                        disabled={processing}
-                                        className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50"
-                                    >
-                                        {processing ? <Loader2 className="w-5 h-5 animate-spin" /> : <Eye className="w-5 h-5" />}
-                                        Prendre en charge
-                                    </button>
-                                )}
-
-                                {(establishment.verification_status === 'IN_REVIEW' || establishment.verification_status === 'PENDING') && (
-                                    <>
-                                        <button
-                                            onClick={() => handleValidate()}
-                                            disabled={processing || documents.length === 0}
-                                            className="flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors disabled:opacity-50 disabled:bg-slate-300"
-                                            title={documents.length === 0 ? "Documents requis pour valider" : ""}
-                                        >
-                                            {processing ? <Loader2 className="w-5 h-5 animate-spin" /> : <CheckCircle className="w-5 h-5" />}
-                                            Valider l'Établissement
-                                        </button>
-
-                                        <button
-                                            onClick={() => setShowRejectModal(true)}
-                                            disabled={processing}
-                                            className="flex items-center gap-2 px-6 py-3 bg-white border border-red-200 text-red-600 rounded-lg font-medium hover:bg-red-50 transition-colors"
-                                        >
-                                            <XCircle className="w-5 h-5" />
-                                            Rejeter
-                                        </button>
-                                    </>
-                                )}
-                            </div>
-                        </div>
-                    )}
                 </div>
             </div>
 

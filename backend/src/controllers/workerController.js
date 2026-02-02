@@ -712,13 +712,17 @@ export const getRecommendedMissions = async (req, res) => {
     const userId = req.user.user_id;
     const limit = parseInt(req.query.limit) || 3;
 
-    // Get worker's specialities
-    const workerSpecialities = await prisma.workerSpeciality.findMany({
+    // Get worker's specialities and city
+    const workerProfile = await prisma.workerProfile.findUnique({
       where: { user_id: userId },
-      select: { speciality_id: true }
+      select: { 
+          city_id: true,
+          specialities: { select: { speciality_id: true } }
+      }
     });
 
-    const specialityIds = workerSpecialities.map(s => s.speciality_id);
+    const specialityIds = workerProfile?.specialities.map(s => s.speciality_id) || [];
+    const workerCityId = workerProfile?.city_id;
 
     // Get missions worker has already applied to
     const appliedMissions = await prisma.application.findMany({
@@ -732,8 +736,13 @@ export const getRecommendedMissions = async (req, res) => {
       where: {
         status: 'ACTIVE',
         mission_id: { notIn: appliedMissionIds },
+        // Filter by Speciality
         ...(specialityIds.length > 0 && {
           speciality_id: { in: specialityIds }
+        }),
+        // Filter by City (New)
+        ...(workerCityId && {
+            city_id: workerCityId
         })
       },
       include: {

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import {
     User, Mail, Phone, MapPin, Lock, Send, AlertCircle,
@@ -9,55 +9,6 @@ import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
 
-// 12 Régions du Maroc avec leurs villes
-const MOROCCAN_REGIONS = {
-    "Tanger-Tétouan-Al Hoceïma": [
-        "Tanger", "Tétouan", "Al Hoceïma", "Chefchaouen", "Larache",
-        "Ksar El Kébir", "Asilah", "Fnideq", "M'diq", "Ouezzane", "Martil"
-    ],
-    "L'Oriental": [
-        "Oujda", "Nador", "Berkane", "Taourirt", "Jerada",
-        "Driouch", "Guercif", "Figuig", "Zaio", "Ahfir"
-    ],
-    "Fès-Meknès": [
-        "Fès", "Meknès", "Taza", "Ifrane", "Azrou", "Séfrou",
-        "Moulay Yacoub", "El Hajeb", "Boulemane", "Imouzzer Kandar"
-    ],
-    "Rabat-Salé-Kénitra": [
-        "Rabat", "Salé", "Kénitra", "Témara", "Skhirat",
-        "Khémisset", "Sidi Slimane", "Sidi Kacem", "Tiflet", "Mehdia"
-    ],
-    "Béni Mellal-Khénifra": [
-        "Béni Mellal", "Khénifra", "Fquih Ben Salah", "Azilal",
-        "Kasba Tadla", "Khouribga", "Oued Zem", "Boujaad"
-    ],
-    "Casablanca-Settat": [
-        "Casablanca", "Mohammedia", "El Jadida", "Settat", "Berrechid",
-        "Benslimane", "Azemmour", "Nouaceur", "Médiouna", "Bouskoura", "Sidi Bennour"
-    ],
-    "Marrakech-Safi": [
-        "Marrakech", "Safi", "Essaouira", "El Kelâa des Sraghna",
-        "Chichaoua", "Youssoufia", "Rehamna", "Ben Guerir"
-    ],
-    "Drâa-Tafilalet": [
-        "Errachidia", "Ouarzazate", "Tinghir", "Zagora",
-        "Midelt", "Merzouga", "Rissani", "Goulmima"
-    ],
-    "Souss-Massa": [
-        "Agadir", "Inezgane", "Taroudant", "Tiznit",
-        "Ait Melloul", "Chtouka Ait Baha", "Tata"
-    ],
-    "Guelmim-Oued Noun": [
-        "Guelmim", "Tan-Tan", "Sidi Ifni", "Assa-Zag"
-    ],
-    "Laâyoune-Sakia El Hamra": [
-        "Laâyoune", "Boujdour", "Tarfaya", "Es-Semara"
-    ],
-    "Dakhla-Oued Ed-Dahab": [
-        "Dakhla", "Aousserd"
-    ]
-};
-
 const RegisterWorker = () => {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
@@ -65,6 +16,29 @@ const RegisterWorker = () => {
     const [success, setSuccess] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    // Dynamic Data
+    const [regionsList, setRegionsList] = useState([]);
+    const [citiesList, setCitiesList] = useState([]);
+    const [filteredCities, setFilteredCities] = useState([]);
+
+    // Fetch Cities
+    useEffect(() => {
+        const fetchCities = async () => {
+            try {
+                const res = await axios.get(`${API_URL}/general/cities`);
+                const citiesData = res.data.data;
+                setCitiesList(citiesData);
+
+                // Extract unique regions
+                const uniqueRegions = [...new Set(citiesData.map(c => c.region?.name).filter(Boolean))].sort();
+                setRegionsList(uniqueRegions);
+            } catch (err) {
+                console.error("Failed to fetch cities", err);
+            }
+        };
+        fetchCities();
+    }, []);
 
     // Form data
     const [formData, setFormData] = useState({
@@ -74,7 +48,7 @@ const RegisterWorker = () => {
         phone: '',
         birthPlace: '',
         region: '',
-        city: '',
+        city_id: '',
         email: '',
         address: '',
         password: '',
@@ -85,6 +59,12 @@ const RegisterWorker = () => {
     const updateFormData = (field, value) => {
         setFormData(prev => ({ ...prev, [field]: value }));
         setError('');
+        
+        if (field === 'region') {
+            const filtered = citiesList.filter(c => c.region?.name === value);
+            setFilteredCities(filtered);
+            setFormData(prev => ({ ...prev, region: value, city_id: '' }));
+        }
     };
 
     const validateForm = () => {
@@ -92,7 +72,7 @@ const RegisterWorker = () => {
         if (!formData.lastName.trim()) return 'Le nom est requis';
         if (!formData.cnie.trim()) return 'Le numéro CNIE est requis';
         if (!formData.phone.trim()) return 'Le téléphone est requis';
-        if (!formData.city) return 'La ville est requise';
+        if (!formData.city_id) return 'La ville est requise';
         if (!formData.email.trim()) return 'L\'email est requis';
         if (!formData.email.includes('@')) return 'Email invalide';
         if (!formData.password) return 'Le mot de passe est requis';
@@ -121,7 +101,7 @@ const RegisterWorker = () => {
                 last_name: formData.lastName,
                 phone: `+212${formData.phone.replace(/\s/g, '')}`,
                 address: formData.address,
-                city: formData.city,
+                city_id: formData.city_id,
                 region: formData.region,
                 cnie: formData.cnie,
                 birth_place: formData.birthPlace,
@@ -317,6 +297,7 @@ const RegisterWorker = () => {
                                 </div>
 
                                 {/* Row 4: Région / Ville */}
+                                {/* Row 4: Région / Ville */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
                                         <label className="block text-sm font-medium text-slate-700 mb-1.5">
@@ -324,14 +305,11 @@ const RegisterWorker = () => {
                                         </label>
                                         <select
                                             value={formData.region}
-                                            onChange={(e) => {
-                                                updateFormData('region', e.target.value);
-                                                updateFormData('city', ''); // Reset city when region changes
-                                            }}
+                                            onChange={(e) => updateFormData('region', e.target.value)}
                                             className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all appearance-none cursor-pointer"
                                         >
                                             <option value="">Sélectionner une région</option>
-                                            {Object.keys(MOROCCAN_REGIONS).map(region => (
+                                            {regionsList.map(region => (
                                                 <option key={region} value={region}>{region}</option>
                                             ))}
                                         </select>
@@ -341,14 +319,14 @@ const RegisterWorker = () => {
                                             Ville <span className="text-red-500">*</span>
                                         </label>
                                         <select
-                                            value={formData.city}
-                                            onChange={(e) => updateFormData('city', e.target.value)}
+                                            value={formData.city_id}
+                                            onChange={(e) => updateFormData('city_id', e.target.value)}
                                             disabled={!formData.region}
                                             className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all appearance-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                                         >
                                             <option value="">{formData.region ? 'Sélectionner une ville' : 'Choisir d\'abord une région'}</option>
-                                            {formData.region && MOROCCAN_REGIONS[formData.region]?.map(city => (
-                                                <option key={city} value={city}>{city}</option>
+                                            {filteredCities.map(city => (
+                                                <option key={city.city_id} value={city.city_id}>{city.name}</option>
                                             ))}
                                         </select>
                                     </div>

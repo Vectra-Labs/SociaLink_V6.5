@@ -9,9 +9,15 @@ export const workerKeys = {
     calendar: () => [...workerKeys.all, 'calendar'],
     applications: () => [...workerKeys.all, 'applications'],
     languages: () => [...workerKeys.all, 'languages'],
+    cities: () => ['cities'], // General key
 };
 
 // --- API FUNCTIONS ---
+
+const getCities = async () => {
+    const { data } = await api.get('/general/cities');
+    return data.data || [];
+};
 
 const getProfile = async () => {
     const { data } = await api.get('/worker/profile');
@@ -32,7 +38,7 @@ const getStats = async () => {
 
 const getCalendar = async () => {
     const { data } = await api.get('/worker/calendar');
-    return data.data;
+    return data.data || [];
 };
 
 const getApplications = async () => {
@@ -193,8 +199,13 @@ export const useToggleAvailability = () => {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: toggleAvailability,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: workerKeys.calendar() });
-        },
+    });
+};
+
+export const useCities = () => {
+    return useQuery({
+        queryKey: workerKeys.cities(),
+        queryFn: getCities,
+        staleTime: 1000 * 60 * 60, // 1 hour
     });
 };

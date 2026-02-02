@@ -9,7 +9,7 @@ import {
     Calendar, CheckCircle2, Car, Languages, Globe,
     FileText, ExternalLink, Eye
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // Hooks
 import { useAuth } from '../../hooks/useAuth';
@@ -24,7 +24,8 @@ import {
     useAddWorkerLanguage,
     useUpdateWorkerLanguage,
     useDeleteWorkerLanguage,
-    useToggleAvailability
+    useToggleAvailability,
+    useCities,
 } from '../../hooks/useWorkerProfile';
 import api from '../../api/client';
 
@@ -40,6 +41,7 @@ const profileSchema = z.object({
 
 export default function EditProfile() {
     const { user } = useAuth();
+    const navigate = useNavigate();
     const [isEditing, setIsEditing] = useState(false);
     const [cvUploading, setCvUploading] = useState(false);
 
@@ -92,6 +94,7 @@ export default function EditProfile() {
     const { data: specialities } = useWorkerSpecialities();
     const { data: documents } = useWorkerDocuments();
     const { data: calendarData } = useWorkerCalendar();
+    const { data: cities } = useCities();
 
     // Mutation
     const updateProfileMutation = useUpdateWorkerProfile();
@@ -104,9 +107,14 @@ export default function EditProfile() {
 
     const onSubmit = (data) => {
         const formData = new FormData();
+        const allowedFields = ['first_name', 'last_name', 'phone', 'bio', 'address', 'city_id'];
+        
         Object.keys(data).forEach(key => {
-            if (data[key]) formData.append(key, data[key]);
+            if (allowedFields.includes(key) && data[key] !== null && data[key] !== undefined) {
+                formData.append(key, data[key]);
+            }
         });
+        
         updateProfileMutation.mutate(formData, {
             onSuccess: () => setIsEditing(false)
         });
@@ -155,6 +163,20 @@ export default function EditProfile() {
     const cityName = profile.city?.name || 'Maroc';
     const isVerified = user?.status === 'VALIDATED';
 
+    // Find CV URL from profile or documents list (fallback)
+    const rawCvUrl = profile.cv_url || documents?.find(d => d.type === 'CV' || d.type === 'RESUME')?.file_url;
+    
+    // Helper to ensure full URL for backend static files
+    const getFileUrl = (url) => {
+        if (!url) return null;
+        if (url.startsWith('http')) return url;
+        // If relative, assume it needs backend base URL (proxy handles /api, but static files might be root or /uploads)
+        // Adjust port if needed or use window.location if deployed differently
+        return `http://localhost:5001${url.startsWith('/') ? '' : '/'}${url}`;
+    };
+
+    const cvUrl = getFileUrl(rawCvUrl);
+
     // Calculate Availability
     const checkAvailability = () => {
         if (!calendarData?.events) return false;
@@ -170,10 +192,12 @@ export default function EditProfile() {
     return (
         <div className="min-h-screen bg-slate-50/50 pb-10 font-sans">
 
-            {/* --- Profile Header (Photoshop Design 2) --- */}
-            <div className="rounded-3xl bg-white shadow-xl overflow-hidden border border-slate-100 mb-10">
-                {/* Full Width Banner */}
-                <div className="relative h-36 md:h-48 overflow-hidden">
+            {/* --- Profile Header (Unified Design) --- */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                {/* Banner - Uploadable */}
+                <div className="h-32 sm:h-40 bg-gradient-to-r from-blue-600 to-indigo-600 relative group">
+                    {/* Banner Image */}
                     {profile.banner_url ? (
                         <img
                             src={profile.banner_url}
@@ -181,162 +205,285 @@ export default function EditProfile() {
                             className="w-full h-full object-cover"
                         />
                     ) : (
-                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-600"></div>
+                        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
                     )}
 
-                    {/* Edit Banner Button */}
+                    {/* Edit Banner Button - Only show camera on hover if editing */}
                     {isEditing && (
-                        <label className="absolute top-4 right-4 px-4 py-2 bg-black/40 hover:bg-black/60 backdrop-blur-md rounded-lg text-white cursor-pointer transition-all flex items-center gap-2">
-                            <Camera className="w-4 h-4" />
-                            <span className="text-sm font-medium">Modifier</span>
+                        <label className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                            <div className="text-center text-white">
+                                <Camera className="w-8 h-8 mx-auto mb-2" />
+                                <p className="text-sm font-medium">Changer la bannière</p>
+                                <p className="text-xs opacity-75">Max 5 Mo • 1200×300 recommandé</p>
+                            </div>
                             <input type="file" className="hidden" accept="image/*" onChange={handleBannerChange} />
                         </label>
                     )}
                 </div>
 
-                {/* Info Section */}
-                <div className="px-6 md:px-8 py-4 md:py-6">
-                    <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
-
-                        {/* Avatar - Overlapping banner */}
-                        <div className="relative -mt-20 md:-mt-24 z-10 shrink-0 self-center md:self-auto">
-                            <div className="w-24 h-24 md:w-28 md:h-28 rounded-full border-4 border-white shadow-lg overflow-hidden bg-white">
+                <div className="px-8 pb-6 relative">
+                    <div className="flex flex-col md:flex-row items-start md:items-end -mt-12 mb-4 gap-6">
+                        {/* Avatar - Circular with Badge */}
+                        <div className="relative group">
+                            <div className="w-32 h-32 rounded-full border-4 border-white bg-white overflow-hidden shadow-lg relative flex items-center justify-center">
                                 {profile.profile_pic_url ? (
                                     <img src={profile.profile_pic_url} alt={fullName} className="w-full h-full object-cover" />
                                 ) : (
-                                    <div className="w-full h-full flex items-center justify-center text-2xl font-bold text-slate-400 bg-gradient-to-br from-slate-50 to-slate-100">
+                                    <div className="w-full h-full flex items-center justify-center text-3xl font-bold text-slate-400 bg-slate-100">
                                         {profile.first_name?.[0]}{profile.last_name?.[0]}
                                     </div>
                                 )}
+                                
+                                {/* Edit Overlay */}
+                                {isEditing && (
+                                    <label className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                                        <Camera className="w-8 h-8 text-white" />
+                                        <input type="file" className="hidden" accept="image/*" onChange={handlePhotoChange} />
+                                    </label>
+                                )}
                             </div>
-                            {/* Blue verification badge */}
-                            <div className="absolute -bottom-1 -right-1 bg-blue-500 text-white p-1 rounded-full border-[3px] border-white shadow-sm">
-                                <Shield className="w-3.5 h-3.5 fill-current" />
-                            </div>
-                            {isEditing && (
-                                <label className="absolute inset-0 rounded-full bg-black/50 flex items-center justify-center text-white opacity-0 hover:opacity-100 transition-opacity cursor-pointer">
-                                    <Camera className="w-6 h-6" />
-                                    <input type="file" className="hidden" accept="image/*" onChange={handlePhotoChange} />
-                                </label>
+                            
+                            {/* Blue verification shield */}
+                            {isVerified && (
+                                <div className="absolute bottom-2 right-2 bg-blue-500 text-white p-1 rounded-full border-[3px] border-white shadow-sm" title="Profil vérifié">
+                                    <Shield className="w-4 h-4 fill-current" />
+                                </div>
                             )}
                         </div>
 
                         {/* Info Block */}
-                        <div className="flex-1 text-center md:text-left">
-                            {/* Row 1: Name + Availability Badge */}
-                            <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
-                                <h1 className="text-xl md:text-2xl font-bold text-slate-900">{fullName}</h1>
-                                <button
-                                    onClick={() => toggleAvailabilityMutation.mutate()}
-                                    disabled={toggleAvailabilityMutation.isPending}
-                                    className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border text-sm font-medium transition-all self-center md:self-auto ${isAvailable
-                                        ? 'bg-emerald-50 text-emerald-600 border-emerald-200'
-                                        : 'bg-slate-50 text-slate-500 border-slate-200'
-                                        }`}
-                                >
-                                    <div className={`w-2 h-2 rounded-full ${isAvailable ? 'bg-emerald-500' : 'bg-slate-400'}`} />
-                                    {isAvailable ? 'Disponible pour missions immédiates' : 'Indisponible'}
-                                </button>
-                            </div>
+                        <div className="flex-1 pt-12 md:pt-0 w-full">
+                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div>
+                                    <div className="flex flex-wrap items-center gap-3 mb-1">
+                                        <h1 className="text-2xl font-bold text-slate-900">{fullName}</h1>
+                                        
+                                        {/* Availability Toggle */}
+                                        <button
+                                            onClick={() => toggleAvailabilityMutation.mutate()}
+                                            disabled={toggleAvailabilityMutation.isPending}
+                                            className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium border transition-colors ${
+                                                isAvailable
+                                                ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100'
+                                                : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
+                                            }`}
+                                        >
+                                            <div className={`w-1.5 h-1.5 rounded-full ${isAvailable ? 'bg-emerald-500' : 'bg-slate-400'}`} />
+                                            {isAvailable ? 'Disponible' : 'Indisponible'}
+                                        </button>
+                                    </div>
+                                    
+                                    <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600">
+                                        <span className="font-medium text-blue-600">
+                                            {specialities?.[0]?.name || 'Travailleur Social'}
+                                        </span>
+                                        <div className="flex items-center gap-1">
+                                            <MapPin className="w-3.5 h-3.5 text-slate-400" />
+                                            {cityName}
+                                        </div>
+                                    </div>
+                                </div>
 
-                            {/* Row 2: Profession */}
-                            <p className="text-blue-600 font-medium mt-1">{specialities?.[0]?.name || 'Travailleur Social'}</p>
-
-                            {/* Row 3: Location */}
-                            <div className="flex items-center justify-center md:justify-start gap-1.5 mt-2 text-sm text-slate-500">
-                                <MapPin className="w-4 h-4" />
-                                <span>{cityName}</span>
-                            </div>
-                        </div>
-
-                        {/* Buttons - Right side */}
-                        <div className="flex items-center justify-center md:justify-end gap-3 mt-2 md:mt-0">
-                            {isEditing ? (
-                                <>
-                                    <button onClick={() => { setIsEditing(false); reset(); }} className="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-medium hover:bg-slate-50 transition-colors">
-                                        Annuler
-                                    </button>
-                                    <button type="submit" form="profile-form" disabled={updateProfileMutation.isPending} className="px-5 py-2.5 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 shadow-md flex items-center gap-2 transition-colors">
-                                        {updateProfileMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                                        Enregistrer
-                                    </button>
-                                </>
-                            ) : (
-                                <>
-                                    <button onClick={() => setIsEditing(true)} className="px-5 py-2.5 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 shadow-md flex items-center gap-2 transition-colors">
-                                        <Edit2 className="w-4 h-4" /> Modifier
-                                    </button>
-                                    {profile.cv_url ? (
-                                        <a href={profile.cv_url} target="_blank" rel="noopener noreferrer" className="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-700 font-medium hover:bg-slate-50 flex items-center gap-2 bg-white transition-colors">
-                                            <Download className="w-4 h-4" /> CV Vérifié
-                                        </a>
+                                {/* Actions - Right Side */}
+                                <div className="flex items-center gap-3 mt-4 md:mt-0">
+                                    {isEditing ? (
+                                        <>
+                                            <button onClick={() => { setIsEditing(false); reset(); }} className="px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg hover:bg-slate-50 font-medium text-sm flex items-center gap-2">
+                                                Aannuler
+                                            </button>
+                                            <button onClick={handleSubmit(onSubmit)} disabled={updateProfileMutation.isPending} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-sm flex items-center gap-2 shadow-sm">
+                                                {updateProfileMutation.isPending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
+                                                Enregistrer
+                                            </button>
+                                        </>
                                     ) : (
-                                        <label className="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-700 font-medium hover:bg-slate-50 flex items-center gap-2 bg-white cursor-pointer transition-colors">
-                                            {cvUploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
-                                            Ajouter CV
-                                            <input type="file" accept=".pdf" className="hidden" onChange={handleCvUpload} disabled={cvUploading} />
-                                        </label>
+                                        <>
+                                            {/* CV Button */}
+                                            {cvUrl ? (
+                                                <a href={cvUrl} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg hover:bg-slate-50 font-medium text-sm flex items-center gap-2 transition-colors">
+                                                    <Download className="w-4 h-4" /> CV
+                                                </a>
+                                            ) : (
+                                                <label className="px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg hover:bg-slate-50 font-medium text-sm flex items-center gap-2 cursor-pointer transition-colors">
+                                                    {cvUploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+                                                    Ajouter CV
+                                                    <input type="file" accept=".pdf" className="hidden" onChange={handleCvUpload} disabled={cvUploading} />
+                                                </label>
+                                            )}
+                                            
+                                            <button onClick={() => setIsEditing(true)} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-sm flex items-center gap-2 shadow-sm">
+                                                <Edit2 className="w-3.5 h-3.5" /> Modifier
+                                            </button>
+                                        </>
                                     )}
-                                </>
-                            )}
-                        </div>
+                                </div>
+                            </div>
                     </div>
                 </div>
             </div>
+            </div>
+            </div>
 
             {/* --- 2. MAIN CONTENT GRID --- */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
 
                 {/* === LEFT SIDEBAR === */}
                 <div className="space-y-6">
 
+                    {/* Mini Calendar / Availability */}
+                    <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+                        <div className="flex items-center justify-between mb-4">
+                            <h3 className="font-bold text-slate-900 flex items-center gap-2">
+                                <Calendar className="w-5 h-5 text-emerald-600" />
+                                Disponibilité
+                            </h3>
+                            <button 
+                                onClick={() => navigate('/worker/calendar')}
+                                className="text-xs text-blue-600 hover:underline font-medium"
+                            >
+                                Gérer
+                            </button>
+                        </div>
+                        
+                        {/* Custom Mini Calendar UI */}
+                        <div className="bg-slate-50 rounded-xl p-3 border border-slate-100">
+                             <div className="flex items-center justify-between mb-2 text-sm font-semibold text-slate-700">
+                                <span>{new Date().toLocaleString('fr-FR', { month: 'long', year: 'numeric' }).replace(/^\w/, c => c.toUpperCase())}</span>
+                            </div>
+                            <div className="grid grid-cols-7 gap-1 text-center text-xs mb-1">
+                                {['L', 'M', 'M', 'J', 'V', 'S', 'D'].map((d, i) => (
+                                    <div key={i} className="text-slate-400">{d}</div>
+                                ))}
+                            </div>
+                            
+                            {/* Calendar Matrix */}
+                            <div className="grid grid-cols-7 gap-1 text-center text-xs font-medium">
+                                {(() => {
+                                    const today = new Date();
+                                    const year = today.getFullYear();
+                                    const month = today.getMonth();
+                                    
+                                    // First day of the month (0 = Sun, 1 = Mon, ... 6 = Sat)
+                                    // Adjust to make Monday 0
+                                    let firstDay = new Date(year, month, 1).getDay();
+                                    firstDay = firstDay === 0 ? 6 : firstDay - 1; 
+
+                                    const daysInMonth = new Date(year, month + 1, 0).getDate();
+                                    const days = [];
+
+                                    // Empty cells for days before the 1st
+                                    for (let i = 0; i < firstDay; i++) {
+                                        days.push(<div key={`empty-${i}`} className="p-1"></div>);
+                                    }
+
+                                    // Days of the month
+                                    for (let d = 1; d <= daysInMonth; d++) {
+                                        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+                                        
+                                        // Check availability from calendarData
+                                        // Assuming calendarData is array of strings 'YYYY-MM-DD' or objects with date property
+                                        // If no structure known, we'll check simple includes for now based on common API patterns
+                                        // Or if calendarData is array of {date: ..., status: ...}
+                                        const isAvailable = Array.isArray(calendarData) && calendarData.some(
+                                            item => (item.date === dateStr || item === dateStr) && 
+                                            (item.status === 'AVAILABLE' || item.status === true)
+                                        );
+                                        
+                                        const isToday = d === today.getDate();
+
+                                        let className = "p-1 rounded-full cursor-pointer transition-colors ";
+                                        if (isToday) {
+                                            className += "bg-blue-600 text-white shadow-sm";
+                                        } else if (isAvailable) {
+                                            className += "bg-emerald-100 text-emerald-700 hover:bg-emerald-200";
+                                        } else {
+                                            className += "hover:bg-white text-slate-600";
+                                        }
+
+                                        days.push(
+                                            <div key={d} className={className} title={isAvailable ? "Disponible" : ""}>
+                                                {d}
+                                            </div>
+                                        );
+                                    }
+                                    return days;
+                                })()}
+                            </div>
+                        </div>
+                        <div className="mt-3 flex items-center gap-4 text-xs">
+                            <div className="flex items-center gap-1.5">
+                                <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
+                                <span className="text-slate-600">Libre</span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                                <div className="w-2 h-2 rounded-full bg-slate-300"></div>
+                                <span className="text-slate-600">Occupé</span>
+                            </div>
+                        </div>
+                    </div>
+
                     {/* Contact & Mobility */}
-                    <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                    <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
                         <h3 className="font-bold text-slate-900 mb-4 flex items-center gap-2">
-                            <Phone className="w-5 h-5 text-blue-600" />
                             Coordonnées
                         </h3>
                         {isEditing ? (
                             <form id="profile-form" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                                 <div>
                                     <label className="text-xs font-semibold text-slate-500 uppercase">Prénom & Nom</label>
-                                    <div className="grid grid-cols-2 gap-2">
-                                        <input {...register('first_name')} className="w-full p-2 border rounded-lg text-sm" placeholder="Prénom" />
-                                        <input {...register('last_name')} className="w-full p-2 border rounded-lg text-sm" placeholder="Nom" />
+                                    <div className="grid grid-cols-2 gap-2 mt-1">
+                                        <input {...register('first_name')} className="w-full p-2 border rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Prénom" />
+                                        <input {...register('last_name')} className="w-full p-2 border rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Nom" />
                                     </div>
                                     {errors.first_name && <p className="text-red-500 text-xs mt-1">{errors.first_name.message}</p>}
                                 </div>
                                 <div>
                                     <label className="text-xs font-semibold text-slate-500 uppercase">Téléphone</label>
-                                    <input {...register('phone')} className="w-full p-2 border rounded-lg text-sm" placeholder="06..." />
+                                    <input {...register('phone')} className="w-full p-2 border rounded-lg text-sm mt-1 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="06..." />
                                     {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>}
+                                </div>
+
+                                <div>
+                                    <label className="text-xs font-semibold text-slate-500 uppercase">Ville</label>
+                                    <select {...register('city_id')} className="w-full p-2 border rounded-lg text-sm mt-1 focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+                                        <option value="">Sélectionner une ville</option>
+                                        {cities?.map(city => (
+                                            <option key={city.city_id} value={city.city_id}>{city.name}</option>
+                                        ))}
+                                    </select>
                                 </div>
                                 <div>
                                     <label className="text-xs font-semibold text-slate-500 uppercase">Adresse</label>
-                                    <textarea {...register('address')} className="w-full p-2 border rounded-lg text-sm" rows={2} placeholder="Votre adresse..." />
+                                    <textarea {...register('address')} className="w-full p-2 border rounded-lg text-sm mt-1 focus:ring-2 focus:ring-blue-500 outline-none" rows={2} placeholder="Votre adresse..." />
                                 </div>
                             </form>
                         ) : (
                             <div className="space-y-4">
-                                <div className="flex items-start gap-4 p-3 rounded-xl bg-slate-50 border border-slate-100">
-                                    <div className="p-2 bg-white rounded-lg shadow-sm text-slate-500"><Phone className="w-4 h-4" /></div>
-                                    <div>
-                                        <p className="text-xs text-slate-500 font-semibold uppercase">Téléphone</p>
+                                <div className="flex items-center gap-3">
+                                    <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
+                                        <Phone className="w-4 h-4" />
+                                    </div>
+                                    <div className="flex-1">
+                                        <p className="text-xs text-slate-500">Téléphone</p>
                                         <p className="text-sm font-medium text-slate-900">{profile.phone || "Non renseigné"}</p>
                                     </div>
                                 </div>
-                                <div className="flex items-start gap-4 p-3 rounded-xl bg-slate-50 border border-slate-100">
-                                    <div className="p-2 bg-white rounded-lg shadow-sm text-slate-500"><MapPin className="w-4 h-4" /></div>
-                                    <div>
-                                        <p className="text-xs text-slate-500 font-semibold uppercase">Adresse</p>
+                                <div className="flex items-center gap-3">
+                                    <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
+                                        <MapPin className="w-4 h-4" />
+                                    </div>
+                                    <div className="flex-1">
+                                        <p className="text-xs text-slate-500">Adresse</p>
                                         <p className="text-sm font-medium text-slate-900">{profile.address || "Non renseigné"}</p>
                                     </div>
                                 </div>
-                                <div className="flex items-start gap-4 p-3 rounded-xl bg-slate-50 border border-slate-100">
-                                    <div className="p-2 bg-white rounded-lg shadow-sm text-slate-500"><Mail className="w-4 h-4" /></div>
-                                    <div>
-                                        <p className="text-xs text-slate-500 font-semibold uppercase">Email</p>
-                                        <p className="text-sm font-medium text-slate-900 truncate max-w-[180px]">{user?.email}</p>
+                                <div className="flex items-center gap-3">
+                                    <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
+                                        <Mail className="w-4 h-4" />
+                                    </div>
+                                    <div className="flex-1">
+                                        <p className="text-xs text-slate-500">Email</p>
+                                        <p className="text-sm font-medium text-slate-900 truncate max-w-[180px]" title={user?.email}>{user?.email}</p>
                                     </div>
                                 </div>
                             </div>
@@ -344,7 +491,7 @@ export default function EditProfile() {
                     </div>
 
                     {/* Skills / Specialities */}
-                    <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm relative group">
+                    <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm relative group">
                         <Link to="/worker/specialities" className="absolute top-4 right-4 p-2 text-slate-400 hover:text-blue-600 hover:bg-slate-50 rounded-lg transition-colors">
                             <Edit2 className="w-4 h-4" />
                         </Link>
@@ -366,7 +513,7 @@ export default function EditProfile() {
                     </div>
 
                     {/* Languages (Mocked for now as per plan) */}
-                    <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm relative group">
+                    <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm relative group">
                         <div className="flex justify-between items-center mb-4">
                             <h3 className="font-bold text-slate-900 flex items-center gap-2">
                                 <Languages className="w-5 h-5 text-indigo-500" />
@@ -454,7 +601,7 @@ export default function EditProfile() {
                 <div className="lg:col-span-2 space-y-8">
 
                     {/* Bio / About */}
-                    <section className="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm relative group">
+                    <section className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm relative group">
                         <h3 className="font-bold text-xl text-slate-900 mb-4">À propos</h3>
                         {isEditing ? (
                             <textarea
@@ -480,7 +627,7 @@ export default function EditProfile() {
                     </section>
 
                     {/* Experience Timeline */}
-                    <section className="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm relative">
+                    <section className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm relative">
                         <div className="flex items-center justify-between mb-8">
                             <h3 className="font-bold text-xl text-slate-900 flex items-center gap-3">
                                 <Briefcase className="w-6 h-6 text-blue-600" />
@@ -517,7 +664,7 @@ export default function EditProfile() {
                     </section>
 
                     {/* Diplomas & Certificates */}
-                    <section className="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm relative">
+                    <section className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm relative">
                         <div className="flex items-center justify-between mb-8">
                             <h3 className="font-bold text-xl text-slate-900 flex items-center gap-3">
                                 <GraduationCap className="w-6 h-6 text-emerald-600" />
