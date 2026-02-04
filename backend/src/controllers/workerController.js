@@ -1,7 +1,11 @@
 import { prisma } from "../config/db.js";
-import { supabase } from "../config/supabase.js";
 import { createNotification } from "../services/notificationService.js";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 //----------------------------- Get Worker Profile -----------------------------//
 export const getWorkerProfile = async (req, res) => {
@@ -110,46 +114,36 @@ export const updateWorkerProfile = async (req, res) => {
     const userId = req.user.user_id;
     const dataToUpdate = { ...req.body };
 
+    // Ensure uploads directory exists
+    const uploadsDir = path.join(__dirname, "../../uploads/avatars");
+    if (!fs.existsSync(uploadsDir)) {
+      fs.mkdirSync(uploadsDir, { recursive: true });
+    }
+
+    // Base URL for manually served files (adjust PORT if needed or use relative)
+    // Using relative path assuming frontend proxies /uploads or backend serves it at root
+    const baseUrl = `${process.env.FRONTEND_URL ? process.env.FRONTEND_URL.replace('5173', '5001').replace('5174', '5001') : 'http://localhost:5001'}/uploads/avatars`;
+
     // Upload photo if exists
     if (req.files?.photo?.[0]) {
       const photoFile = req.files.photo[0];
-      const fileName = `worker_${userId}_avatar_${Date.now()}.png`;
+      const fileName = `worker_${userId}_avatar_${Date.now()}.png`; // Force PNG or derive ext
+      const filePath = path.join(uploadsDir, fileName);
 
-      const { error } = await supabase.storage
-        .from("avatars")
-        .upload(fileName, photoFile.buffer, {
-          contentType: photoFile.mimetype,
-          upsert: true,
-        });
+      fs.writeFileSync(filePath, photoFile.buffer);
 
-      if (error) throw error;
-
-      const { data } = supabase.storage
-        .from("avatars")
-        .getPublicUrl(fileName);
-
-      dataToUpdate.profile_pic_url = data.publicUrl;
+      dataToUpdate.profile_pic_url = `${baseUrl}/${fileName}`;
     }
 
     // Upload banner if exists
     if (req.files?.banner?.[0]) {
       const bannerFile = req.files.banner[0];
       const fileName = `worker_${userId}_banner_${Date.now()}.png`;
+      const filePath = path.join(uploadsDir, fileName);
 
-      const { error } = await supabase.storage
-        .from("avatars")
-        .upload(fileName, bannerFile.buffer, {
-          contentType: bannerFile.mimetype,
-          upsert: true,
-        });
+      fs.writeFileSync(filePath, bannerFile.buffer);
 
-      if (error) throw error;
-
-      const { data } = supabase.storage
-        .from("avatars")
-        .getPublicUrl(fileName);
-
-      dataToUpdate.banner_url = data.publicUrl;
+      dataToUpdate.banner_url = `${baseUrl}/${fileName}`;
     }
 
     const updatedProfile = await prisma.workerProfile.update({
@@ -706,44 +700,44 @@ export const getWorkerReviews = async (req, res) => {
   }
 };
 
-//----------------------------- Get Recommended Missions (based on specialities) -----------------------------//
+//----------------------------- Get Recommended Missions (Advanced Matching) -----------------------------//
 export const getRecommendedMissions = async (req, res) => {
   try {
     const userId = req.user.user_id;
     const limit = parseInt(req.query.limit) || 3;
 
-    // Get worker's specialities and city
+    // 1. Get worker profile with criteria
     const workerProfile = await prisma.workerProfile.findUnique({
       where: { user_id: userId },
       select: { 
           city_id: true,
-          specialities: { select: { speciality_id: true } }
+          specialities: { select: { speciality_id: true } },
+          skills: true // ["Permis B", "Gériatrie"]
       }
     });
 
     const specialityIds = workerProfile?.specialities.map(s => s.speciality_id) || [];
     const workerCityId = workerProfile?.city_id;
+    const workerSkills = workerProfile?.skills || [];
 
-    // Get missions worker has already applied to
+    // 2. Get missions already applied
     const appliedMissions = await prisma.application.findMany({
       where: { worker_profile_id: userId },
       select: { mission_id: true }
     });
     const appliedMissionIds = appliedMissions.map(a => a.mission_id);
 
-    // Find matching active missions
-    const missions = await prisma.mission.findMany({
+    // 3. Fetch Candidate Missions (Broad Filter first)
+    // We fetch a bit more than limit to allow re-ranking by score
+    const candidateMissions = await prisma.mission.findMany({
       where: {
-        status: 'ACTIVE',
+        status: 'OPEN', // Only OPEN missions
         mission_id: { notIn: appliedMissionIds },
-        // Filter by Speciality
-        ...(specialityIds.length > 0 && {
-          speciality_id: { in: specialityIds }
-        }),
-        // Filter by City (New)
-        ...(workerCityId && {
-            city_id: workerCityId
-        })
+        // Basic match: Must match either City OR Speciality to be considered relevant
+        OR: [
+            { city_id: workerCityId },
+            { speciality_id: { in: specialityIds } }
+        ]
       },
       include: {
         establishment: {
@@ -756,10 +750,51 @@ export const getRecommendedMissions = async (req, res) => {
         speciality: { select: { name: true } }
       },
       orderBy: { created_at: 'desc' },
-      take: limit
+      take: 50 // Fetch pool for scoring
     });
 
-    const formattedMissions = missions.map(m => ({
+    // 4. Scoring Logic
+    const scoredMissions = candidateMissions.map(mission => {
+        let score = 0;
+        const debug = [];
+
+        // A. City Match (High priority)
+        if (mission.city_id === workerCityId) {
+            score += 10;
+            debug.push('City Match (+10)');
+        }
+
+        // B. Speciality Match (Critical)
+        if (specialityIds.includes(mission.speciality_id)) {
+            score += 20;
+            debug.push('Speciality Match (+20)');
+        }
+
+        // C. Skills/Tags Match (The "Advanced" part)
+        // Check intersection of worker.skills and mission.skills
+        const missionSkills = mission.skills || [];
+        const matchingSkills = missionSkills.filter(skill => workerSkills.includes(skill));
+        
+        if (matchingSkills.length > 0) {
+            const points = matchingSkills.length * 5; // 5 points per matching skill
+            score += points;
+            debug.push(`Skills Match: ${matchingSkills.join(', ')} (+${points})`);
+        }
+
+        // D. Urgency Bonus
+        if (mission.is_urgent) {
+            score += 5;
+            debug.push('Urgent (+5)');
+        }
+
+        return { ...mission, matchScore: score, matchDebug: debug };
+    });
+
+    // 5. Sort by Score DESC
+    scoredMissions.sort((a, b) => b.matchScore - a.matchScore);
+
+    // 6. Format for Frontend
+    const finalMissions = scoredMissions.slice(0, limit).map(m => ({
       id: m.mission_id,
       title: m.title,
       establishment: m.establishment?.name || 'Entreprise',
@@ -767,15 +802,17 @@ export const getRecommendedMissions = async (req, res) => {
       location: m.establishment?.city?.name || 'France',
       speciality: m.speciality?.name,
       salary: m.salary_min && m.salary_max ?
-        `${m.salary_min}€ - ${m.salary_max}€` :
-        (m.salary_min ? `À partir de ${m.salary_min}€` : 'Non spécifié'),
+        `${m.salary_min}DH - ${m.salary_max}DH` : // Changed to DH
+        (m.salary_min ? `À partir de ${m.salary_min}DH` : 'Non spécifié'),
       type: m.contract_type,
-      createdAt: m.created_at
+      tags: m.skills, // Show matched tags
+      createdAt: m.created_at,
+      score: m.matchScore // Optional: show score match %
     }));
 
     res.status(200).json({
       message: "Recommended missions fetched successfully",
-      data: formattedMissions,
+      data: finalMissions,
     });
   } catch (error) {
     console.error("GET RECOMMENDED MISSIONS ERROR:", error);

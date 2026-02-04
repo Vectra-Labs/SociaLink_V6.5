@@ -21,16 +21,27 @@ const SuperAdminUsers = () => {
     const [selectedUser, setSelectedUser] = useState(null);
     const [userDetails, setUserDetails] = useState(null);
     const [loadingDetails, setLoadingDetails] = useState(false);
+    const [plans, setPlans] = useState([]);
 
     useEffect(() => {
         fetchUsers();
+        fetchPlans();
     }, [filters]);
+
+    const fetchPlans = async () => {
+        try {
+            const { data } = await api.get('/admin/plans');
+            setPlans(data);
+        } catch (error) {
+            console.error("Error fetching plans", error);
+        }
+    };
 
     const fetchUsers = async () => {
         setLoading(true);
         try {
             const query = new URLSearchParams(filters).toString();
-            const { data } = await api.get(`/super-admin/users?${query}`);
+            const { data } = await api.get(`/admin/users?${query}`);
             setUsers(data.users);
             setPagination(data.pagination);
         } catch (error) {
@@ -45,7 +56,7 @@ const SuperAdminUsers = () => {
         setLoadingDetails(true);
         setUserDetails(null);
         try {
-            const { data } = await api.get(`/super-admin/users/${user.user_id}`);
+            const { data } = await api.get(`/admin/users/${user.user_id}`);
             setUserDetails(data);
         } catch (error) {
             alert("Erreur chargement détails (Vérifiez la console)");
@@ -58,7 +69,7 @@ const SuperAdminUsers = () => {
     const handleStatusChange = async (userId, newStatus) => {
         if (!window.confirm(`Êtes-vous sûr de vouloir changer le statut à ${newStatus} ?`)) return;
         try {
-            await api.put(`/super-admin/users/${userId}/status`, { status: newStatus });
+            await api.put(`/admin/users/${userId}/status`, { status: newStatus });
             fetchUsers();
             if (selectedUser?.user_id === userId) {
                 // Refresh modal if open
@@ -66,6 +77,20 @@ const SuperAdminUsers = () => {
             }
         } catch (error) {
             alert("Erreur lors de la mise à jour");
+        }
+    };
+
+    const handleUpdateSubscription = async (planCode, durationMembers) => {
+        if (!window.confirm("Confirmer la modification de l'abonnement ?")) return;
+        try {
+            await api.put(`/admin/users/${selectedUser.user_id}/subscription`, {
+                planCode,
+                durationMonths: parseInt(durationMembers)
+            });
+            alert("Abonnement mis à jour !");
+            handleViewDetails(selectedUser); // Refresh details
+        } catch (error) {
+            alert("Erreur: " + (error.response?.data?.message || error.message));
         }
     };
 
@@ -338,15 +363,49 @@ const SuperAdminUsers = () => {
                                         {userDetails.subscription && userDetails.subscription.length > 0 && (
                                             <div>
                                                 <h3 className="text-sm font-bold text-slate-900 uppercase mb-3 flex items-center gap-2">
-                                                    <Award className="w-4 h-4" /> Abonnement
+                                                    <Award className="w-4 h-4" /> Abonnement Actuel
                                                 </h3>
-                                                <div className="bg-blue-50 border border-blue-100 p-4 rounded-xl">
+                                                <div className="bg-blue-50 border border-blue-100 p-4 rounded-xl mb-4">
                                                     <p className="font-bold text-blue-900">{userDetails.subscription[0].plan?.name}</p>
                                                     <p className="text-xs text-blue-700 mt-1">Statut: {userDetails.subscription[0].status}</p>
                                                     <p className="text-xs text-blue-600 mt-1">Expire le: {userDetails.subscription[0].end_date ? new Date(userDetails.subscription[0].end_date).toLocaleDateString() : 'Jamais'}</p>
                                                 </div>
                                             </div>
                                         )}
+
+                                        {/* Manage Subscription */}
+                                        <div>
+                                            <h3 className="text-sm font-bold text-slate-900 uppercase mb-3 flex items-center gap-2">
+                                                <Award className="w-4 h-4" /> Gérer Abonnement
+                                            </h3>
+                                            <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                                <div className="space-y-3">
+                                                    <div>
+                                                        <label className="text-xs font-semibold text-slate-500">Nouveau Plan</label>
+                                                        <select id="newPlanSelect" className="w-full text-sm p-2 border rounded">
+                                                            <option value="">Sélectionner...</option>
+                                                            {plans.map(p => (
+                                                                <option key={p.plan_id} value={p.code}>{p.name} ({p.price_monthly / 100} DH)</option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+                                                    <div>
+                                                        <label className="text-xs font-semibold text-slate-500">Durée (Mois)</label>
+                                                        <input id="subDuration" type="number" defaultValue={1} className="w-full text-sm p-2 border rounded" min="1" max="24" />
+                                                    </div>
+                                                    <button 
+                                                        onClick={() => {
+                                                            const plan = document.getElementById('newPlanSelect').value;
+                                                            const duration = document.getElementById('subDuration').value;
+                                                            if(plan) handleUpdateSubscription(plan, duration);
+                                                        }}
+                                                        className="w-full py-2 bg-blue-600 text-white text-xs font-bold rounded hover:bg-blue-700"
+                                                    >
+                                                        Mettre à jour Abonnement
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     {/* Column 2: Specific Profile Data */}

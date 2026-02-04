@@ -30,7 +30,7 @@ const SuperAdminMarketing = () => {
 
     const fetchBanners = async () => {
         try {
-            const { data } = await api.get('/super-admin/banners');
+            const { data } = await api.get('/admin/banners');
             setBanners(data);
         } catch (error) {
             console.error("Error fetching banners", error);
@@ -56,7 +56,7 @@ const SuperAdminMarketing = () => {
     const handleDeleteBanner = async (id) => {
         if (!window.confirm("Supprimer cette bannière ?")) return;
         try {
-            await api.delete(`/super-admin/banners/${id}`);
+            await api.delete(`/admin/banners/${id}`);
             fetchBanners();
         } catch (e) {
             alert("Erreur suppression");
@@ -67,9 +67,9 @@ const SuperAdminMarketing = () => {
         e.preventDefault();
         try {
             if (editingId) {
-                await api.put(`/super-admin/banners/${editingId}`, bannerData);
+                await api.put(`/admin/banners/${editingId}`, bannerData);
             } else {
-                await api.post('/super-admin/banners', bannerData);
+                await api.post('/admin/banners', bannerData);
             }
             setShowBannerModal(false);
             fetchBanners();
@@ -80,7 +80,7 @@ const SuperAdminMarketing = () => {
 
     const toggleBannerStatus = async (bn) => {
         try {
-            await api.put(`/super-admin/banners/${bn.banner_id}`, { ...bn, is_active: !bn.is_active });
+            await api.put(`/admin/banners/${bn.banner_id}`, { ...bn, is_active: !bn.is_active });
             fetchBanners();
         } catch (e) { console.error(e); }
     };
@@ -92,7 +92,7 @@ const SuperAdminMarketing = () => {
 
         setSending(true);
         try {
-            const { data } = await api.post('/super-admin/notifications/broadcast', notifData);
+            const { data } = await api.post('/admin/notifications/broadcast', notifData);
             alert(data.message);
             setNotifData({ title: '', message: '', target_role: 'ALL', target_status: 'VALIDATED' });
         } catch (error) {

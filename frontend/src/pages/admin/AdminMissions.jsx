@@ -22,7 +22,7 @@ const AdminMissions = () => {
     const fetchMissions = async () => {
         setLoading(true);
         try {
-            const { data } = await api.get(`/super-admin/missions?status=${filter}&search=${searchQuery}`);
+            const { data } = await api.get(`/admin/missions?status=${filter}&search=${searchQuery}`);
             setMissions(data.items || []);
             if (data.stats) setStats(data.stats);
         } catch (error) {
@@ -36,7 +36,7 @@ const AdminMissions = () => {
     const handleApprove = async (missionId) => {
         setProcessing(true);
         try {
-            await api.put(`/super-admin/missions/${missionId}/review`, { status: 'APPROVED' });
+            await api.put(`/admin/missions/${missionId}/review`, { status: 'APPROVED' });
             alert('Mission approuvée et publiée avec succès');
             setSelectedMission(null);
             fetchMissions();
@@ -55,7 +55,7 @@ const AdminMissions = () => {
         }
         setProcessing(true);
         try {
-            await api.put(`/super-admin/missions/${missionId}/review`, {
+            await api.put(`/admin/missions/${missionId}/review`, {
                 status: 'REJECTED',
                 reason: rejectReason
             });

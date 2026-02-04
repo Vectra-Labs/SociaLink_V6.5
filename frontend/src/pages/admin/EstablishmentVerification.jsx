@@ -19,7 +19,7 @@ const EstablishmentVerification = () => {
     const fetchEstablishments = async () => {
         setLoading(true);
         try {
-            const { data } = await api.get('/super-admin/quality/pending');
+            const { data } = await api.get('/admin/quality/pending');
 
             let filtered = data?.items || [];
             if (filter === 'pending') {

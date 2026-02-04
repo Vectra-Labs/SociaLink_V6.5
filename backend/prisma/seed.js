@@ -165,24 +165,67 @@ async function main() {
   // ==========================================
   console.log('\n👑 Creating admin accounts...');
 
-  const superAdmin = await prisma.user.create({
-    data: {
-      email: 'superadmin@socialink.ma',
-      password: await bcrypt.hash('superadmin123', 10),
-      role: 'SUPER_ADMIN', status: 'VALIDATED', isEmailVerified: true
-    }
-  });
-
+  /* REMOVED SUPER_ADMIN creation - Merged into ADMIN role */
+  
   const admin = await prisma.user.create({
     data: {
       email: 'admin@socialink.ma',
       password: await bcrypt.hash('admin123', 10),
       role: 'ADMIN', status: 'VALIDATED', isEmailVerified: true,
-      admin_permissions: JSON.stringify(['CAN_VALIDATE', 'CAN_MODERATE', 'CAN_VIEW_DOCUMENTS'])
+      // Permissions are now implicit for ADMIN, but keeping explicit list doesn't hurt or can be removed if schema changed
+      admin_permissions: JSON.stringify(['ALL_ACCESS']) 
     }
   });
-  console.log('  ✓ superadmin@socialink.ma / superadmin123');
-  console.log('  ✓ admin@socialink.ma / admin123');
+  console.log('  ✓ admin@socialink.ma / admin123 (Full Admin Access)');
+
+  const hafidAdmin = await prisma.user.create({
+    data: {
+      email: 'hafid.admin@socialink.ma',
+      password: await bcrypt.hash('hafid123', 10),
+      role: 'ADMIN', status: 'VALIDATED', isEmailVerified: true,
+      admin_permissions: JSON.stringify(['ALL_ACCESS']),
+      adminProfile: {
+        create: {
+            first_name: 'Hafid', last_name: 'Belkorchi', 
+            department: 'Direction', profile_pic_url: null
+        }
+      }
+    }
+  });
+  console.log('  ✓ hafid.admin@socialink.ma / hafid123 (Admin Persistant)');
+
+  // ==========================================
+  // PERSISTENT WORKER: HAFID BELKORCHI
+  // ==========================================
+  const hafidWorker = await prisma.user.create({
+    data: {
+        email: 'hafid.belkorchi@gmail.com',
+        password: await bcrypt.hash('hafid123', 10),
+        role: 'WORKER', status: 'VALIDATED', isEmailVerified: true,
+        workerProfile: {
+            create: {
+                first_name: 'Hafid', last_name: 'Belkorchi',
+                phone: '+212600000000', city_id: 1, // Casablanca assumed ID 1
+                title: 'Infirmier Testeur', experience_years: 10,
+                bio: 'Compte de test officiel pour validation et démonstration. Profil complet et vérifié.',
+                verification_status: 'VERIFIED',
+                skills: ["Test", "Développement", "Gestion"],
+                address: '123 Avenue Mohamed V, Casablanca',
+                profile_pic_url: null
+            }
+        }
+    }
+  });
+  
+  // Fake Documents for Hafid Worker
+  await prisma.workerDocument.createMany({
+    data: [
+        { worker_id: hafidWorker.user_id, type: 'CV', name: 'CV_Final.pdf', file_url: '/assets/documents/sample.pdf', status: 'VERIFIED', verified_at: new Date() },
+        { worker_id: hafidWorker.user_id, type: 'DIPLOMA', name: 'Diplome_Etat.pdf', file_url: '/assets/documents/sample.pdf', status: 'VERIFIED', verified_at: new Date() },
+        { worker_id: hafidWorker.user_id, type: 'CIN', name: 'CIN_RectoVerso.jpg', file_url: '/assets/documents/sample.jpg', status: 'VERIFIED', verified_at: new Date() }
+    ]
+  });
+  console.log('  ✓ hafid.belkorchi@gmail.com / hafid123 (Worker Persistant + Docs)');
 
   // ==========================================
   // REALISTIC WORKERS (8 profiles)
@@ -196,6 +239,7 @@ async function main() {
       title: 'Aide-soignante spécialisée gériatrie', experience_years: 8,
       bio: 'Aide-soignante diplômée avec 8 ans d\'expérience en EHPAD et soins à domicile. Passionnée par l\'accompagnement des personnes âgées, je mets mon expertise au service du bien-être et de la dignité de chaque patient. Certifiée en soins palliatifs.',
       specialities: ['Soins gériatriques', 'EHPAD', 'Soins palliatifs', 'Assistance aux personnes âgées'],
+      skills: ["Permis B", "Gériatrie", "Soins techniques"],
       profile_pic: '/assets/Photo profile/Profile photo_1.jpg'
     },
     {
@@ -204,6 +248,7 @@ async function main() {
       title: 'Éducateur spécialisé', experience_years: 5,
       bio: 'Éducateur spécialisé diplômé d\'État, je travaille depuis 5 ans avec des personnes en situation de handicap. Formé à la communication non-violente et aux techniques d\'accompagnement individualisé.',
       specialities: ['Éducation spécialisée', 'Accompagnement handicap', 'Autonomie PMR'],
+      skills: ["Langue des signes", "Permis B"],
       profile_pic: '/assets/Photo profile/Profile photo_2.jpg'
     },
     {
@@ -212,6 +257,7 @@ async function main() {
       title: 'Éducatrice de jeunes enfants', experience_years: 6,
       bio: 'Éducatrice de jeunes enfants avec spécialisation Montessori. J\'accompagne les enfants de 0 à 6 ans dans leur développement psychomoteur et leur éveil. Expérience en crèche et à domicile.',
       specialities: ['Garde d\'enfants', 'Éveil et pédagogie', 'Activités maternelles'],
+      skills: ["Toilette", "Alimentation", "Ecoute active"],
       profile_pic: '/assets/Photo profile/Profile photo_3.jpg'
     },
     {
@@ -276,6 +322,7 @@ async function main() {
             city_id: cityMap[w.city],
             profile_pic_url: w.profile_pic,
             verification_status: w.status === 'VALIDATED' ? 'VERIFIED' : 'PENDING',
+            skills: w.skills || [], // Add demo skills
             address: `${Math.floor(Math.random() * 200) + 1}, Rue ${['Mohammed V', 'Hassan II', 'Ibn Batouta', 'Al Massira'][Math.floor(Math.random() * 4)]}, ${w.city}`
           }
         }
@@ -416,10 +463,10 @@ async function main() {
   console.log('\n📋 Creating REALISTIC MISSIONS...');
 
   const missionsData = [
-    { estab: 0, title: 'Aide-soignant(e) de nuit - 3x12h', desc: 'Poste d\'aide-soignant(e) en équipe de nuit au sein de notre EHPAD. Vous assurez l\'accompagnement des résidents, les soins d\'hygiène et de confort, la distribution des repas et la surveillance nocturne. Rotation sur 3 nuits consécutives.', city: 'Casablanca', budget: 9500, contract: 'CDI', urgent: false, status: 'OPEN', daysAgo: 5 },
-    { estab: 0, title: 'Infirmier(e) coordinateur(trice)', desc: 'En tant qu\'IDEC, vous coordonnez l\'équipe soignante, gérez les plannings, assurez le lien avec les familles et les médecins traitants. Poste clé dans notre organisation.', city: 'Casablanca', budget: 14000, contract: 'CDI', urgent: false, status: 'OPEN', daysAgo: 3 },
-    { estab: 1, title: 'Éducatrice de jeunes enfants', desc: 'Nous recherchons une EJE passionnée pour rejoindre notre équipe. Vous encadrez un groupe de 8 enfants (2-3 ans), proposez des activités d\'éveil adaptées et participez aux réunions pédagogiques.', city: 'Rabat', budget: 8000, contract: 'CDI', urgent: false, status: 'OPEN', daysAgo: 7 },
-    { estab: 1, title: 'Auxiliaire de puériculture - Remplacement', desc: 'Remplacement congé maternité de 4 mois. Vous assurez les soins quotidiens aux bébés (0-1 an), préparez les biberons, accompagnez les siestes et participez aux transmissions.', city: 'Rabat', budget: 6500, contract: 'CDD', urgent: true, status: 'OPEN', daysAgo: 1 },
+    { estab: 0, title: 'Aide-soignant(e) de nuit - 3x12h', desc: 'Poste d\'aide-soignant(e) en équipe de nuit au sein de notre EHPAD. Vous assurez l\'accompagnement des résidents, les soins d\'hygiène et de confort, la distribution des repas et la surveillance nocturne. Rotation sur 3 nuits consécutives.', city: 'Casablanca', budget: 9500, contract: 'CDI', urgent: false, status: 'OPEN', daysAgo: 5, skills: ["Soins techniques", "Gériatrie", "Permis B"] },
+    { estab: 0, title: 'Infirmier(e) coordinateur(trice)', desc: 'En tant qu\'IDEC, vous coordonnez l\'équipe soignante, gérez les plannings, assurez le lien avec les familles et les médecins traitants. Poste clé dans notre organisation.', city: 'Casablanca', budget: 14000, contract: 'CDI', urgent: false, status: 'OPEN', daysAgo: 3, skills: ["Management", "Gériatrie"] },
+    { estab: 1, title: 'Éducatrice de jeunes enfants', desc: 'Nous recherchons une EJE passionnée pour rejoindre notre équipe. Vous encadrez un groupe de 8 enfants (2-3 ans), proposez des activités d\'éveil adaptées et participez aux réunions pédagogiques.', city: 'Rabat', budget: 8000, contract: 'CDI', urgent: false, status: 'OPEN', daysAgo: 7, skills: ["Ecoute active", "Eveil"] },
+    { estab: 1, title: 'Auxiliaire de puériculture - Remplacement', desc: 'Remplacement congé maternité de 4 mois. Vous assurez les soins quotidiens aux bébés (0-1 an), préparez les biberons, accompagnez les siestes et participez aux transmissions.', city: 'Rabat', budget: 6500, contract: 'CDD', urgent: true, status: 'OPEN', daysAgo: 1, skills: ["Soins nourrisson", "Hygiène"] },
     { estab: 2, title: 'Travailleur(euse) social(e) polyvalent(e)', desc: 'Au sein de notre centre social, vous accueillez et orientez les usagers, réalisez des évaluations sociales, montez des dossiers d\'aide et travaillez en réseau avec les partenaires locaux.', city: 'Marrakech', budget: 7500, contract: 'CDD', urgent: false, status: 'IN_PROGRESS', daysAgo: 20 },
     { estab: 2, title: 'Animateur(trice) soutien scolaire', desc: 'Animation d\'ateliers d\'aide aux devoirs pour enfants du CP au CM2, 4 soirs par semaine de 16h30 à 18h30. Bienveillance et patience requises.', city: 'Marrakech', budget: 3500, contract: 'CDD', urgent: false, status: 'OPEN', daysAgo: 4 },
     { estab: 3, title: 'Infirmier(e) de bloc opératoire - URGENT', desc: 'Poste en bloc opératoire polyvalent. Vous assistez les chirurgiens, préparez le matériel, assurez l\'instrumentation et participez à la prise en charge du patient en pré et post-opératoire.', city: 'Tanger', budget: 15000, contract: 'CDI', urgent: true, status: 'OPEN', daysAgo: 2 },
@@ -445,6 +492,7 @@ async function main() {
         contract_type: m.contract,
         is_urgent: m.urgent,
         status: m.status,
+        skills: m.skills || [], // Add demo skills
         start_date: new Date(),
         end_date: new Date(Date.now() + (m.status === 'COMPLETED' ? -10 : 60) * 24 * 60 * 60 * 1000),
         created_at: new Date(Date.now() - m.daysAgo * 24 * 60 * 60 * 1000),
@@ -527,9 +575,9 @@ async function main() {
     // Admin notifications - new pending users
     { user: admin.user_id, message: 'Nouvelle inscription: Amina Chraibi (Travailleur) en attente de validation', type: 'INFO', link: '/admin/validations' },
     { user: admin.user_id, message: 'Nouvelle inscription: Fondation Espoir (Établissement) en attente de validation', type: 'INFO', link: '/admin/validations' },
-    { user: superAdmin.user_id, message: 'Nouvel abonnement PREMIUM activé: Fatima Benali', type: 'SUCCESS', link: '/super-admin/finance' },
-    { user: superAdmin.user_id, message: 'Nouvel abonnement PRO activé: EHPAD Résidence Atlas', type: 'SUCCESS', link: '/super-admin/finance' },
-    { user: superAdmin.user_id, message: '3 nouveaux abonnements ce mois - Revenus: 113 700 DH', type: 'INFO', link: '/super-admin/dashboard' },
+    { user: admin.user_id, message: 'Nouvel abonnement PREMIUM activé: Fatima Benali', type: 'SUCCESS', link: '/admin/finance' },
+    { user: admin.user_id, message: 'Nouvel abonnement PRO activé: EHPAD Résidence Atlas', type: 'SUCCESS', link: '/admin/finance' },
+    { user: admin.user_id, message: '3 nouveaux abonnements ce mois - Revenus: 113 700 DH', type: 'INFO', link: '/admin/dashboard' },
     // Worker notifications
     { user: validatedWorkers[0].user_id, message: 'Votre candidature pour "Aide-soignant(e) de nuit" a été acceptée !', type: 'SUCCESS', link: '/worker/applications' },
     { user: validatedWorkers[0].user_id, message: 'Vous avez reçu un avis 5 étoiles de EHPAD Résidence Atlas', type: 'SUCCESS', link: '/worker/reviews' },
@@ -553,7 +601,7 @@ async function main() {
       }
     });
   }
-  console.log(`  ✓ ${notifications.length} notifications créées (dont ${notifications.filter(n => n.user === admin.user_id || n.user === superAdmin.user_id).length} pour admins)`);
+  console.log(`  ✓ ${notifications.length} notifications créées (dont ${notifications.filter(n => n.user === admin.user_id).length} pour admins)`);
 
   // ==========================================
   // CONVERSATIONS & MESSAGES
@@ -645,8 +693,8 @@ async function main() {
     { admin: admin.user_id, action: 'VALIDATE_USER', target_type: 'USER', details: { user_email: 'karim.idrissi@gmail.com', action: 'Profile validated' } },
     { admin: admin.user_id, action: 'VALIDATE_DOCUMENT', target_type: 'DOCUMENT', details: { document: 'Diplôme Aide-Soignant', worker: 'Fatima Benali' } },
     { admin: admin.user_id, action: 'REJECT_USER', target_type: 'USER', details: { user_email: 'nadia.ouazzani@gmail.com', reason: 'Documents insuffisants' } },
-    { admin: superAdmin.user_id, action: 'CREATE_PLAN', target_type: 'SUBSCRIPTION', details: { plan: 'PREMIUM', price: 14900 } },
-    { admin: superAdmin.user_id, action: 'VIEW_FINANCE', target_type: 'SYSTEM', details: { action: 'Accessed finance dashboard' } }
+    { admin: admin.user_id, action: 'CREATE_PLAN', target_type: 'SUBSCRIPTION', details: { plan: 'PREMIUM', price: 14900 } },
+    { admin: admin.user_id, action: 'VIEW_FINANCE', target_type: 'SYSTEM', details: { action: 'Accessed finance dashboard' } }
   ];
 
   for (const log of adminLogs) {
@@ -694,8 +742,7 @@ async function main() {
   console.log('\n📋 RÉCAPITULATIF DES COMPTES (MDP: test123 sauf admins):');
   console.log('─'.repeat(70));
   console.log('\n👑 ADMINS:');
-  console.log('  superadmin@socialink.ma / superadmin123  → SUPER_ADMIN');
-  console.log('  admin@socialink.ma / admin123            → ADMIN');
+  console.log('  admin@socialink.ma / admin123            → ADMIN (Full Access)');
   console.log('\n👤 TRAVAILLEURS:');
   workersData.forEach(w => {
     console.log(`  ${w.email.padEnd(35)} → ${w.status}${w.subscription ? ' + ' + w.subscription : ''}`);

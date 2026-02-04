@@ -29,17 +29,17 @@ const SuperAdminLayout = () => {
     }, []);
 
     const menuItems = [
-        { path: '/super-admin/dashboard', label: 'Vue d\'ensemble', icon: LayoutDashboard }, // Section 2
-        { path: '/super-admin/admins', label: 'Administrateurs', icon: ShieldCheck }, // Section 1
-        { path: '/super-admin/users', label: 'Utilisateurs', icon: Users }, // Section 9
-        { path: '/super-admin/subscriptions', label: 'Abonnements', icon: CreditCard }, // Section 3
-        { path: '/super-admin/marketing', label: 'Marketing', icon: Megaphone }, // Section 4
-        { path: '/super-admin/finance', label: 'Finance', icon: TrendingUp }, // Section 5
-        { path: '/super-admin/quality', label: 'Contrôle Qualité', icon: ShieldAlert }, // Section 6
-        { path: '/super-admin/disputes', label: 'Litiges', icon: Gavel }, // Section 8
-        { path: '/super-admin/messages', label: 'Messagerie Interne', icon: Mail },
-        { path: '/super-admin/privileges', label: 'Contrôle Privilèges', icon: KeyRound }, // NEW
-        { path: '/super-admin/settings', label: 'Paramètres Système', icon: Settings }, // Section 7
+        { path: '/admin/dashboard', label: 'Vue d\'ensemble', icon: LayoutDashboard }, // Section 2
+        { path: '/admin/admins', label: 'Administrateurs', icon: ShieldCheck }, // Section 1
+        { path: '/admin/users', label: 'Utilisateurs', icon: Users }, // Section 9
+        { path: '/admin/subscriptions', label: 'Abonnements', icon: CreditCard }, // Section 3
+        { path: '/admin/marketing', label: 'Marketing', icon: Megaphone }, // Section 4
+        { path: '/admin/finance', label: 'Finance', icon: TrendingUp }, // Section 5
+        { path: '/admin/quality', label: 'Contrôle Qualité', icon: ShieldAlert }, // Section 6
+        { path: '/admin/disputes', label: 'Litiges', icon: Gavel }, // Section 8
+        { path: '/admin/messages', label: 'Messagerie Interne', icon: Mail },
+        { path: '/admin/privileges', label: 'Contrôle Privilèges', icon: KeyRound }, // NEW
+        { path: '/admin/settings', label: 'Paramètres Système', icon: Settings }, // Section 7
     ];
 
     const adminName = user?.prenom || user?.first_name || 'Super Admin';
@@ -102,7 +102,7 @@ const SuperAdminLayout = () => {
                     {/* Right: Messages, Notifications, Profile */}
                     <div className="flex items-center gap-2 px-4">
                         <Link
-                            to="/super-admin/messages"
+                            to="/admin/messages"
                             className="relative p-2 hover:bg-slate-100 rounded-lg transition-colors"
                             title="Messagerie"
                         >
@@ -152,7 +152,7 @@ const SuperAdminLayout = () => {
                                     </div>
 
                                     <div className="py-1">
-                                        <Link to="/super-admin/settings" className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
+                                        <Link to="/admin/settings" className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
                                             <Settings className="w-4 h-4 text-slate-400" /> Paramètres
                                         </Link>
                                     </div>

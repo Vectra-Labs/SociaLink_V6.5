@@ -18,8 +18,8 @@ const SuperAdminFinance = () => {
         setLoading(true);
         try {
             const [statsRes, txRes] = await Promise.all([
-                api.get('/super-admin/finance/stats'),
-                api.get('/super-admin/finance/transactions?page=1')
+                api.get('/admin/finance/stats'),
+                api.get('/admin/finance/transactions?page=1')
             ]);
             setStats(statsRes.data);
             setTransactions(txRes.data.transactions);

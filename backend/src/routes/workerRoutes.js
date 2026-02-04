@@ -3,7 +3,7 @@ import { uploadImage } from "../middleware/uploadImageMiddleware.js";
 import { uploadDocument as uploadDocumentMiddleware, handleMulterError } from "../middleware/uploadDocumentMiddleware.js";
 import { updateWorkerProfile, addWorkerSpecialities, getWorkerSpecialities, removeWorkerSpeciality, submitWorkerProfile, getWorkerProfile, getExperiences, addExperience, deleteExperience, getWorkerStats, getWorkerReviews, getRecommendedMissions } from "../controllers/workerController.js";
 import { getCalendarEvents, createCalendarEvent, updateCalendarEvent, deleteCalendarEvent, getHolidays, toggleAvailability } from "../controllers/calendarController.js";
-import { getDocuments, uploadDocument, updateDocument, deleteDocument } from "../controllers/documentController.js";
+import { getDocuments, uploadDocument, updateDocument, deleteDocument, downloadDocument } from "../controllers/documentController.js";
 import { getLanguages, addLanguage, updateLanguage, deleteLanguage } from "../controllers/languageController.js";
 import { validate } from "../validators/authValidator.js"; // Reuse the validate helper
 import { updateWorkerProfileSchema, addWorkerSpecialitiesSchema } from "../validators/workerValidator.js";
@@ -42,6 +42,7 @@ router.get("/availability", getCalendarEvents); // Alias for dashboard
 
 // Documents (avec upload fichier)
 router.get("/documents", getDocuments);
+router.get("/documents/:id/download", downloadDocument);
 router.post("/documents", uploadDocumentMiddleware.single("file"), handleMulterError, uploadDocument);
 router.put("/documents/:id", updateDocument);
 router.delete("/documents/:id", deleteDocument);

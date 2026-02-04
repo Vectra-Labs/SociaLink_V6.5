@@ -129,13 +129,22 @@ function App() {
             <AdminLayout />
           </ProtectedRoute>
         }>
-          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="dashboard" element={<SuperAdminOverview />} /> {/* Upgraded to SuperAdmin Dashboard */}
+          <Route path="users" element={<SuperAdminUsers />} />     {/* New: Manage Users */}
+          <Route path="admins" element={<SuperAdminAdmins />} />   {/* New: Manage Admins */}
+          <Route path="subscriptions" element={<SuperAdminSubscriptions />} /> {/* New: Manage Plans */}
+          <Route path="finance" element={<SuperAdminFinance />} />   {/* New: Finance Stats */}
+          {/* <Route path="marketing" element={<SuperAdminMarketing />} /> New: Banners (Removed) */}
+          <Route path="quality" element={<SuperAdminQuality />} />     {/* New: Quality Control */}
+          <Route path="privileges" element={<SuperAdminPrivileges />} /> {/* New: Privileges */}
+          
+          {/* Maintained Admin Routes */}
           <Route path="worker/:id" element={<AdminWorkerDetails />} />
           <Route path="validations" element={<AdminValidations />} />
           <Route path="documents" element={<AdminDocuments />} />
-          <Route path="disputes" element={<AdminDisputes />} />
+          <Route path="disputes" element={<SuperAdminDisputes />} /> {/* Upgraded to SuperAdmin Disputes */}
           <Route path="notifications" element={<AdminNotifications />} />
-          <Route path="settings" element={<AdminSettings />} />
+          <Route path="settings" element={<SuperAdminSettings />} /> {/* Upgraded to SuperAdmin Settings */}
           <Route path="messages" element={<AdminMessages />} />
           <Route path="profile" element={<AdminProfile />} />
           <Route path="establishment-documents" element={<AdminEstablishmentDocs />} />
@@ -146,28 +155,6 @@ function App() {
           <Route path="verification/establishments" element={<EstablishmentVerification />} />
           <Route path="verification/establishments/:id" element={<EstablishmentVerificationDetail />} />
           {/* Redirect root /admin to dashboard */}
-          <Route index element={<Navigate to="dashboard" replace />} />
-        </Route>
-
-
-        {/* Super Admin Routes - Uses SuperAdminLayout with Sidebar */}
-        <Route path="/super-admin" element={
-          <ProtectedRoute allowedRoles={['SUPER_ADMIN']}>
-            <SuperAdminLayout />
-          </ProtectedRoute>
-        }>
-          <Route path="dashboard" element={<SuperAdminOverview />} />
-          <Route path="admins" element={<SuperAdminAdmins />} />
-          <Route path="users" element={<SuperAdminUsers />} />
-          <Route path="subscriptions" element={<SuperAdminSubscriptions />} />
-          <Route path="marketing" element={<SuperAdminMarketing />} />
-          <Route path="finance" element={<SuperAdminFinance />} />
-          <Route path="quality" element={<SuperAdminQuality />} />
-          <Route path="disputes" element={<SuperAdminDisputes />} />
-          <Route path="messages" element={<AdminMessages />} />
-          <Route path="settings" element={<SuperAdminSettings />} />
-          <Route path="privileges" element={<SuperAdminPrivileges />} />
-          {/* Redirect root /super-admin to dashboard */}
           <Route index element={<Navigate to="dashboard" replace />} />
         </Route>
 

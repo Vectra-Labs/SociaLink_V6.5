@@ -8,9 +8,9 @@ export const adminService = {
     getDashboardStats: async () => {
         try {
             const [qualityRes, pendingRes, disputesRes] = await Promise.all([
-                api.get('/super-admin/quality/stats'),
-                api.get('/super-admin/quality/pending'),
-                api.get('/super-admin/disputes?status=OPEN')
+                api.get('/admin/quality/stats'),
+                api.get('/admin/quality/pending'),
+                api.get('/admin/disputes?status=OPEN')
             ]);
 
             return {

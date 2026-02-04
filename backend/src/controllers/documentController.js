@@ -369,3 +369,63 @@ export const rejectDocument = async (req, res) => {
         res.status(500).json({ message: 'Erreur lors du rejet du document' });
     }
 };
+
+// GET /api/worker/documents/:id/download - Télécharger un document chiffré
+export const downloadDocument = async (req, res) => {
+    try {
+        const documentId = parseInt(req.params.id);
+        const userId = req.user.user_id;
+        const userRole = req.user.role;
+
+        const document = await prisma.workerDocument.findUnique({
+            where: { document_id: documentId }
+        });
+
+        if (!document) {
+            return res.status(404).json({ message: 'Document non trouvé' });
+        }
+
+        // Access Control: Owner or Admin
+        if (document.worker_id !== userId && userRole !== 'ADMIN' && userRole !== 'SUPER_ADMIN') {
+            return res.status(403).json({ message: 'Accès refusé' });
+        }
+
+        // Construct absolute path
+        // The DB stores relative path like "/uploads/documents/..."
+        const relativePath = document.file_url;
+        const absolutePath = path.join(__dirname, "../../", relativePath);
+
+        if (!fs.existsSync(absolutePath)) {
+            return res.status(404).json({ message: 'Fichier non trouvé sur le serveur' });
+        }
+
+        // Check if encrypted
+        let isEncrypted = false;
+        if (encryptionService) {
+             isEncrypted = await encryptionService.isFileEncrypted(absolutePath);
+        }
+
+        let fileBuffer;
+        if (isEncrypted && encryptionService) {
+            fileBuffer = await encryptionService.decryptFileInPlace(absolutePath);
+        } else {
+            fileBuffer = fs.readFileSync(absolutePath);
+        }
+
+        // Determine Mime Type based on extension
+        const ext = path.extname(absolutePath).toLowerCase();
+        let mimeType = 'application/octet-stream';
+        if (ext === '.pdf') mimeType = 'application/pdf';
+        else if (ext === '.jpg' || ext === '.jpeg') mimeType = 'image/jpeg';
+        else if (ext === '.png') mimeType = 'image/png';
+        else if (ext === '.webp') mimeType = 'image/webp';
+
+        res.setHeader('Content-Type', mimeType);
+        res.setHeader('Content-Disposition', `inline; filename="${document.name}${ext}"`);
+        res.send(fileBuffer);
+
+    } catch (error) {
+        console.error('DOWNLOAD DOCUMENT ERROR:', error);
+        res.status(500).json({ message: 'Erreur lors du téléchargement du document' });
+    }
+};

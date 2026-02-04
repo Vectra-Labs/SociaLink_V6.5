@@ -27,7 +27,7 @@ const EstablishmentVerificationDetail = () => {
         setLoading(true);
         try {
             // Fetch unified establishment details (Profile + Docs)
-            const { data } = await api.get(`/super-admin/quality/establishment/${id}/details`);
+            const { data } = await api.get(`/admin/quality/establishment/${id}/details`);
 
             setEstablishment(data.establishment);
             setDocuments(data.documents || []);
@@ -42,7 +42,7 @@ const EstablishmentVerificationDetail = () => {
     const handleTakeCharge = async () => {
         setProcessing(true);
         try {
-            await api.put(`/super-admin/quality/profiles/ESTABLISHMENT/${id}/review`, { status: 'IN_REVIEW' });
+            await api.put(`/admin/quality/profiles/ESTABLISHMENT/${id}/review`, { status: 'IN_REVIEW' });
             setEstablishment(prev => ({ ...prev, status: 'IN_REVIEW', verification_status: 'IN_REVIEW' }));
         } catch (error) {
             alert('Erreur lors de la prise en charge');
@@ -54,7 +54,7 @@ const EstablishmentVerificationDetail = () => {
     const handleValidate = async () => {
         setProcessing(true);
         try {
-            await api.put(`/super-admin/quality/profiles/ESTABLISHMENT/${id}/review`, {
+            await api.put(`/admin/quality/profiles/ESTABLISHMENT/${id}/review`, {
                 status: 'VALIDATED',
                 notes: adminNotes
             });
@@ -73,7 +73,7 @@ const EstablishmentVerificationDetail = () => {
         }
         setProcessing(true);
         try {
-            await api.put(`/super-admin/quality/profiles/ESTABLISHMENT/${id}/review`, {
+            await api.put(`/admin/quality/profiles/ESTABLISHMENT/${id}/review`, {
                 status: 'REJECTED',
                 rejectReason: rejectReason,
                 notes: adminNotes

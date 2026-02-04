@@ -5,12 +5,21 @@ import { generateToken } from "../utils/generateToken.js";
 import { sendVerificationEmail, sendPasswordResetEmail } from "../utils/emailService.js";
 import crypto from 'crypto';
 
-// Helper: Generate 6-digit OTP
+/**
+ * Génère un code OTP (One Time Password) à 6 chiffres.
+ * @returns {string} Code OTP généré
+ */
 const generateOTP = () => {
   return Math.floor(100000 + Math.random() * 900000).toString();
 };
 
-//----------------------------- worker Registration -----------------------------//
+//----------------------------- Inscription Travailleur -----------------------------//
+/**
+ * Inscrit un nouveau travailleur (Worker).
+ * Crée un utilisateur et son profil associé.
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
+ */
 export const registerWorker = async (req, res) => {
   try {
     const { email, password, first_name, last_name, phone, address, city_id, region, cnie, birth_place, linkedin_url } = req.body;
@@ -52,25 +61,10 @@ export const registerWorker = async (req, res) => {
           phone,
           address: address || null,
           city_id: city_id ? parseInt(city_id) : null,
-          // region: region || null, // Region inferred from city usually, but schema has no region column in WorkerProfile shown in snippet?
-          // Checking snippet again: NO region column in WorkerProfile lines 144-180.
-          // authController was trying to save 'region'. It probably failed or Prisma ignored it if not in schema.
-          // I will comment out region for now to be safe, or check schema again. 
-          // Wait, snippet 671 doesn't show region. It shows address, city_id. 
-          // Let's assume region is NOT in WorkerProfile.
+          // Note: Les champs région, cnie, birth_place, linkedin_url peuvent être ajoutés ici si le schéma le supporte.
+          // Pour l'instant, nous nous limitons aux champs confirmés dans le schéma Prisma actuel.
           cnie: cnie || null,
           birth_place: birth_place || null,
-          // linkedin_url is also not in snippet 671? 
-          // double check snippet 671. 
-          // It has 'bio', 'profile_pic_url', etc. 
-          // It does NOT show 'cnie', 'birth_place', 'linkedin_url'.
-          // Are these new fields? Or did I miss them?
-          // I'll stick to what I see or what was there.
-          // The previous code had them. I'll keep them but might need to verify schema if they cause errors.
-          // For now, I fix city_id.
-          // The previous code had: region: region || null.
-          // If schema doesn't have it, it will crash.
-          // I will blindly trust previous code for other fields but fix city_id.
         },
       });
     });
@@ -92,7 +86,13 @@ export const registerWorker = async (req, res) => {
   }
 };
 
-//----------------------------- Establishment Registration -----------------------------//
+//----------------------------- Inscription Établissement -----------------------------//
+/**
+ * Inscrit un nouvel établissement.
+ * Notifie les administrateurs pour validation.
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
+ */
 export const registerEstablishment = async (req, res) => {
   try {
     const { email, password, name, contact_first_name, contact_last_name, phone, ice_number } = req.body;
@@ -165,7 +165,13 @@ export const registerEstablishment = async (req, res) => {
   }
 };
 
-//----------------------------- Login -----------------------------//
+//----------------------------- Connexion (Login) -----------------------------//
+/**
+ * Connecte un utilisateur existant.
+ * Vérifie l'email, le mot de passe et le statut de vérification.
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
+ */
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -238,7 +244,12 @@ export const login = async (req, res) => {
   }
 };
 
-//----------------------------- Verify Email -----------------------------//
+//----------------------------- Vérification Email -----------------------------//
+/**
+ * Vérifie l'adresse email d'un utilisateur via le code OTP.
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
+ */
 export const verifyEmail = async (req, res) => {
   try {
     const { email, code } = req.body;
@@ -292,7 +303,12 @@ export const verifyEmail = async (req, res) => {
   }
 };
 
-//----------------------------- Resend OTP -----------------------------//
+//----------------------------- Renvoyer OTP -----------------------------//
+/**
+ * Renvoie un nouveau code OTP de vérification.
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
+ */
 export const resendOtp = async (req, res) => {
   try {
     const { email } = req.body;
@@ -321,7 +337,13 @@ export const resendOtp = async (req, res) => {
 };
 
 
-//----------------------------- Forgot Password -----------------------------//
+//----------------------------- Mot de Passe Oublié -----------------------------//
+/**
+ * Initie la procédure de réinitialisation de mot de passe.
+ * Envoie un lien par email.
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
+ */
 export const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
@@ -354,7 +376,12 @@ export const forgotPassword = async (req, res) => {
   }
 };
 
-//----------------------------- Reset Password -----------------------------//
+//----------------------------- Réinitialiser Mot de Passe -----------------------------//
+/**
+ * Réinitialise le mot de passe avec le token fourni.
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
+ */
 export const resetPassword = async (req, res) => {
   try {
     const { token, newPassword } = req.body;
@@ -392,7 +419,12 @@ export const resetPassword = async (req, res) => {
   }
 };
 
-//----------------------------- Change Password (Authenticated) -----------------------------//
+//----------------------------- Changer Mot de Passe (Authentifié) -----------------------------//
+/**
+ * Permet à un utilisateur connecté de changer son mot de passe.
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
+ */
 export const changePassword = async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;
@@ -443,7 +475,12 @@ export const changePassword = async (req, res) => {
 };
 
 
-//-----------------------------  Logout -----------------------------//
+//----------------------------- Déconnexion (Logout) -----------------------------//
+/**
+ * Déconnecte l'utilisateur en effaçant le cookie JWT.
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
+ */
 export const logout = async (req, res) => {
   res.cookie("jwt", "", {
     httpOnly: true,
@@ -456,7 +493,12 @@ export const logout = async (req, res) => {
   });
 };
 
-//----------------------------- Get Current User (Me) -----------------------------//
+//----------------------------- Récupérer Utilisateur Courant (Me) -----------------------------//
+/**
+ * Récupère les informations de l'utilisateur actuellement connecté.
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
+ */
 export const getMe = async (req, res) => {
   try {
     const userId = req.user.user_id;
@@ -532,7 +574,12 @@ export const getMe = async (req, res) => {
   }
 };
 
-//----------------------------- Delete Account -----------------------------//
+//----------------------------- Supprimer Compte -----------------------------//
+/**
+ * Supprime le compte de l'utilisateur connecté et toutes ses données associées.
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
+ */
 export const deleteAccount = async (req, res) => {
   try {
     const userId = req.user.user_id;

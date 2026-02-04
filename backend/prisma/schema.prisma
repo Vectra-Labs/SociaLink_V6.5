@@ -167,6 +167,8 @@ model WorkerProfile {
   availability_lat       Float?
   availability_lng       Float?
 
+  skills                 String[]        @default([]) // ["Permis B", "Gériatrie", "Soin palliatif"]
+
   diplomas        Diploma[]
   experiences     Experience[]
   availabilities  Availability[]
@@ -855,11 +857,36 @@ model EstablishmentDocument {
   file_url         String
   file_name        String
   uploaded_at      DateTime @default(now())
-  status           VerificationStatus @default(PENDING)
-  reviewed_by      Int?
-  reviewed_at      DateTime?
+  verified_at      DateTime?
   rejection_reason String?
+}
 
+enum EstablishmentDocType {
+  K_BIS
+  RIB
+  IDENTITY_PROOF
+  INSURANCE
+  OTHER
+}
+
+///////////////////////
+// NOTIFICATIONS
+///////////////////////
+
+model Notification {
+  notification_id Int      @id @default(autoincrement())
+  user_id         Int
+  
+  user            User     @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  
+  title           String?
+  message         String
+  type            String   @default("INFO") // INFO, WARNING, SUCCESS, ERROR
+  is_read         Boolean  @default(false)
+  link            String?  // Optional action link
+  
+  created_at      DateTime @default(now())
+  
   @@index([user_id])
-  @@index([status])
+  @@index([is_read])
 }

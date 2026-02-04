@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import {
     LayoutDashboard, User, Award,
-    Briefcase, FileText, LogOut, Calendar, FolderOpen,
-    Menu, Bell, MessageSquare, ChevronDown, Settings,
+    Briefcase, LogOut, Calendar, FolderOpen,
+    Menu, MessageSquare, ChevronDown, Settings,
     Crown, Shield, Star
 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
@@ -16,14 +16,14 @@ const WorkerLayout = () => {
     const { isSubscribed } = useSubscription();
     const location = useLocation();
 
-    // State
+    // État (State)
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
     const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
     const [showProfileMenu, setShowProfileMenu] = useState(false);
-    // Notifications state handled by NotificationBell component
+    // Les notifications sont gérées par le composant NotificationBell
     const [profilePicUrl, setProfilePicUrl] = useState(null);
 
-    // Fetch profile picture
+    // Récupération de la photo de profil
     useEffect(() => {
         const fetchProfile = async () => {
             try {
@@ -37,7 +37,7 @@ const WorkerLayout = () => {
         fetchProfile();
     }, []);
 
-    // Close menus on click outside
+    // Fermer les menus au clic extérieur
     useEffect(() => {
         const handleClickOutside = () => {
             setShowProfileMenu(false);
@@ -47,7 +47,7 @@ const WorkerLayout = () => {
         return () => document.removeEventListener('click', handleClickOutside);
     }, []);
 
-    // Nav Items - Profile always 2nd position
+    // Éléments de navigation - Profil toujours en 2ème position
     const navItems = [
         { path: '/worker/dashboard', label: 'Tableau de bord', icon: LayoutDashboard },
         { path: '/worker/profile', label: 'Profil', icon: User },

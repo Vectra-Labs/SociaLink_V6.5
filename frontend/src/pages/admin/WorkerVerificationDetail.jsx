@@ -33,7 +33,7 @@ const WorkerVerificationDetail = () => {
     const fetchWorkerDetails = async () => {
         setLoading(true);
         try {
-            const { data } = await api.get(`/super-admin/quality/worker/${id}/details`);
+            const { data } = await api.get(`/admin/quality/worker/${id}/details`);
 
             setWorker(data.worker);
             
@@ -67,7 +67,7 @@ const WorkerVerificationDetail = () => {
     const handleTakeCharge = async () => {
         setProcessing(true);
         try {
-            await api.put(`/super-admin/quality/worker/${id}`, { status: 'IN_REVIEW' });
+            await api.put(`/admin/quality/worker/${id}`, { status: 'IN_REVIEW' });
             setWorker(prev => ({ ...prev, status: 'IN_REVIEW' }));
         } catch (error) {
             alert('Erreur lors de la prise en charge');
@@ -79,7 +79,7 @@ const WorkerVerificationDetail = () => {
     const handleValidate = async () => {
         setProcessing(true);
         try {
-            await api.put(`/super-admin/quality/worker/${id}`, {
+            await api.put(`/admin/quality/worker/${id}`, {
                 status: 'VALIDATED',
                 notes: adminNotes
             });
@@ -98,7 +98,7 @@ const WorkerVerificationDetail = () => {
             const idToUpdate = doc.diploma_id || doc.document_id;
             const docType = doc.type || 'DOCUMENT'; // 'DIPLOMA' or other types from backend
 
-            await api.put(`/super-admin/quality/document/${idToUpdate}/status`, {
+            await api.put(`/admin/quality/document/${idToUpdate}/status`, {
                 type: docType,
                 status: status,
                 reason: reason
@@ -145,7 +145,7 @@ const WorkerVerificationDetail = () => {
         }
         setProcessing(true);
         try {
-            await api.put(`/super-admin/quality/worker/${id}`, {
+            await api.put(`/admin/quality/worker/${id}`, {
                 status: 'REJECTED',
                 rejectReason: rejectReason,
                 notes: adminNotes

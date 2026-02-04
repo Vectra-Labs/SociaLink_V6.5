@@ -57,7 +57,7 @@ const SuperAdminAdmins = () => {
     const fetchAdmins = async () => {
         setLoading(true);
         try {
-            const { data } = await api.get('/super-admin/admins');
+            const { data } = await api.get('/admin/admins');
             setAdmins(data);
         } catch (error) {
             console.error(error);
@@ -69,7 +69,7 @@ const SuperAdminAdmins = () => {
     const fetchLogs = async () => {
         setLoading(true);
         try {
-            const { data } = await api.get('/super-admin/logs');
+            const { data } = await api.get('/admin/logs');
             setLogs(data);
         } catch (error) {
             console.error(error);
@@ -83,7 +83,7 @@ const SuperAdminAdmins = () => {
         try {
             if (editingAdmin) {
                 // Update admin - includes profile data
-                await api.put(`/super-admin/admins/${editingAdmin.user_id}`, {
+                await api.put(`/admin/admins/${editingAdmin.user_id}`, {
                     permissions: formData.permissions,
                     role: formData.role,
                     status: formData.status,
@@ -97,7 +97,7 @@ const SuperAdminAdmins = () => {
                 });
             } else {
                 // Create admin - includes initial profile
-                await api.post('/super-admin/admins', {
+                await api.post('/admin/admins', {
                     email: formData.email,
                     password: formData.password,
                     role: 'ADMIN',
@@ -204,7 +204,7 @@ const SuperAdminAdmins = () => {
     const handleDelete = async (adminId) => {
         if (!confirm("Êtes-vous sûr de vouloir supprimer cet administrateur ? Cette action est irréversible.")) return;
         try {
-            await api.delete(`/super-admin/admins/${adminId}`);
+            await api.delete(`/admin/admins/${adminId}`);
             fetchAdmins();
         } catch (error) {
             alert("Erreur lors de la suppression");

@@ -181,14 +181,14 @@ const SuperAdminDashboard = () => {
                         <RefreshCw className="w-5 h-5 text-slate-500" />
                     </button>
                     <Link
-                        to="/super-admin/settings"
+                        to="/admin/settings"
                         className="flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors"
                     >
                         <Settings className="w-4 h-4" />
                         Paramètres
                     </Link>
                     <Link
-                        to="/super-admin/admins"
+                        to="/admin/admins"
                         className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all shadow-lg shadow-purple-500/20"
                     >
                         <Plus className="w-4 h-4" />
@@ -218,7 +218,7 @@ const SuperAdminDashboard = () => {
                 </div>
 
                 {/* Active Workers */}
-                <Link to="/super-admin/users?role=WORKER" className="group">
+                <Link to="/admin/users?role=WORKER" className="group">
                     <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-200 transition-all h-full">
                         <div className="flex items-center justify-between mb-3">
                             <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
@@ -237,7 +237,7 @@ const SuperAdminDashboard = () => {
                 </Link>
 
                 {/* Establishments */}
-                <Link to="/super-admin/users?role=ESTABLISHMENT" className="group">
+                <Link to="/admin/users?role=ESTABLISHMENT" className="group">
                     <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm hover:shadow-md hover:border-purple-200 transition-all h-full">
                         <div className="flex items-center justify-between mb-3">
                             <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
@@ -256,7 +256,7 @@ const SuperAdminDashboard = () => {
                 </Link>
 
                 {/* Pending Accounts */}
-                <Link to="/super-admin/quality" className="group">
+                <Link to="/admin/quality" className="group">
                     <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm hover:shadow-md hover:border-amber-200 transition-all relative overflow-hidden h-full">
                         {stats.pendingAccounts > 0 && (
                             <div className="absolute top-0 right-0 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-bl-lg flex items-center gap-1">
@@ -284,43 +284,43 @@ const SuperAdminDashboard = () => {
                     Actions Super Admin
                 </h2>
                 <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
-                    <Link to="/super-admin/users" className="flex flex-col items-center gap-2 p-4 bg-blue-50 hover:bg-blue-100 rounded-xl transition-all group">
+                    <Link to="/admin/users" className="flex flex-col items-center gap-2 p-4 bg-blue-50 hover:bg-blue-100 rounded-xl transition-all group">
                         <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg shadow-blue-600/20">
                             <Users className="w-6 h-6 text-white" />
                         </div>
                         <span className="text-xs font-medium text-slate-700 text-center">Utilisateurs</span>
                     </Link>
-                    <Link to="/super-admin/admins" className="flex flex-col items-center gap-2 p-4 bg-purple-50 hover:bg-purple-100 rounded-xl transition-all group">
+                    <Link to="/admin/admins" className="flex flex-col items-center gap-2 p-4 bg-purple-50 hover:bg-purple-100 rounded-xl transition-all group">
                         <div className="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg shadow-purple-600/20">
                             <ShieldCheck className="w-6 h-6 text-white" />
                         </div>
                         <span className="text-xs font-medium text-slate-700 text-center">Admins</span>
                     </Link>
-                    <Link to="/super-admin/subscriptions" className="flex flex-col items-center gap-2 p-4 bg-emerald-50 hover:bg-emerald-100 rounded-xl transition-all group">
+                    <Link to="/admin/subscriptions" className="flex flex-col items-center gap-2 p-4 bg-emerald-50 hover:bg-emerald-100 rounded-xl transition-all group">
                         <div className="w-12 h-12 bg-emerald-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg shadow-emerald-600/20">
                             <Crown className="w-6 h-6 text-white" />
                         </div>
                         <span className="text-xs font-medium text-slate-700 text-center">Abonnements</span>
                     </Link>
-                    <Link to="/super-admin/finance" className="flex flex-col items-center gap-2 p-4 bg-amber-50 hover:bg-amber-100 rounded-xl transition-all group">
+                    <Link to="/admin/finance" className="flex flex-col items-center gap-2 p-4 bg-amber-50 hover:bg-amber-100 rounded-xl transition-all group">
                         <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg shadow-amber-500/20">
                             <CreditCard className="w-6 h-6 text-white" />
                         </div>
                         <span className="text-xs font-medium text-slate-700 text-center">Finance</span>
                     </Link>
-                    <Link to="/super-admin/quality" className="flex flex-col items-center gap-2 p-4 bg-cyan-50 hover:bg-cyan-100 rounded-xl transition-all group">
+                    <Link to="/admin/quality" className="flex flex-col items-center gap-2 p-4 bg-cyan-50 hover:bg-cyan-100 rounded-xl transition-all group">
                         <div className="w-12 h-12 bg-cyan-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg shadow-cyan-600/20">
                             <Award className="w-6 h-6 text-white" />
                         </div>
                         <span className="text-xs font-medium text-slate-700 text-center">Qualité</span>
                     </Link>
-                    <Link to="/super-admin/marketing" className="flex flex-col items-center gap-2 p-4 bg-pink-50 hover:bg-pink-100 rounded-xl transition-all group">
+                    <Link to="/admin/marketing" className="flex flex-col items-center gap-2 p-4 bg-pink-50 hover:bg-pink-100 rounded-xl transition-all group">
                         <div className="w-12 h-12 bg-pink-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg shadow-pink-600/20">
                             <Bell className="w-6 h-6 text-white" />
                         </div>
                         <span className="text-xs font-medium text-slate-700 text-center">Marketing</span>
                     </Link>
-                    <Link to="/super-admin/settings" className="flex flex-col items-center gap-2 p-4 bg-slate-100 hover:bg-slate-200 rounded-xl transition-all group">
+                    <Link to="/admin/settings" className="flex flex-col items-center gap-2 p-4 bg-slate-100 hover:bg-slate-200 rounded-xl transition-all group">
                         <div className="w-12 h-12 bg-slate-700 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg shadow-slate-700/20">
                             <Settings className="w-6 h-6 text-white" />
                         </div>
@@ -399,7 +399,7 @@ const SuperAdminDashboard = () => {
                                 {admins.length}
                             </span>
                         </div>
-                        <Link to="/super-admin/admins" className="text-sm text-purple-600 hover:underline flex items-center gap-1">
+                        <Link to="/admin/admins" className="text-sm text-purple-600 hover:underline flex items-center gap-1">
                             Gérer <ArrowUpRight className="w-4 h-4" />
                         </Link>
                     </div>
@@ -455,7 +455,7 @@ const SuperAdminDashboard = () => {
                             </div>
                             <h3 className="font-bold text-slate-900">Offres d'Abonnement</h3>
                         </div>
-                        <Link to="/super-admin/subscriptions" className="text-sm text-purple-600 hover:underline flex items-center gap-1">
+                        <Link to="/admin/subscriptions" className="text-sm text-purple-600 hover:underline flex items-center gap-1">
                             Configurer <ArrowUpRight className="w-4 h-4" />
                         </Link>
                     </div>

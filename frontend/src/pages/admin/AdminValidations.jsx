@@ -20,8 +20,8 @@ const AdminValidations = () => {
         setLoading(true);
         try {
             const [statsRes, profilesRes] = await Promise.all([
-                api.get('/super-admin/quality/stats'),
-                api.get('/super-admin/quality/pending')
+                api.get('/admin/quality/stats'),
+                api.get('/admin/quality/pending')
             ]);
             setStats(statsRes.data);
             setPendingProfiles(profilesRes.data);
@@ -44,7 +44,7 @@ const AdminValidations = () => {
             // My API getPendingVerifications returns { type: 'worker' | 'establishment', ... }
             const type = selectedProfile.type;
 
-            await api.put(`/super-admin/quality/profiles/${type}/${selectedProfile.user_id}/review`, {
+            await api.put(`/admin/quality/profiles/${type}/${selectedProfile.user_id}/review`, {
                 status,
                 rejection_reason: rejectReason
             });

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SociaLink - Rapport Technique Détailé</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+    </script>
+</head>
+<body>
+
+    <header>
+        <h1>RAPPORT TECHNIQUE APPROFONDI<br><small>Projet SociaLink v6.5</small></h1>
+        <p style="text-align: center; font-size: 1.2rem; color: #64748b;">
+            Développement Full-Stack MERN • Architecture • Sécurité • Logique Métier
+        </p>
+    </header>
+
+    <div class="toc no-print">
+        <h3>Sommaire Rapide</h3>
+        <ul>
+            <li><a href="#chapitre-1-architecture">1. Architecture & Environnement</a></li>
+            <li><a href="#chapitre-2-backend">2. Backend API & REST</a></li>
+            <li><a href="#chapitre-3-database">3. Base de Données (Prisma)</a></li>
+            <li><a href="#securite-avancee">4. Sécurité Avancée</a></li>
+            <li><a href="#frontend-details">5. Frontend & State</a></li>
+            <li><a href="#chapitre-6-deploy">6. Déploiement & DevOps</a></li>
+        </ul>
+    </div>
+
+    <!-- CHAPITRE 1 -->
+    <section id="chapitre-1-architecture">
+        <h2>Chapitre 1 : Architecture & Environnement Technique</h2>
+        
+        <div class="intro-block">
+            <p>La réussite d'un projet web d'envergure repose avant tout sur des fondations solides. Pour <strong>SociaLink v6.5</strong>, nous avons opté pour une architecture modulaire, séparant distinctement la logique métier (Backend) de l'interface utilisateur (Frontend). Cette séparation garantit la maintanabilité du code et facilite le travail collaboratif.</p>
+        </div>
+
+        <h3>1.1 Stack Technologique (MERN Évoluée)</h3>
+        <p>Nous avons sélectionné des technologies éprouvées mais modernes (Versions 2026) pour assurer performance et longévité.</p>
+        
+        <table class="tech-table">
+            <thead>
+                <tr>
+                    <th>Couche</th>
+                    <th>Technologie</th>
+                    <th>Version</th>
+                    <th>Justification du Choix</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Frontend</strong></td>
+                    <td>React.js + Vite</td>
+                    <td>v19.2 / v7.2</td>
+                    <td>React 19 apporte une meilleure gestion du rendu concurrent. Vite remplace Create-React-App pour des temps de démarrage instantanés.</td>
+                </tr>
+                <tr>
+                    <td><strong>Styling</strong></td>
+                    <td>Tailwind CSS</td>
+                    <td>v4.1</td>
+                    <td>Approche "Utility-First" permettant un prototypage ultra-rapide et un design system cohérent sans fichiers CSS lourds.</td>
+                </tr>
+                <tr>
+                    <td><strong>Backend</strong></td>
+                    <td>Node.js + Express</td>
+                    <td>v22 / v5.2</td>
+                    <td>Express 5 gère nativement les promesses (Promises), simplifiant la gestion des erreurs asynchrones.</td>
+                </tr>
+                <tr>
+                    <td><strong>Base de Données</strong></td>
+                    <td>PostgreSQL + Prisma</td>
+                    <td>v16 / v6.19</td>
+                    <td>SQL garantit l'intégrité des données relationnelles. Prisma offre une sécurité de type (Type-Safety) inégalée.</td>
+                </tr>
+                <tr>
+                    <td><strong>Validation</strong></td>
+                    <td>Zod</td>
+                    <td>v3.25</td>
+                    <td>Validation stricte des données entrantes (Schema Validation) pour éviter les injections et erreurs de format.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>1.2 Architecture du Backend (Détail)</h3>
+        <p>Le backend est structuré selon le pattern <strong>MVC (Model-View-Controller)</strong> adapté aux API REST. Chaque dossier a une responsabilité unique.</p>
+        
+        <div class="card">
+            <div class="tree-view">
+/backend/src
+├── config/             # Configuration globale
+│   └── db.js           # Instance unique du client Prisma (Singleton)
+├── controllers/        # ORCHESTRATION (Le "Chef d'Orchestre")
+│   ├── authController.js       # Logique d'inscription, login, vérification email
+│   ├── workerController.js     # Logique de matching et recherche
+│   └── ...
+├── middleware/         # SÉCURITÉ (Les "Gardes du Corps")
+│   ├── authMiddleware.js       # Décrypte le token JWT
+│   ├── roleMiddleware.js       # Vérifie si l'user est ADMIN/WORKER
+│   └── uploadMiddleware.js     # Filtre les fichiers (Multer: PDF/JPG uniquement)
+├── routes/             # AIGUILLAGE (Le "GPS")
+│   └── authRoutes.js           # Mappe l'URL /login vers authController.login
+├── services/           # MÉTIER COMPLEXE (Les "Experts")
+│   ├── encryptionService.js    # Chiffrement AES-256 des fichiers
+│   ├── emailService.js         # Envoi SMTP
+│   └── notificationService.js  # Gestion des Sockets Temps-réel
+└── validators/         # CONTRÔLE QUALITÉ (Le "Douanier")
+    └── authValidator.js        # Schémas Zod (Password complexity, Email format)
+            </div>
+            <p><strong>Flux d'une requête :</strong> <code>Route</code> -> <code>Validator</code> -> <code>Middleware</code> -> <code>Controller</code> -> <code>Service</code> -> <code>Database</code>.</p>
+        </div>
+
+        <h3>1.3 Architecture du Frontend (Détail)</h3>
+        <p>Le frontend React n'est pas une simple coquille vide. Il gère une complexité logique importante (État, Cache, Navigation).</p>
+
+        <div class="card">
+            <div class="tree-view">
+/frontend/src
+├── api/                # COUCHE RÉSEAU
+│   └── client.js       # Instance Axios avec Intercepteurs (Gestion auto des 401)
+├── components/         # BRIQUES LEGO (UI)
+│   ├── common/         # Boutons, Inputs, Modal (Réutilisables partout)
+│   ├── layout/         # Navbar, Sidebar, Footer (Structure des pages)
+│   └── specific/       # Composants métier (ex: MissionCard)
+├── context/            # MÉMOIRE GLOBALE
+│   ├── AuthContext.jsx         # Qui est connecté ? (User, Role)
+│   └── SocketContext.jsx       # Canal de communication temps-réel
+├── hooks/              # LOGIQUE RÉUTILISABLE (Custom Hooks)
+│   ├── useAuth.js              # Accès simplifié au contexte Auth
+│   └── useDebounce.js          # Optimisation de la recherche (évite trop de requêtes)
+├── pages/              # ÉCRANS DE L'APPLICATION
+│   ├── public/         # Home, Login, Register
+│   ├── worker/         # Dashboard Travailleur (Protégé)
+│   └── admin/          # Dashboard Admin (Protégé)
+└── services/           # POINTS D'ENTRÉE API
+    └── auth.service.js # Fonctions async (login, register...)
+            </div>
+        </div>
+
+        <h3>1.4 Flux de Données Global (Data Flow)</h3>
+        <p>Comprendre comment les données voyagent est essentiel. Voici le trajet d'une donnée critique (ex: Mot de passe lors de l'inscription).</p>
+
+        <div class="mermaid">
+        sequenceDiagram
+            participant User as Utilisateur
+            participant React as Frontend (Vite)
+            participant Axios as Client API
+            participant Express as Backend (Node)
+            participant Prisma as ORM
+            participant PG as PostgreSQL DB
+
+            User->>React: Remplit le formulaire
+            React->>React: Validation Zod (Côté Client)
+            React->>Axios: Envoie POST /api/register
+            Axios->>Express: Requête HTTP (JSON)
+            Express->>Express: Validation Zod (Côté Serveur)
+            Express->>Prisma: Hash Password (Bcrypt)
+            Prisma->>PG: INSERT INTO users
+            PG-->>Prisma: Confirm ID
+            Prisma-->>Express: User Created
+            Express-->>Axios: 201 Created (Success)
+            Axios-->>React: Update UI (Redirect to Login)
+            React-->>User: Affiche "Inscription réussie"
+        </div>
+    </section>
+
+    <!-- CHAPITRE 2 -->
+    <section id="chapitre-2-backend">
+        <h2>Chapitre 2 : Backend API & Principes REST</h2>
+        <div class="intro-block">
+            <p>Notre backend Express.js n'est pas un simple passe-plat. Il implémente une logique rigoureuse de sécurité et de validation pour garantir que chaque donnée entrant dans la base est propre et autorisée.</p>
+        </div>
+
+        <h3>2.1 Organisation des Routes (RESTful)</h3>
+        <p>Nous respectons les verbes HTTP standards pour chaque action. Voici un extrait réel de <code>workerRoutes.js</code> montrant cette organisation :</p>
+
+        <pre><code class="language-javascript">
+// backend/src/routes/workerRoutes.js
+const router = express.Router();
+
+// Middleware Global pour ce fichier :
+// 1. Être connecté (Auth)
+// 2. Être un Travailleur (Role)
+router.use(authMiddleware, roleMiddleware("WORKER"));
+
+// Lecture (GET)
+router.get("/profile", getWorkerProfile);
+router.get("/stats", getWorkerStats);
+
+// Écriture (POST)
+router.post("/experience", addExperience);
+
+// Mise à jour (PUT) - Upload de fichiers inclus
+router.put("/profile/update", 
+    uploadImage.fields([{ name: 'photo' }, { name: 'banner' }]), 
+    validate(updateWorkerProfileSchema), // Validation Zod ici
+    updateWorkerProfile
+);
+
+// Suppression (DELETE)
+router.delete("/experience/:id", deleteExperience);
+        </code></pre>
+
+        <h3>2.2 La Chaîne de Middleware (Le Pipeline de Sécurité)</h3>
+        <p>Avant qu'une requête n'atteigne le contrôleur (la fonction qui fait le travail), elle doit traverser plusieurs barrières de sécurité. Si une seule échoue, la requête est rejetée immédiatement.</p>
+
+        <div class="mermaid">
+        graph LR
+            Req[Requête Client] --> Auth{Auth Middleware<br/>Token Valide ?}
+            Auth -- Non --> 401[401 Unauthorized]
+            Auth -- Oui --> Role{Role Middleware<br/>Est WORKER ?}
+            Role -- Non --> 403[403 Forbidden]
+            Role -- Oui --> Upload{Multer<br/>Fichier OK ?}
+            Upload -- Non --> 400A[400 Bad Request<br/>Format invalide]
+            Upload -- Oui --> Zod{Validator Zod<br/>Données valides ?}
+            Zod -- Non --> 400B[400 Bad Request<br/>Erreur de champs]
+            Zod -- Oui --> Controller[Worker Controller]
+            Controller --> DB[(Database)]
+            
+            style Auth fill:#fecaca,stroke:#dc2626
+            style Role fill:#fecaca,stroke:#dc2626
+            style Zod fill:#fde68a,stroke:#d97706
+            style Controller fill:#bbf7d0,stroke:#16a34a
+        </div>
+
+        <h3>2.3 Logique des Contrôleurs (Separation of Concerns)</h3>
+        <p>Pour éviter les "Fat Controllers" (fonctions de 500 lignes), nous déléguons la logique complexe. Le contrôleur ne fait que coordonner.</p>
+        
+        <p><strong>Exemple : Inscription d'un établissement</strong></p>
+        <div class="code-block">
+            <pre><code class="language-javascript">
+// backend/src/controllers/authController.js
+
+export const registerEstablishment = async (req, res) => {
+  try {
+    // 1. Les données sont déjà validées par Zod à ce stade
+    const { email, password, ...profileData } = req.body;
+
+    // 2. Logic métier: Hashage
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // 3. Transaction SGBD (Atomique)
+    // Si la création du profil échoue, l'utilisateur n'est pas créé
+    await prisma.$transaction(async (tx) => {
+        const newUser = await tx.user.create({ ... });
+        await tx.establishmentProfile.create({ ... });
+    });
+
+    // 4. Service Tiers : Envoi Email
+    await sendVerificationEmail(email, code);
+
+    // 5. Réponse unifiée
+    res.status(201).json({ status: "success", message: "Vérifiez votre email" });
+
+  } catch (error) {
+    // Gestion d'erreur centralisée
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+};
+            </code></pre>
+        </div>
+    </section>
+
+    <!-- CHAPITRE 3 -->
+    <section id="chapitre-3-database">
+        <h2>Chapitre 3 : Base de Données & Modélisation</h2>
+        <div class="intro-block">
+            <p>Le cœur de SociaLink repose sur une base de données PostgreSQL relationnelle, gérée via l'ORM Prisma. Ce choix garantit une intégrité des données stricte (Clés étrangères, Contraintes d'unicité) et une sécurité de type au niveau du code (Type-Safety).</p>
+        </div>
+
+        <h3>3.1 Schéma Entité-Association (Simplifié)</h3>
+        <p>Le modèle de données est centré autour de l'entité <code>User</code>, qui se décline en profils spécifiques (Polymorphisme par association).</p>
+
+        <div class="mermaid">
+        erDiagram
+            User ||--o| WorkerProfile : "has"
+            User ||--o| EstablishmentProfile : "has"
+            User ||--o{ Notification : "receives"
+            
+            EstablishmentProfile ||--o{ Mission : "creates"
+            WorkerProfile ||--o{ Application : "applies to"
+            Mission ||--o{ Application : "receives"
+            
+            WorkerProfile ||--o{ Review : "receives"
+            Mission ||--o{ Review : "has"
+
+            User {
+                int id
+                string email
+                enum role "WORKER, ESTABLISHMENT, ADMIN"
+                enum status "PENDING, VALIDATED"
+            }
+            
+            Mission {
+                string title
+                float budget
+                boolean is_urgent
+                enum status "OPEN, CLOSED"
+            }
+        </div>
+
+        <h3>3.2 Relations Clés et Choix de Conception</h3>
+        <ul class="feature-list">
+            <li>
+                <strong>Héritage des Utilisateurs</strong> : Nous n'avons pas fait de tables <code>Workers</code> et <code>Establishments</code> séparées pour l'authentification. Tout le monde est un <code>User</code> (pour le Login unique), et les détails spécifiques sont dans des tables proflies liées en <code>One-to-One</code>.
+            </li>
+            <li>
+                <strong>Intégrité Référentielle (Cascade Delete)</strong> : Si un utilisateur supprime son compte, Prisma supprime automatiquement (via <code>onDelete: Cascade</code>) son profil, ses messages, ses notifications et ses candidatures. Cela évite les "données orphelines" qui polluent la base.
+            </li>
+            <li>
+                <strong>Système d'Abonnement</strong> : Le modèle <code>Subscription</code> est lié à <code>SubscriptionPlanConfig</code>. Cela permet à l'administrateur de modifier le prix ou les avantages d'un plan sans toucher au code, juste en modifiant la ligne en base de données.
+            </li>
+        </ul>
+
+        <h3>3.3 Stratégie de Données (Seeding & Migrations)</h3>
+        <p>Pour garantir que chaque développeur (et le serveur de production) a la même structure de base :</p>
+        
+        <h4>Prisma Migrate</h4>
+        <p>Chaque changement de schéma génère un fichier SQL immuable. Cela permet de versionner la structure de la BDD avec Git.</p>
+        <pre><code class="language-bash">
+# Exemple de commande de migration
+npx prisma migrate dev --name add_subscription_model
+# Génère: /prisma/migrations/20260203_add_subscription_model/migration.sql
+        </code></pre>
+
+        <h4>Seeding (Données initiales)</h4>
+        <p>Le script <code>prisma/seed.js</code> peuple automatiquement la base avec les données essentielles au démarrage de l'application :</p>
+        <ul>
+            <li><strong>Super Admin</strong> : Création du compte administrateur par défaut.</li>
+            <li><strong>Référentiels Géographiques</strong> : Injection des 12 Régions et principales Villes du Maroc.</li>
+            <li><strong>Métiers</strong> : Liste prédéfinie des spécialités (Plomberie, Electricité...).</li>
+        </ul>
+    </section>
+
+    <!-- CHAPITRE 4 -->
+    <section id="frontend-details">
+        <h2>Chapitre 4 : Implémentation Frontend (React)</h2>
+        <div class="intro-block">
+            <p>Le frontend a été conçu pour être <strong>réactif</strong> et <strong>modulaire</strong>. Nous avons résolu les problèmes classiques de React (prop drilling, re-renders inutiles) grâce à une utilisation intelligente des Contexts et des Custom Hooks.</p>
+        </div>
+
+        <h3>4.1 Gestion d'État Global (AuthContext)</h3>
+        <p>L'état de l'utilisateur (connecté, rôle, avatar) est nécessaire partout : dans la Navbar, les routes protégées, le dashboard. Pour éviter de passer les props manuellement à travers 10 composants (Prop Drilling), nous utilisons l'API Context.</p>
+        
+        <div class="code-block">
+            <h4>Code Source : authContext.jsx (Simplifié)</h4>
+            <pre><code class="language-javascript">
+// frontend/src/context/AuthContext.jsx
+export const AuthProvider = ({ children }) => {
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    // Au chargement de l'app, on vérifie si un cookie de session existe
+    useEffect(() => {
+        checkUserLoggedIn();
+    }, []);
+
+    const checkUserLoggedIn = async () => {
+        try {
+            const { data } = await api.get('/auth/me');
+            setUser(data.data); 
+        } catch (error) {
+            setUser(null);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Le Provider diffuse l'objet { user, login, logout } à toute l'app
+    return (
+        &lt;AuthContext.Provider value={{ user, login, logout, loading }}&gt;
+            {!loading && children}
+        &lt;/AuthContext.Provider&gt;
+    );
+};
+            </code></pre>
+        </div>
+
+        <h3>4.2 Architecture des Composants (Smart vs Dumb)</h3>
+        <p>Nous séparons nos composants en deux catégories pour faciliter les tests et la réutilisation :</p>
+        <ul class="feature-list">
+            <li>
+                <strong>Dumb Components (UI)</strong> : Ne font qu'afficher des données. Exemple : <code>Button.jsx</code>, <code>MissionCard.jsx</code>. Ils n'ont aucune dépendance avec l'API.
+            </li>
+            <li>
+                <strong>Smart Components (Containers)</strong> : Gèrent la logique et les appels API. Exemple : <code>MissionList.jsx</code>. Ils récupèrent les données et les passent aux composants UI.
+            </li>
+        </ul>
+
+        <h3>4.3 Communication API (Axios Interceptors)</h3>
+        <p>Plutôt que de vérifier sur chaque page si le token est expiré, nous avons centralisé cette logique directement dans la configuration d'Axios.</p>
+        
+        <pre><code class="language-javascript">
+// frontend/src/api/client.js
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        // Si le backend renvoie 401 (Non autorisé)
+        if (error.response?.status === 401) {
+            console.warn('Session expirée, redirection vers login...');
+            // On pourrait ici forcer une déconnexion automatique
+        }
+        return Promise.reject(error);
+    }
+);
+        </code></pre>
+
+        <h3>4.4 Temps Réel (Socket.io)</h3>
+        <p>Pour les notifications instantanées (ex: "Nouvelle candidature reçue"), nous utilisons un <code>SocketContext</code> qui maintient une connexion WebSocket ouverte. Dès qu'un événement survient côté serveur, il est "pushé" vers le client sans que l'utilisateur n'ait besoin de rafraîchir la page.</p>
+    </section>
+
+    <!-- CHAPITRE 5 -->
+    <section id="securite-avancee">
+        <h2>Chapitre 5 : Systèmes de Sécurité Avancés</h2>
+        <div class="intro-block">
+            <p>La sécurité n'est pas une option sur SociaLink. Nous appliquons le principe de "Defense in Depth" (Défense en profondeur) avec multiples couches de protection.</p>
+        </div>
+
+        <div class="card">
+            <h3>🔒 5.1 Validation des Entrées (Input Validation)</h3>
+            <p>Nous n'utilisons jamais <code>if/else</code> artisanal pour valider les données. Chaque requête entrante est interceptée par un schéma <strong>Zod</strong> strict. Si le format est invalide, le code métier ne s'exécute même pas.</p>
+            <pre><code class="language-javascript">
+// backend/src/validators/authValidator.js
+export const registerWorkerSchema = z.object({
+    email: z.string().email("Format invalide"),
+    password: z.string()
+        .min(8)
+        .regex(/[A-Z]/, "Majuscule requise")
+        .regex(/[0-9]/, "Chiffre requis"),
+    // Zod nettoie automatiquement les champs inconnus (Strip unknown)
+});
+            </code></pre>
+        </div>
+
+        <div class="card">
+            <h3>🛡️ 5.2 Contrôle d'Accès (RBAC)</h3>
+            <p>L'accès aux routes est protégé par une double barrière middleware :</p>
+            <ol>
+                <li><strong>AuthMiddleware</strong> : Vérifie la validité du JWT et l'identité de l'user.</li>
+                <li><strong>RoleMiddleware</strong> : Vérifie si le rôle de l'user est autorisé à accéder à la ressource.</li>
+            </ol>
+            <p><em>Exemple de protection d'une route sensible :</em></p>
+            <pre><code class="language-javascript">
+router.delete('/delete-account', 
+    protect,              // Barrière 1 : Qui est-ce ?
+    authorize('ADMIN'),   // Barrière 2 : A-t-il le droit ?
+    deleteAccount
+);
+            </code></pre>
+        </div>
+
+        <div class="card">
+            <h3>🔐 5.3 Cryptage des Documents (AES-256-CBC)</h3>
+            <p>Les fichiers sensibles (CNIE, Diplômes) ne sont jamais stockés en clair sur le serveur pour garantir la confidentialité totale en cas de fuite de données.</p>
+            <ul>
+                <li><strong>Algorithme</strong> : AES-256-CBC (Advanced Encryption Standard).</li>
+                <li><strong>Clé Privée</strong> : Stockée uniquement en variable d'environnement (<code>process.env.DOCUMENT_ENCRYPTION_KEY</code>), jamais sur Git.</li>
+                <li><strong>Processus</strong> : Le fichier est chiffré "à la volée" (Stream) lors de l'upload. L'admin est le seul à pouvoir demander un déchiffrement temporaire pour validation.</li>
+            </ul>
+        </div>
+    </section>
+
+
+    <!-- CHAPITRE 6 -->
+    <section id="chapitre-6-deploy">
+        <h2>Chapitre 6 : Déploiement & DevOps</h2>
+        <div class="intro-block">
+            <p>Une application moderne ne vit pas uniquement sur le poste du développeur ("It works on my machine"). Nous avons préparé SociaLink pour un déploiement robuste en production.</p>
+        </div>
+
+        <h3>6.1 Gestion des Variables d'Environnement (.env)</h3>
+        <p>Les secrets (clés API, mots de passe BDD) sont strictement séparés du code source via des fichiers <code>.env</code>. Cela permet de déployer le même code sur des environnements différents (Dev, Staging, Prod) en changeant simplement la configuration.</p>
+        <pre><code class="language-bash">
+# Exemple de .env (Backend)
+PORT=5000
+DATABASE_URL="postgresql://user:pass@supabase-host:5432/socialink_db"
+JWT_SECRET="super_secret_key_complex_v6"
+DOCUMENT_ENCRYPTION_KEY="32_bytes_random_hex_key_for_aes_256"
+CLIENT_URL="https://socialink.ma"
+        </code></pre>
+
+        <h3>6.2 Processus de Build (Vite)</h3>
+        <p>Contrairement au backend (Node.js) qui s'exécute directement, le frontend React doit être "transpilé" et optimisé pour le navigateur.</p>
+        <ul class="feature-list">
+            <li><strong>Optimisation</strong> : La commande <code>npm run build</code> (via Vite) génère des fichiers HTML/CSS/JS minifiés dans le dossier <code>/dist</code>.</li>
+            <li><strong>Cache Busting</strong> : Les fichiers JS générés ont des noms hachés (ex: <code>index.a1b2c3.js</code>) pour forcer le navigateur à retélécharger la nouvelle version après une mise à jour.</li>
+        </ul>
+
+        <h3>6.3 Architecture de Déploiement Cible</h3>
+        <p>Pour la mise en production, nous recommandons l'architecture suivante :</p>
+        <div class="mermaid">
+        graph TD
+            Client[Utilisateur] -->|HTTPS| Proxy[Nginx (Reverse Proxy)]
+            Proxy -->|Static Files| Frontend[Frontend (React/Vite)]
+            Proxy -->|/api| Backend[Backend (Node.js Cluster)]
+            Backend --> DB[(Supabase PostgreSQL)]
+            Backend --> S3[Stockage Fichiers (S3/Disk)]
+        </div>
+    </section>
+
+    <!-- CONCLUSION -->
+    <section id="conclusion">
+        <h2 style="border-bottom: 3px solid var(--accent);">Conclusion Générale</h2>
+        <p>Le projet <strong>SociaLink v6.5</strong> démontre qu'une application de mise en relation peut être à la fois <strong>simple d'utilisation</strong> pour l'usager et <strong>techniquement rigoureuse</strong> en coulisses.</p>
+        <p>De l'architecture modulaire à la sécurité avancée (AES-256, RBAC), chaque choix technique a été fait pour garantir la pérennité et l'évolutivité de la solution. Cette plateforme est prête à répondre aux besoins réels du marché marocain de l'interim et du service à domicile.</p>
+        <p style="margin-top: 2rem; font-style: italic;">Développé avec ❤️ et rigeur dans le cadre du projet de fin de formation.</p>
+    </section>
+
+    <footer style="margin-top: 4rem; text-align: center; border-top: 1px solid #ccc; padding-top: 2rem;">
+        <p>Généré automatiquement pour le rapport de fin de formation SociaLink.</p>
+    </footer>
+
+</body>
+</html>

@@ -20,7 +20,7 @@ const Dashboard = () => {
                     navigate('/admin/dashboard');
                     break;
                 case 'SUPER_ADMIN':
-                    navigate('/super-admin/dashboard');
+                    navigate('/admin/dashboard');
                     break;
                 default:
                     // If no role or unknown role, stay here or go to home

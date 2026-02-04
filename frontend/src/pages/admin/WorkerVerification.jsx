@@ -21,8 +21,8 @@ const WorkerVerification = () => {
         setLoading(true);
         try {
             // Fetch workers with optional status filter
-            console.log('[DEBUG Frontend] Fetching from:', `/super-admin/quality/pending?status=${filter === 'all' ? '' : filter}`);
-            const { data } = await api.get(`/super-admin/quality/pending?status=${filter === 'all' ? '' : filter}`);
+            console.log('[DEBUG Frontend] Fetching from:', `/admin/quality/pending?status=${filter === 'all' ? '' : filter}`);
+            const { data } = await api.get(`/admin/quality/pending?status=${filter === 'all' ? '' : filter}`);
             console.log('[DEBUG Frontend] API Response:', data);
 
             // Handle new API response structure

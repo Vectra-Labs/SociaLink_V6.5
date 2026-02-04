@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllAdmins, createAdmin, updateAdmin, getAuditLogs, getDashboardStats, getPlans, createPlan, updatePlan, getBanners, upsertBanner, deleteBanner, sendGlobalNotification, getAllUsers, updateUserStatus, getUserDetails, getFinancialStats, getTransactions, getQualityStats, getPendingVerifications, reviewProfile, getWorkerFullDetails, getEstablishmentFullDetails, updateDocumentStatus, getSystemSettings, updateSystemSettings, getDisputes, resolveDispute, getAdminMessages, sendAdminMessage, markMessageRead, markConversationRead, getAdminMissions, reviewMission } from '../controllers/superAdminController.js';
+import { getAllAdmins, createAdmin, updateAdmin, getAuditLogs, getDashboardStats, getPlans, createPlan, updatePlan, getBanners, upsertBanner, deleteBanner, sendGlobalNotification, getAllUsers, updateUserStatus, getUserDetails, getFinancialStats, getTransactions, getQualityStats, getPendingVerifications, reviewProfile, getWorkerFullDetails, getEstablishmentFullDetails, updateDocumentStatus, getSystemSettings, updateSystemSettings, getDisputes, resolveDispute, getAdminMessages, sendAdminMessage, markMessageRead, markConversationRead, getAdminMissions, reviewMission, seedDemoData, updateUserSubscription } from '../controllers/superAdminController.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { roleMiddleware } from '../middleware/roleMiddleware.js';
 
@@ -63,6 +63,10 @@ router.get('/finance/transactions', roleMiddleware('ADMIN', 'SUPER_ADMIN'), getT
 // System Settings
 router.get('/settings', roleMiddleware('SUPER_ADMIN'), getSystemSettings);
 router.put('/settings', roleMiddleware('SUPER_ADMIN'), updateSystemSettings);
+
+// --- DEMO & UTILS ---
+router.post('/seed-demo-data', roleMiddleware('SUPER_ADMIN'), seedDemoData);
+router.put('/users/:id/subscription', roleMiddleware('SUPER_ADMIN'), updateUserSubscription);
 
 // Audit Logs
 router.get('/logs', roleMiddleware('SUPER_ADMIN'), getAuditLogs);

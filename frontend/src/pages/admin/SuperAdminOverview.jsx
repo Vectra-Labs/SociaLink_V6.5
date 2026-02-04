@@ -20,7 +20,7 @@ const SuperAdminOverview = () => {
     useEffect(() => {
         const fetchStats = async () => {
             try {
-                const response = await api.get('/super-admin/stats');
+                const response = await api.get('/admin/stats');
                 setData(response.data);
             } catch (error) {
                 console.error("Failed to fetch stats:", error);
@@ -106,7 +106,7 @@ const SuperAdminOverview = () => {
                         {exporting ? 'Export...' : 'Exporter Rapport'}
                     </button>
                     <button
-                        onClick={() => navigate('/super-admin/admins')}
+                        onClick={() => navigate('/admin/admins')}
                         className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-sm shadow-blue-200 transition-all"
                     >
                         <Plus className="w-4 h-4" />
@@ -229,7 +229,7 @@ const SuperAdminOverview = () => {
                     </div>
 
                     <div className="p-3 border-t border-slate-100 bg-slate-50/50 text-center">
-                        <button onClick={() => navigate('/super-admin/admins')} className="text-xs text-blue-600 font-medium hover:underline">
+                        <button onClick={() => navigate('/admin/admins')} className="text-xs text-blue-600 font-medium hover:underline">
                             Voir tout le journal d'audit
                         </button>
                     </div>

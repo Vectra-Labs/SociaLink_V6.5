@@ -40,7 +40,7 @@ const SuperAdminSubscriptions = () => {
 
     const fetchPlans = async () => {
         try {
-            const { data } = await api.get('/super-admin/plans');
+            const { data } = await api.get('/admin/plans');
             setPlans(data);
         } catch (error) {
             console.error(error);
@@ -92,9 +92,9 @@ const SuperAdminSubscriptions = () => {
             delete payload.price_monthly_dh;
 
             if (editingPlan) {
-                await api.put(`/super-admin/plans/${editingPlan.plan_id}`, payload);
+                await api.put(`/admin/plans/${editingPlan.plan_id}`, payload);
             } else {
-                await api.post('/super-admin/plans', payload);
+                await api.post('/admin/plans', payload);
             }
             setShowModal(false);
             fetchPlans();

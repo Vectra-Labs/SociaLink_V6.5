@@ -35,7 +35,7 @@ const SuperAdminSettings = () => {
 
     const fetchSettings = async () => {
         try {
-            const { data } = await api.get('/super-admin/settings');
+            const { data } = await api.get('/admin/settings');
             // Merge with defaults to ensure all keys exist
             setConfig(prev => ({ ...prev, ...data }));
         } catch (error) {
@@ -64,7 +64,7 @@ const SuperAdminSettings = () => {
         }
         setSaving(true);
         try {
-            await api.put('/super-admin/settings', config);
+            await api.put('/admin/settings', config);
             alert("Configuration sauvegardée avec succès !");
         } catch (error) {
             alert("Erreur lors de la sauvegarde.");
@@ -429,6 +429,43 @@ const SuperAdminSettings = () => {
                             </div>
                             <p className="text-xs text-slate-400 mt-1">Affiché: {config.hero_stat_satisfaction}%</p>
                         </div>
+                    </div>
+                </div>
+
+                {/* DEMO ZONE */}
+                <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6 md:col-span-2">
+                    <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
+                        <div className="p-2 bg-pink-100 text-pink-600 rounded">
+                            <Sliders className="w-5 h-5" />
+                        </div>
+                        <div>
+                            <h3 className="font-bold text-slate-900">Zone de Démo & Tests</h3>
+                            <p className="text-xs text-slate-500">Outils pour faciliter la démonstration de la plateforme.</p>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-200">
+                        <div>
+                            <h4 className="font-bold text-slate-900">Générer Données de Démo</h4>
+                            <p className="text-xs text-slate-500">Crée 5 travailleurs, 3 établissements et 10 missions instantanément.</p>
+                        </div>
+                        <button
+                            onClick={async () => {
+                                if(!window.confirm("Êtes-vous sûr ? Cela va créer des utilisateurs de démo.")) return;
+                                try {
+                                    setSaving(true);
+                                    const { data } = await api.post('/admin/seed-demo-data');
+                                    alert(data.message);
+                                } catch (err) {
+                                    alert("Erreur: " + (err.response?.data?.message || err.message));
+                                } finally {
+                                    setSaving(false);
+                                }
+                            }}
+                            className="px-4 py-2 bg-pink-600 text-white text-sm font-medium rounded-lg hover:bg-pink-700 transition-colors shadow-sm"
+                        >
+                            Lancer le Seeder
+                        </button>
                     </div>
                 </div>
 

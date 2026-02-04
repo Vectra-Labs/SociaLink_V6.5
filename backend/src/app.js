@@ -16,7 +16,7 @@ import adminRoutes from "./routes/adminRoutes.js";
 import applicationRoutes from "./routes/applicationRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
 import subscriptionRoutes from "./routes/subscriptionRoutes.js";
-import superAdminRoutes from "./routes/superAdminRoutes.js";
+// import superAdminRoutes from "./routes/superAdminRoutes.js";
 import generalRoutes from "./routes/generalRoutes.js";
 import messageRoutes from "./routes/messageRoutes.js";
 import privilegeRoutes from "./routes/privilegeRoutes.js";
@@ -40,7 +40,7 @@ app.use(cookieParser());
 
 // Enable CORS
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: process.env.FRONTEND_URL || "http://localhost:5173",
     credentials: true
 }));
 
@@ -58,7 +58,7 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/applications", applicationRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/subscriptions", subscriptionRoutes);
-app.use("/api/super-admin", superAdminRoutes);
+// app.use("/api/super-admin", superAdminRoutes); // Merged into adminRoutes
 app.use("/api/general", generalRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/privileges", privilegeRoutes);

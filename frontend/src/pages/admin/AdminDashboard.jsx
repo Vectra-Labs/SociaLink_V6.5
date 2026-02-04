@@ -29,7 +29,7 @@ const AdminDashboard = () => {
 
             // Fetch all pending items in parallel
             const [profilesRes, docsRes] = await Promise.all([
-                api.get('/super-admin/quality/pending').catch(() => ({ data: [] })),
+                api.get('/admin/quality/pending').catch(() => ({ data: [] })),
                 api.get('/admin/establishment-documents?status=PENDING').catch(() => ({ data: [] }))
             ]);
 

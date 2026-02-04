@@ -195,3 +195,149 @@ export const markAllNotificationsAsRead = async (req, res) => {
     });
   }
 };
+
+//----------------------------- Messaging System -----------------------------//
+
+// Get Users for Messaging (with search & filter)
+export const getUsersForMessaging = async (req, res) => {
+    try {
+        const { role, status, search, page = 1, limit = 50 } = req.query;
+        const skip = (parseInt(page) - 1) * parseInt(limit);
+
+        const whereClause = {
+            ...(role && role !== 'ALL' && { role: role }),
+            ...(status && status !== 'ALL' && { status: status }),
+            ...(search && {
+                OR: [
+                    { email: { contains: search, mode: 'insensitive' } },
+                    { 
+                        workerProfile: { 
+                            OR: [
+                                { first_name: { contains: search, mode: 'insensitive' } },
+                                { last_name: { contains: search, mode: 'insensitive' } }
+                            ]
+                        }
+                    },
+                    {
+                        establishmentProfile: {
+                            name: { contains: search, mode: 'insensitive' }
+                        }
+                    }
+                ]
+            })
+        };
+
+        const users = await prisma.user.findMany({
+            where: whereClause,
+            select: {
+                user_id: true,
+                email: true,
+                role: true,
+                workerProfile: {
+                    select: { first_name: true, last_name: true, profile_pic_url: true }
+                },
+                establishmentProfile: {
+                    select: { name: true, logo_url: true }
+                },
+                adminProfile: {
+                    select: { first_name: true, last_name: true, profile_pic_url: true }
+                }
+            },
+            take: parseInt(limit),
+            skip: skip,
+            orderBy: { created_at: 'desc' }
+        });
+
+        const total = await prisma.user.count({ where: whereClause });
+
+        const formattedUsers = users.map(u => {
+            let name = 'Utilisateur';
+            let avatar = null;
+
+            if (u.role === 'WORKER') {
+                name = `${u.workerProfile?.first_name || ''} ${u.workerProfile?.last_name || ''}`.trim() || 'Travailleur Inconnu';
+                avatar = u.workerProfile?.profile_pic_url;
+            } else if (u.role === 'ESTABLISHMENT') {
+                name = u.establishmentProfile?.name || 'Établissement Inconnu';
+                avatar = u.establishmentProfile?.logo_url;
+            } else if (u.role === 'ADMIN' || u.role === 'SUPER_ADMIN') {
+                name = `${u.adminProfile?.first_name || ''} ${u.adminProfile?.last_name || ''}`.trim() || 'Administrateur';
+                avatar = u.adminProfile?.profile_pic_url;
+            }
+
+            return {
+                id: u.user_id,
+                email: u.email,
+                role: u.role,
+                name: name,
+                avatar: avatar
+            };
+        });
+
+        res.status(200).json({ data: formattedUsers, meta: { total, page: parseInt(page) } });
+
+    } catch (error) {
+        console.error("GET USERS MESSAGING ERROR:", error);
+        res.status(500).json({ message: "Failed to fetch users" });
+    }
+};
+
+// Send Bulk Message / Notification
+export const sendBulkMessage = async (req, res) => {
+    try {
+        const { title, message, targetRole, targetUserIds, type = 'INFO' } = req.body;
+        // targetRole: 'ALL', 'WORKER', 'ESTABLISHMENT' or null if targetUserIds is set
+        // targetUserIds: [1, 2, 3] if specific users
+
+        let userIds = [];
+
+        if (targetUserIds && targetUserIds.length > 0) {
+            userIds = targetUserIds;
+        } else if (targetRole) {
+            const whereClause = targetRole === 'ALL' ? {} : { role: targetRole };
+            // Exclude admins from receiving bulk user messages usually, but 'ALL' might imply everyone. 
+            // Let's filter to only WORKER and ESTABLISHMENT for safety unless specified.
+            if (targetRole === 'ALL') {
+                whereClause.role = { in: ['WORKER', 'ESTABLISHMENT'] };
+            }
+
+            const users = await prisma.user.findMany({
+                where: whereClause,
+                select: { user_id: true }
+            });
+            userIds = users.map(u => u.user_id);
+        }
+
+        if (userIds.length === 0) {
+            return res.status(400).json({ message: "No users found for selection" });
+        }
+
+        // Create notifications in bulk (Prisma doesn't support createMany for related records with relations easily, 
+        // but Notification is a simple model linked to user_id. check schema.)
+        // Actually schema says: user User @relation...
+        // Use createMany
+        const notificationsData = userIds.map(id => ({
+            user_id: id,
+            title: title || 'Message Admin', // Schema might not have title, let's check. 
+            // Notification model usually has 'message', 'type'. Schema check required?
+            // Assuming simplified model: message, type, user_id. 
+            // Use message as combined title/body if needed or just body.
+            message: message, 
+            type: type,
+            is_read: false
+        }));
+
+        await prisma.notification.createMany({
+            data: notificationsData
+        });
+
+        res.status(200).json({ 
+            message: `Message sent to ${userIds.length} users successfully`,
+            count: userIds.length 
+        });
+
+    } catch (error) {
+        console.error("SEND BULK MESSAGE ERROR:", error);
+        res.status(500).json({ message: "Failed to send messages" });
+    }
+};

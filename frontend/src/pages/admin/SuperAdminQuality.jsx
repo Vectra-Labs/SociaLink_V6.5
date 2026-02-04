@@ -20,8 +20,8 @@ const SuperAdminQuality = () => {
         setLoading(true);
         try {
             const [statsRes, pendingRes] = await Promise.all([
-                api.get('/super-admin/quality/stats'),
-                api.get('/super-admin/quality/pending')
+                api.get('/admin/quality/stats'),
+                api.get('/admin/quality/pending')
             ]);
             setStats(statsRes.data);
             setPendingProfiles(pendingRes.data);
@@ -41,7 +41,7 @@ const SuperAdminQuality = () => {
 
         setVerifying(true);
         try {
-            await api.put(`/super-admin/quality/profiles/${type}/${id}/review`, {
+            await api.put(`/admin/quality/profiles/${type}/${id}/review`, {
                 status,
                 reason: status === 'REJECTED' ? rejectReason : undefined
             });

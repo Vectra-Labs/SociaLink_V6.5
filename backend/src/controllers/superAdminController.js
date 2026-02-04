@@ -3,7 +3,9 @@ import bcrypt from "bcryptjs";
 import { createNotification } from "../services/notificationService.js";
 
 /**
- * Get all admins (Super Admin & Admin)
+ * Récupère tous les administrateurs (Super Admin & Admin).
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
  */
 export const getAllAdmins = async (req, res) => {
     try {
@@ -42,7 +44,9 @@ export const getAllAdmins = async (req, res) => {
 };
 
 /**
- * Create a new Admin (with optional profile data)
+ * Crée un nouvel administrateur (avec données de profil optionnelles).
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
  */
 export const createAdmin = async (req, res) => {
     try {
@@ -103,7 +107,9 @@ export const createAdmin = async (req, res) => {
 };
 
 /**
- * Update Admin (Permissions, Status, Profile)
+ * Met à jour un administrateur (Permissions, Statut, Profil).
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
  */
 export const updateAdmin = async (req, res) => {
     try {
@@ -172,7 +178,9 @@ export const updateAdmin = async (req, res) => {
 };
 
 /**
- * Get Audit Logs
+ * Récupère les journaux d'audit (Logs).
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
  */
 export const getAuditLogs = async (req, res) => {
     try {
@@ -199,7 +207,9 @@ export const getAuditLogs = async (req, res) => {
 };
 
 /**
- * Get Dashboard Stats
+ * Récupère les statistiques du tableau de bord.
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
  */
 export const getDashboardStats = async (req, res) => {
     try {
@@ -287,7 +297,9 @@ export const getDashboardStats = async (req, res) => {
 };
 
 /**
- * Get All Subscription Plans
+ * Récupère tous les plans d'abonnement.
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
  */
 export const getPlans = async (req, res) => {
     try {
@@ -307,7 +319,9 @@ export const getPlans = async (req, res) => {
 };
 
 /**
- * Update Subscription Plan
+ * Met à jour un plan d'abonnement.
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
  */
 export const updatePlan = async (req, res) => {
     try {
@@ -348,7 +362,9 @@ export const updatePlan = async (req, res) => {
 };
 
 /**
- * Create Subscription Plan
+ * Crée un nouveau plan d'abonnement.
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
  */
 export const createPlan = async (req, res) => {
     try {
@@ -380,7 +396,9 @@ export const createPlan = async (req, res) => {
 };
 
 /**
- * Get Marketing Banners
+ * Récupère les bannières marketing.
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
  */
 export const getBanners = async (req, res) => {
     try {
@@ -395,7 +413,9 @@ export const getBanners = async (req, res) => {
 };
 
 /**
- * Create/Update Banner
+ * Crée ou met à jour une bannière.
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
  */
 export const upsertBanner = async (req, res) => {
     try {
@@ -441,7 +461,9 @@ export const upsertBanner = async (req, res) => {
 };
 
 /**
- * Delete Banner
+ * Supprime une bannière.
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
  */
 export const deleteBanner = async (req, res) => {
     try {
@@ -454,7 +476,9 @@ export const deleteBanner = async (req, res) => {
 };
 
 /**
- * Send Mass Notification
+ * Envoie une notification de masse.
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
  */
 export const sendGlobalNotification = async (req, res) => {
     try {
@@ -508,7 +532,9 @@ export const sendGlobalNotification = async (req, res) => {
 };
 
 /**
- * Get All Users (Paginated & Filtered)
+ * Récupère tous les utilisateurs (Paginé & Filtré).
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
  */
 export const getAllUsers = async (req, res) => {
     try {
@@ -559,7 +585,9 @@ export const getAllUsers = async (req, res) => {
 };
 
 /**
- * Update User Status (Suspend/Validate)
+ * Met à jour le statut d'un utilisateur (Suspendre/Valider).
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
  */
 export const updateUserStatus = async (req, res) => {
     try {
@@ -601,7 +629,9 @@ export const updateUserStatus = async (req, res) => {
 };
 
 /**
- * Get Single User Details
+ * Récupère les détails d'un utilisateur unique.
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
  */
 export const getUserDetails = async (req, res) => {
     try {
@@ -641,7 +671,9 @@ export const getUserDetails = async (req, res) => {
 };
 
 /**
- * Get Financial Overview
+ * Récupère l'aperçu financier.
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
  */
 export const getFinancialStats = async (req, res) => {
     try {
@@ -692,7 +724,9 @@ export const getFinancialStats = async (req, res) => {
 };
 
 /**
- * Get Transactions List
+ * Récupère la liste des transactions.
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
  */
 export const getTransactions = async (req, res) => {
     try {
@@ -740,7 +774,10 @@ export const getTransactions = async (req, res) => {
 };
 
 /**
- * Quality Control Logic
+ * Logique de Contrôle Qualité.
+ * Récupère les statistiques de vérification.
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
  */
 export const getQualityStats = async (req, res) => {
     try {
@@ -766,6 +803,11 @@ export const getQualityStats = async (req, res) => {
     }
 };
 
+/**
+ * Récupère les demandes de vérification en attente (Travailleurs et Établissements).
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
+ */
 export const getPendingVerifications = async (req, res) => {
     try {
         const { status } = req.query; // pending, in_review, verified, rejected, or undefined for all
@@ -920,7 +962,7 @@ function calculateProfileCompleteness(worker) {
     return Math.min(100, score);
 }
 
-// Get Full Worker Details for Verification
+// Récupère les détails complets du profil travailleur pour vérification
 export const getWorkerFullDetails = async (req, res) => {
     try {
         const userId = parseInt(req.params.id);
@@ -987,7 +1029,7 @@ export const getWorkerFullDetails = async (req, res) => {
     }
 };
 
-// Get Full Establishment Details for Verification
+// Récupère les détails complets du profil établissement pour vérification
 export const getEstablishmentFullDetails = async (req, res) => {
     try {
         const userId = parseInt(req.params.id);
@@ -1038,6 +1080,11 @@ export const getEstablishmentFullDetails = async (req, res) => {
     }
 };
 
+/**
+ * Examine et met à jour le statut d'un profil (Validation/Rejet).
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
+ */
 export const reviewProfile = async (req, res) => {
     try {
         const { type, id } = req.params; // type: 'WORKER' | 'ESTABLISHMENT'
@@ -1125,6 +1172,11 @@ export const reviewProfile = async (req, res) => {
     }
 };
 
+/**
+ * Met à jour le statut d'un document spécifique.
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
+ */
 export const updateDocumentStatus = async (req, res) => {
     try {
         const { id } = req.params;
@@ -1181,7 +1233,9 @@ export const updateDocumentStatus = async (req, res) => {
 };
 
 /**
- * System Settings
+ * Récupère les paramètres système.
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
  */
 export const getSystemSettings = async (req, res) => {
     try {
@@ -1261,6 +1315,11 @@ export const getPublicFeatures = async (req, res) => {
     }
 };
 
+/**
+ * Met à jour les paramètres système.
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
+ */
 export const updateSystemSettings = async (req, res) => {
     try {
         const settings = req.body; // { key: value, key2: value2 }
@@ -1294,9 +1353,13 @@ export const updateSystemSettings = async (req, res) => {
 
 
 
-// --- ADMIN MESSAGING SYSTEM ---
+// --- Système de Messagerie Admin ---
 
-// Get conversation with another admin or list of all messages
+/**
+ * Récupère les messages d'une conversation ou la liste des conversations.
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
+ */
 export const getAdminMessages = async (req, res) => {
     try {
         const userId = req.user.user_id;
@@ -1342,6 +1405,11 @@ export const getAdminMessages = async (req, res) => {
     }
 };
 
+/**
+ * Envoie un message à un autre administrateur.
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
+ */
 export const sendAdminMessage = async (req, res) => {
     try {
         const senderId = req.user.user_id;
@@ -1441,10 +1509,14 @@ export const getUIFeatures = async (req, res) => {
 };
 
 /**
- * MISSION VALIDATION
+ * VALIDATION DES MISSIONS
  */
 
-// Get Missions for Admin (with filtering and stats)
+/**
+ * Récupère les missions pour l'administration (avec filtres et stats).
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
+ */
 export const getAdminMissions = async (req, res) => {
     try {
         const { status = 'all', page = 1, limit = 10, search = '' } = req.query;
@@ -1542,7 +1614,11 @@ export const getAdminMissions = async (req, res) => {
     }
 };
 
-// Review Mission (Approve/Reject)
+/**
+ * Examine et valide/rejette une mission.
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
+ */
 export const reviewMission = async (req, res) => {
     try {
         const { id } = req.params;
@@ -1747,3 +1823,29 @@ export const resolveDispute = async (req, res) => {
         res.status(500).json({ message: "Erreur lors de la résolution du litige" });
     }
 };
+
+// --- Demo & Utils ---
+export const seedDemoData = async (req, res) => {
+    // Placeholder
+    res.json({ message: "Demo data seeding not implemented in this environment." });
+};
+
+export const updateUserSubscription = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { plan_id } = req.body;
+        
+        // Basic implementation
+        const sub = await prisma.subscription.upsert({
+            where: { user_id: parseInt(id) },
+            update: { plan_id: parseInt(plan_id), status: 'ACTIVE' },
+            create: { user_id: parseInt(id), plan_id: parseInt(plan_id), status: 'ACTIVE', start_date: new Date() }
+        });
+        res.json(sub);
+    } catch (error) {
+         console.error("Update Sub Error:", error);
+        res.status(500).json({ message: "Error updating subscription" });
+    }
+};
+
+

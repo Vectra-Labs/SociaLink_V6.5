@@ -16,7 +16,7 @@ const AdminDisputes = () => {
     const fetchDisputes = async () => {
         try {
             setLoading(true);
-            const res = await api.get(`/super-admin/disputes?status=${statusFilter}`);
+            const res = await api.get(`/admin/disputes?status=${statusFilter}`);
             setDisputes(res.data.items);
             setStats(res.data.stats);
         } catch (error) {
@@ -34,7 +34,7 @@ const AdminDisputes = () => {
         if (!descriptionRequired && !resolutionNote.trim()) return;
 
         try {
-            await api.put(`/super-admin/disputes/${selectedDispute.id}/resolve`, {
+            await api.put(`/admin/disputes/${selectedDispute.id}/resolve`, {
                 status,
                 resolution: resolutionNote
             });

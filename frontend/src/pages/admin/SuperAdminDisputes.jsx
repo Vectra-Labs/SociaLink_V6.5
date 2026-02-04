@@ -19,7 +19,7 @@ const SuperAdminDisputes = () => {
     const fetchDisputes = async () => {
         setLoading(true);
         try {
-            const { data } = await api.get(`/super-admin/disputes?status=${filter}`);
+            const { data } = await api.get(`/admin/disputes?status=${filter}`);
             setDisputes(data);
         } catch (error) {
             console.error("Error loading disputes", error);
@@ -37,7 +37,7 @@ const SuperAdminDisputes = () => {
 
         setProcessing(true);
         try {
-            await api.put(`/super-admin/disputes/${selectedDispute.dispute_id}/resolve`, {
+            await api.put(`/admin/disputes/${selectedDispute.dispute_id}/resolve`, {
                 status,
                 resolution: resolutionNote
             });

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import {
-    LayoutDashboard, Users, Briefcase, Settings, LogOut, Shield,
-    MessageSquare, Menu, ChevronDown, User, ShieldCheck, Building2,
-    ChevronRight, Gavel
+    LayoutDashboard, Users, Settings, LogOut, Shield,
+    MessageSquare, Menu, ChevronDown, User, Building2,
+    ChevronRight, CreditCard
 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import NotificationBell from './ui/NotificationBell';
@@ -12,20 +12,20 @@ const AdminLayout = () => {
     const { logout, user } = useAuth();
     const location = useLocation();
 
-    // State
+    // État (State)
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
     const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
     const [showProfileMenu, setShowProfileMenu] = useState(false);
     const [expandedMenu, setExpandedMenu] = useState(null);
 
-    // Auto-expand submenu if current path is in it
+    // Expansion automatique du sous-menu si le chemin actuel y correspond
     useEffect(() => {
         if (location.pathname.includes('/admin/verification')) {
             setExpandedMenu('verification');
         }
     }, [location.pathname]);
 
-    // Close menus on click outside
+    // Fermer les menus au clic extérieur
     useEffect(() => {
         const handleClickOutside = () => {
             setShowProfileMenu(false);
@@ -34,21 +34,31 @@ const AdminLayout = () => {
         return () => document.removeEventListener('click', handleClickOutside);
     }, []);
 
-    // Menu items with submenu support
+    // Éléments de menu avec support de sous-menus
     const menuItems = [
         { path: '/admin/dashboard', label: 'Vue d\'ensemble', icon: LayoutDashboard },
         {
             id: 'verification',
-            label: 'Authentification',
-            icon: ShieldCheck,
+            label: 'Vérification Comptes',
+            icon: Users,
             submenu: [
-                { path: '/admin/verification/workers', label: 'Travailleurs', icon: User },
-                { path: '/admin/verification/establishments', label: 'Établissements', icon: Building2 },
+                { path: '/admin/verification/workers', label: 'Validation Travailleurs', icon: User },
+                { path: '/admin/verification/establishments', label: 'Validation Établissements', icon: Building2 },
             ]
         },
-        { path: '/admin/missions', label: 'Validation Missions', icon: Briefcase },
-        { path: '/admin/disputes', label: 'Litiges', icon: Gavel },
-        { path: '/admin/messages', label: 'Messagerie', icon: MessageSquare },
+        {
+            id: 'finance',
+            label: 'Finance',
+            icon: CreditCard,
+            submenu: [
+                { path: '/admin/finance', label: 'Statistiques', icon: LayoutDashboard },
+                { path: '/admin/subscriptions', label: 'Abonnements', icon: CreditCard },
+            ]
+        },
+        // { path: '/admin/missions', label: 'Missions', icon: Briefcase }, // Removed as per request (Direct Publish)
+        // { path: '/admin/marketing', label: 'Marketing', icon: Megaphone }, // Removed as per request (User Decision)
+        // { path: '/admin/disputes', label: 'Litiges', icon: Gavel }, // Removed as per request (Simplification)
+        { path: '/admin/messages', label: 'Messagerie & Notifs', icon: MessageSquare },
         { path: '/admin/settings', label: 'Paramètres', icon: Settings },
     ];
 
